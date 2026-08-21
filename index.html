@@ -6,9 +6,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
-<title>Life Improvement Tracker</title>
-<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#4361ee">
+<link rel="manifest" href="manifest.json">
+<title>Life Improvement Tracker</title>
 <script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts-more.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/solid-gauge.js"></script>
@@ -36,9 +36,9 @@
   .main-content { flex: 1; overflow-y: auto; padding: 20px 16px 100px; -webkit-overflow-scrolling: touch; }
 
   .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; align-items: center; padding: 6px 0 calc(6px + env(safe-area-inset-bottom)); box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 200; }
-  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; padding: 6px 10px; border-radius: 12px; transition: 0.2s; border: none; background: none; font-family: inherit; }
-  .nav-item .icon { font-size: 20px; }
-  .nav-item .label { font-size: 9px; font-weight: 500; color: var(--color-text-muted); }
+  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 1px; cursor: pointer; padding: 4px 8px; border-radius: 10px; transition: 0.2s; border: none; background: none; font-family: inherit; }
+  .nav-item .icon { font-size: 18px; }
+  .nav-item .label { font-size: 8px; font-weight: 500; color: var(--color-text-muted); }
   .nav-item.active .label { color: var(--color-primary); font-weight: 600; }
   .nav-item.active { background: var(--color-primary-light); }
 
@@ -112,7 +112,6 @@
   .done-item .undo-btn { background: none; border: none; cursor: pointer; font-size: 16px; opacity: 0.6; padding: 4px; }
   .done-item .undo-btn:active { opacity: 1; }
 
-  /* Save individual button */
   .save-single-btn { background: var(--color-success); color: white; border: none; border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer; margin-top: 6px; }
   .save-single-btn:active { transform: scale(0.95); }
 
@@ -181,13 +180,77 @@
   .summary-card .period-score { font-size: 28px; font-weight: 800; }
   .summary-card .period-status { font-size: 12px; margin-top: 4px; font-weight: 600; }
 
-  /* Live score indicator */
   .live-score-bar { background: var(--color-bg-secondary); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 16px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 12px; }
   .live-score-bar .live-value { font-size: 22px; font-weight: 800; }
   .live-score-bar .live-label { font-size: 12px; color: var(--color-text-muted); }
   .live-score-bar .live-progress { flex: 1; height: 8px; border-radius: 4px; background: var(--color-border-light); overflow: hidden; }
   .live-score-bar .live-progress-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
   .live-count { font-size: 12px; color: var(--color-text-muted); font-weight: 500; }
+
+  /* Reverse clock & dashboard on check-in page */
+  .checkin-dashboard { background: linear-gradient(145deg, #0f172a, #1e293b); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: 0 8px 32px rgba(15,23,42,0.3); position: relative; overflow: hidden; }
+  .checkin-dashboard::before { content: ''; position: absolute; top: -50%; right: -30%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(99,102,241,0.15), transparent 70%); border-radius: 50%; }
+  .checkin-dashboard::after { content: ''; position: absolute; bottom: -30%; left: -20%; width: 150px; height: 150px; background: radial-gradient(circle, rgba(14,165,233,0.1), transparent 70%); border-radius: 50%; }
+  .dash-clock-row { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; position: relative; z-index: 1; }
+  .dash-clock-time { font-family: var(--font-mono); font-size: 36px; font-weight: 900; background: linear-gradient(135deg, #67e8f9, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 2px; }
+  .dash-clock-meta { flex: 1; }
+  .dash-clock-label { font-size: 11px; color: #94a3b8; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+  .dash-clock-remaining { font-size: 13px; color: #e2e8f0; font-weight: 600; margin-top: 2px; }
+  .dash-progress-outer { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.08); overflow: hidden; margin-bottom: 14px; position: relative; z-index: 1; }
+  .dash-progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #06b6d4, #8b5cf6, #ec4899); transition: width 1s ease; }
+  .dash-stats-row { display: flex; gap: 8px; position: relative; z-index: 1; }
+  .dash-stat { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 8px; text-align: center; }
+  .dash-stat-value { font-size: 18px; font-weight: 800; color: #f1f5f9; }
+  .dash-stat-label { font-size: 9px; color: #64748b; text-transform: uppercase; font-weight: 600; margin-top: 2px; letter-spacing: 0.3px; }
+  .dash-stat-value.score-up { color: #34d399; }
+  .dash-stat-value.score-down { color: #fb923c; }
+  .dash-target-chart { margin-top: 14px; position: relative; z-index: 1; }
+  .dash-target-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .dash-target-name { font-size: 11px; color: #94a3b8; min-width: 70px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dash-target-bar-outer { flex: 1; height: 10px; border-radius: 5px; background: rgba(255,255,255,0.06); overflow: hidden; position: relative; }
+  .dash-target-bar-fill { height: 100%; border-radius: 5px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); position: relative; }
+  .dash-target-bar-fill::after { content: ''; position: absolute; top: 0; right: 0; width: 3px; height: 100%; background: rgba(255,255,255,0.6); border-radius: 2px; animation: target-pulse 1.5s ease-in-out infinite; }
+  @keyframes target-pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .dash-target-pct { font-size: 11px; font-weight: 700; color: #e2e8f0; min-width: 35px; text-align: right; font-family: var(--font-mono); }
+  .dash-target-marker { position: absolute; top: -2px; width: 2px; height: 14px; background: #fbbf24; border-radius: 1px; opacity: 0.8; }
+
+  /* ===== TIMER TAB STYLES ===== */
+  .reverse-clock-card { background: linear-gradient(135deg, #1e1b4b, #312e81); border-radius: var(--radius); padding: 24px 20px; margin-bottom: 16px; box-shadow: var(--shadow-lg); text-align: center; color: white; }
+  .reverse-clock-value { font-family: var(--font-mono); font-size: 42px; font-weight: 800; letter-spacing: 2px; margin-bottom: 6px; }
+  .reverse-clock-label { font-size: 13px; opacity: 0.8; margin-bottom: 12px; }
+  .day-progress-outer { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.15); overflow: hidden; }
+  .day-progress-inner { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #10b981, #4361ee); transition: width 1s linear; }
+  .day-pct { font-size: 12px; opacity: 0.7; margin-top: 6px; }
+
+  .time-discipline-card { background: var(--color-bg-secondary); border-radius: var(--radius); padding: 18px; margin-bottom: 16px; box-shadow: var(--shadow); text-align: center; }
+  .time-discipline-value { font-size: 36px; font-weight: 800; }
+  .time-discipline-label { font-size: 12px; color: var(--color-text-muted); margin-top: 4px; }
+
+  .time-status-card { background: var(--color-bg-secondary); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow); }
+  .time-status-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 14px; }
+  .time-status-row .ts-label { color: var(--color-text-muted); }
+  .time-status-row .ts-value { font-weight: 700; }
+  .time-status-badge { display: inline-block; padding: 4px 12px; border-radius: 100px; font-size: 13px; font-weight: 700; margin-top: 8px; }
+
+  .timer-activity-card { background: var(--color-bg-secondary); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .timer-activity-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .timer-activity-name { font-size: 15px; font-weight: 600; }
+  .timer-activity-time { font-size: 13px; font-family: var(--font-mono); color: var(--color-text-muted); }
+  .timer-activity-bar { height: 8px; border-radius: 4px; background: var(--color-border-light); overflow: hidden; margin-bottom: 8px; }
+  .timer-activity-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+  .timer-activity-actions { display: flex; gap: 8px; align-items: center; }
+  .timer-btn-start { background: var(--color-success); color: white; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .timer-btn-start:active { transform: scale(0.95); }
+  .timer-btn-stop { background: var(--color-error); color: white; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .timer-btn-stop:active { transform: scale(0.95); }
+  .timer-btn-manual { background: var(--color-bg); border: 1px solid var(--color-border); border-radius: 8px; padding: 8px 12px; font-size: 13px; cursor: pointer; }
+  .timer-manual-input { width: 60px; padding: 6px 8px; border: 2px solid var(--color-border-light); border-radius: 6px; font-size: 14px; text-align: center; font-family: inherit; }
+  .timer-manual-input:focus { border-color: var(--color-primary); outline: none; }
+
+  @keyframes timer-pulse { 0%,100%{box-shadow: 0 0 0 0 rgba(239,68,68,0.3)} 50%{box-shadow: 0 0 0 8px rgba(239,68,68,0)} }
+  .timer-running { animation: timer-pulse 1.5s infinite; border: 2px solid var(--color-error); }
+
+  .timer-add-card { background: var(--color-bg-secondary); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow); }
 </style>
 </head>
 <body>
@@ -200,18 +263,33 @@
 <div class="main-content">
   <!-- CHECK-IN -->
   <div class="tab-content active" id="tab-checkin">
-    <!-- Live score indicator -->
+    <!-- Modern Dashboard: Clock + Stats + Target Chart -->
+    <div class="checkin-dashboard">
+      <div class="dash-clock-row">
+        <div class="dash-clock-time" id="mainClockValue">00:00:00</div>
+        <div class="dash-clock-meta">
+          <div class="dash-clock-label">Time Remaining</div>
+          <div class="dash-clock-remaining" id="mainClockRemaining">calculating...</div>
+        </div>
+      </div>
+      <div class="dash-progress-outer"><div class="dash-progress-fill" id="mainClockBar" style="width:0%"></div></div>
+      <div class="dash-stats-row">
+        <div class="dash-stat"><div class="dash-stat-value" id="dashScoreToday">—</div><div class="dash-stat-label">Today</div></div>
+        <div class="dash-stat"><div class="dash-stat-value" id="dashDoneCount">0</div><div class="dash-stat-label">Done</div></div>
+        <div class="dash-stat"><div class="dash-stat-value" id="dashPendingCount">0</div><div class="dash-stat-label">Pending</div></div>
+        <div class="dash-stat"><div class="dash-stat-value" id="dashTimePct">—</div><div class="dash-stat-label">Time Used</div></div>
+      </div>
+      <div class="dash-target-chart" id="dashTargetChart"></div>
+    </div>
     <div class="live-score-bar" id="liveScoreBar">
       <div><div class="live-value" id="liveScore">0%</div><div class="live-label">Today's Score</div></div>
       <div class="live-progress"><div class="live-progress-fill" id="liveProgressFill" style="width:0%;background:var(--color-border)"></div></div>
       <div class="live-count" id="liveCount">0/0 done</div>
     </div>
-    <!-- Pending questions -->
     <div class="card" id="pendingCard">
       <div class="card-title">📝 Pending</div>
       <div id="pendingList"></div>
     </div>
-    <!-- Done questions -->
     <div id="doneSection"></div>
   </div>
 
@@ -267,6 +345,46 @@
     <div id="historyDetailList"></div>
   </div>
 
+  <!-- TIMER TAB -->
+  <div class="tab-content" id="tab-timer">
+    <!-- Reverse Clock -->
+    <div class="reverse-clock-card">
+      <div class="reverse-clock-label">⏳ Time remaining today</div>
+      <div class="reverse-clock-value" id="reverseClockValue">00:00:00</div>
+      <div class="day-progress-outer"><div class="day-progress-inner" id="dayProgressInner" style="width:0%"></div></div>
+      <div class="day-pct" id="dayPct">0% of day used</div>
+    </div>
+
+    <!-- Time Discipline Score -->
+    <div class="time-discipline-card">
+      <div class="time-discipline-value" id="timeDisciplineScore" style="color:var(--color-text-muted)">—</div>
+      <div class="time-discipline-label">Time Discipline Score</div>
+    </div>
+
+    <!-- Remaining Time Analysis -->
+    <div class="time-status-card" id="timeStatusCard">
+      <div class="time-status-row"><span class="ts-label">Total planned</span><span class="ts-value" id="tsPlanned">0h 0m</span></div>
+      <div class="time-status-row"><span class="ts-label">Utilized</span><span class="ts-value" id="tsUtilized">0h 0m</span></div>
+      <div class="time-status-row"><span class="ts-label">Remaining to targets</span><span class="ts-value" id="tsRemaining">0h 0m</span></div>
+      <div style="text-align:center;margin-top:8px;"><span class="time-status-badge" id="tsStatusBadge">Add activities below</span></div>
+    </div>
+
+    <!-- Activity List -->
+    <div id="timerActivityList"></div>
+
+    <!-- Add Activity -->
+    <div class="timer-add-card">
+      <div class="card-title">➕ Add Time Target</div>
+      <div class="setting-row">
+        <input type="text" id="timerNewName" placeholder="Activity name (e.g., Reading)">
+      </div>
+      <div class="setting-row">
+        <input type="number" id="timerNewTarget" placeholder="Target (min)" min="1" style="max-width:120px;">
+        <button class="btn btn-sm btn-primary" onclick="addTimeTarget()" style="width:auto;padding:12px 20px;">Add</button>
+      </div>
+    </div>
+  </div>
+
   <!-- SETTINGS -->
   <div class="tab-content" id="tab-settings">
     <div class="info-box">
@@ -312,13 +430,17 @@
   <button class="nav-item" onclick="switchTab('stats',this)"><span class="icon">📊</span><span class="label">Overview</span></button>
   <button class="nav-item" onclick="switchTab('category',this)"><span class="icon">📂</span><span class="label">Category</span></button>
   <button class="nav-item" onclick="switchTab('history',this)"><span class="icon">📅</span><span class="label">History</span></button>
+  <button class="nav-item" onclick="switchTab('timer',this)"><span class="icon">⏱️</span><span class="label">Timer</span></button>
   <button class="nav-item" onclick="switchTab('settings',this)"><span class="icon">⚙️</span><span class="label">Settings</span></button>
 </div>
 
 <script>
+// ===== STORAGE KEYS =====
 const QK='life_tracker_q_v7', DK='life_tracker_d_v7', TDK='life_tracker_today_v7';
+const TTK='life_tracker_time_targets_v7', TLK='life_tracker_time_log_v7';
 let catPeriod=7, histPeriod='daily', selectedType='yesno';
 
+// ===== PRESETS =====
 const PRESETS={
   health:[{text:'Exercise',type:'target',target:30,uom:'minutes',weight:5},{text:'Water intake',type:'target',target:8,uom:'glasses',weight:3},{text:'Sleep',type:'target',target:7,uom:'hours',weight:4},{text:'Healthy meals',type:'target',target:3,uom:'meals',weight:4},{text:'No smoking/alcohol',type:'yesno',weight:3},{text:'Steps walked',type:'target',target:8000,uom:'steps',weight:3}],
   mental:[{text:'Meditation',type:'target',target:15,uom:'minutes',weight:4},{text:'Felt calm today',type:'yesno',weight:5},{text:'Took proper breaks',type:'yesno',weight:3},{text:'No overthinking',type:'yesno',weight:4},{text:'Screen-free time',type:'target',target:2,uom:'hours',weight:3}],
@@ -328,6 +450,7 @@ const PRESETS={
   finance:[{text:'Stayed within budget',type:'yesno',weight:4},{text:'Tracked expenses',type:'yesno',weight:3},{text:'Savings contribution',type:'target',target:500,uom:'₹',weight:4},{text:'No impulse purchase',type:'yesno',weight:3}],
 };
 
+// ===== HELPERS =====
 function gQ(){try{return JSON.parse(localStorage.getItem(QK))||[];}catch(e){return[];}}
 function sQ(q){localStorage.setItem(QK,JSON.stringify(q));}
 function gD(){try{return JSON.parse(localStorage.getItem(DK))||[];}catch(e){return[];}}
@@ -337,24 +460,26 @@ function esc(s){const d=document.createElement('div');d.textContent=s;return d.i
 function scoreClass(s){return s>=80?'score-excellent':s>=60?'score-verygood':s>=55?'score-normal':s>=40?'score-bad':'score-verybad';}
 function scoreText(s){return s>=80?'🌟 Excellent!':s>=60?'✨ Very Good':s>=55?'👍 Normal':s>=40?'⚠️ Needs Work':'🚨 Very Bad';}
 function scoreColor(s){return s>=80?'#059669':s>=60?'#10b981':s>=55?'#f59e0b':s>=40?'#f97316':'#ef4444';}
+function fmtMin(m){const h=Math.floor(m/60),mm=Math.round(m%60);return h>0?h+'h '+mm+'m':mm+'m';}
 
-// Today's partial answers (saved per-item, survives page reload)
+// ===== TODAY ANSWERS =====
 function getTodayAnswers(){
   try{const raw=localStorage.getItem(TDK);if(!raw)return{date:getToday(),answers:{}};const d=JSON.parse(raw);if(d.date!==getToday())return{date:getToday(),answers:{}};return d;}catch(e){return{date:getToday(),answers:{}};}
 }
 function saveTodayAnswers(ans){localStorage.setItem(TDK,JSON.stringify({date:getToday(),answers:ans}));}
 
+// ===== TAB SWITCHING =====
 function switchTab(n,el){
-  const tabs=['checkin','stats','category','history','settings'];
+  const tabs=['checkin','stats','category','history','timer','settings'];
   document.querySelectorAll('.tab-content').forEach((t,i)=>t.classList.toggle('active',tabs[i]===n));
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
   if(el)el.classList.add('active');
-  if(n==='stats')renderStats();if(n==='settings')renderSettings();if(n==='category')renderCatReport();if(n==='history')renderHistoryTab();
+  if(n==='stats')renderStats();if(n==='settings')renderSettings();if(n==='category')renderCatReport();if(n==='history')renderHistoryTab();if(n==='timer')renderTimerTab();
   document.querySelector('.main-content').scrollTop=0;
 }
 function selectType(t){selectedType=t;document.getElementById('typeYN').classList.toggle('active',t==='yesno');document.getElementById('typeTarget').classList.toggle('active',t==='target');document.getElementById('targetFields').classList.toggle('show',t==='target');}
 
-// SETTINGS
+// ===== SETTINGS =====
 function addQuestion(){
   const text=document.getElementById('newQuestion').value.trim();if(!text){alert('Enter a question');return;}
   const cat=document.getElementById('newCategory').value.trim()||'General';
@@ -374,111 +499,196 @@ function addPreset(key){
 function renderSettings(){
   const qs=gQ();document.getElementById('qCount').textContent=qs.length+' total';
   const g={};qs.forEach(q=>{(g[q.category]=g[q.category]||[]).push(q);});
-  let h='';Object.keys(g).sort().forEach(cat=>{h+='<div class="category-header">'+cat+'</div>';g[cat].forEach(q=>{const tb=q.type==='yesno'?'<span class="q-type-badge q-type-yn">Y/N</span>':'<span class="q-type-badge q-type-target">Target</span>';const meta=q.type==='target'?'Target: '+q.target+' '+esc(q.uom)+' | ⭐'+q.weight:'⭐'+q.weight;h+='<div class="existing-q">'+tb+' <span class="text">'+esc(q.text)+'</span><span class="q-weight">⭐'+q.weight+'</span><button class="btn-icon" onclick="removeQuestion('+q.id+')">🗑️</button><div class="meta">'+meta+'</div></div>';});});
+  let h='';Object.keys(g).sort().forEach(cat=>{h+='<div class="category-header">'+cat+'</div>';g[cat].forEach(q=>{const meta=q.type==='target'?'Target: '+q.target+' '+esc(q.uom)+' | ⭐'+q.weight:'Y/N | ⭐'+q.weight;h+='<div class="existing-q"><span class="text">'+esc(q.text)+'</span><span class="q-weight">⭐'+q.weight+'</span><button class="btn-icon" onclick="removeQuestion('+q.id+')">🗑️</button><div class="meta">'+meta+'</div></div>';});});
   if(!qs.length)h='<div class="empty-state">No questions. Add or use presets!</div>';
   document.getElementById('questionsList').innerHTML=h;
 }
 
-// CHECK-IN — individual save per question
+// ===== CHECK-IN =====
 function renderCheckin(){
   const qs=gQ(),ta=getTodayAnswers();
   if(!qs.length){document.getElementById('pendingList').innerHTML='<div class="empty-state">Go to ⚙️ Settings to add questions</div>';document.getElementById('doneSection').innerHTML='';updateLiveScore();return;}
-
   const pending=[],done=[];
   qs.forEach(q=>{if(ta.answers[q.id]!==undefined)done.push(q);else pending.push(q);});
-
-  // Render pending grouped by category
   const pg={};pending.forEach(q=>{(pg[q.category]=pg[q.category]||[]).push(q);});
   let ph='';
   if(!pending.length)ph='<div class="empty-state" style="padding:20px;">✅ All done for today!</div>';
-  else{
-    Object.keys(pg).sort().forEach(cat=>{
-      ph+='<div class="category-header">'+cat+'</div>';
-      pg[cat].forEach(q=>{
-        ph+='<div class="q-item"><div class="q-item-top"><label>'+esc(q.text)+'</label><span class="q-weight">⭐'+q.weight+'</span></div>';
-        if(q.type==='yesno'){
-          ph+='<div class="yn-toggle"><label class="yn-switch"><input type="checkbox" id="inp_'+q.id+'" onchange="updateYN('+q.id+')"><span class="yn-slider"></span></label><span class="yn-label" id="ynl_'+q.id+'">No</span><button class="save-single-btn" onclick="saveSingle('+q.id+')">Save ✓</button></div>';
-        }else{
-          ph+='<div class="q-item-input"><input type="number" id="inp_'+q.id+'" placeholder="0" min="0" step="any" oninput="updateProg('+q.id+','+q.target+')"><span class="q-target">/ <strong>'+q.target+'</strong> '+esc(q.uom)+'</span><div class="q-progress-mini"><div class="q-progress-mini-fill" id="prog_'+q.id+'" style="width:0%"></div></div><button class="save-single-btn" onclick="saveSingle('+q.id+')">Save ✓</button></div>';
-        }
-        ph+='</div>';
-      });
-    });
-  }
+  else{Object.keys(pg).sort().forEach(cat=>{ph+='<div class="category-header">'+cat+'</div>';pg[cat].forEach(q=>{ph+='<div class="q-item"><div class="q-item-top"><label>'+esc(q.text)+'</label><span class="q-weight">⭐'+q.weight+'</span></div>';if(q.type==='yesno')ph+='<div class="yn-toggle"><label class="yn-switch"><input type="checkbox" id="inp_'+q.id+'" onchange="updateYN('+q.id+')"><span class="yn-slider"></span></label><span class="yn-label" id="ynl_'+q.id+'">No</span><button class="save-single-btn" onclick="saveSingle('+q.id+')">Save ✓</button></div>';else ph+='<div class="q-item-input"><input type="number" id="inp_'+q.id+'" placeholder="0" min="0" step="any" oninput="updateProg('+q.id+','+q.target+')"><span class="q-target">/ <strong>'+q.target+'</strong> '+esc(q.uom)+'</span><div class="q-progress-mini"><div class="q-progress-mini-fill" id="prog_'+q.id+'" style="width:0%"></div></div><button class="save-single-btn" onclick="saveSingle('+q.id+')">Save ✓</button></div>';ph+='</div>';});});}
   document.getElementById('pendingList').innerHTML=ph;
-
-  // Render done section
-  if(done.length){
-    let dh='<div class="done-section"><div class="done-header">✅ Done ('+done.length+'/'+qs.length+')</div>';
-    done.forEach(q=>{
-      const val=ta.answers[q.id];
-      let display='';
-      if(q.type==='yesno')display=val===1?'Yes ✓':'No ✗';
-      else display=val+' / '+q.target+' '+esc(q.uom);
-      dh+='<div class="done-item"><span class="text">'+esc(q.text)+'</span><span class="done-value">'+display+'</span><button class="undo-btn" onclick="undoSingle('+q.id+')" title="Undo">↩️</button></div>';
-    });
-    dh+='</div>';
-    document.getElementById('doneSection').innerHTML=dh;
-  }else{document.getElementById('doneSection').innerHTML='';}
-
+  if(done.length){let dh='<div class="done-section"><div class="done-header">✅ Done ('+done.length+'/'+qs.length+')</div>';done.forEach(q=>{const val=ta.answers[q.id];let display='';if(q.type==='yesno')display=val===1?'Yes ✓':'No ✗';else display=val+' / '+q.target+' '+esc(q.uom);dh+='<div class="done-item"><span class="text">'+esc(q.text)+'</span><span class="done-value">'+display+'</span><button class="undo-btn" onclick="undoSingle('+q.id+')" title="Undo">↩️</button></div>';});dh+='</div>';document.getElementById('doneSection').innerHTML=dh;}else{document.getElementById('doneSection').innerHTML='';}
   updateLiveScore();
 }
-
 function updateYN(id){const i=document.getElementById('inp_'+id),l=document.getElementById('ynl_'+id);if(!i||!l)return;l.textContent=i.checked?'Yes ✓':'No';l.classList.toggle('active',i.checked);}
 function updateProg(id,t){const i=document.getElementById('inp_'+id),p=document.getElementById('prog_'+id);if(!i||!p)return;const v=parseFloat(i.value)||0,pct=Math.min(100,Math.round(v/t*100));p.style.width=pct+'%';p.style.background=pct>=100?'#10b981':pct>=60?'#4361ee':pct>=30?'#f59e0b':'#ef4444';}
+function saveSingle(id){const qs=gQ(),q=qs.find(x=>x.id===id);if(!q)return;const ta=getTodayAnswers();if(q.type==='yesno'){ta.answers[id]=document.getElementById('inp_'+id)?.checked?1:0;}else{const val=parseFloat(document.getElementById('inp_'+id)?.value)||0;if(val===0){alert('Enter a value first');return;}ta.answers[id]=val;}saveTodayAnswers(ta.answers);saveDailyRecord();renderCheckin();updateDashStats();}
+function undoSingle(id){const ta=getTodayAnswers();delete ta.answers[id];saveTodayAnswers(ta.answers);saveDailyRecord();renderCheckin();updateDashStats();}
+function saveDailyRecord(){const qs=gQ(),ta=getTodayAnswers();let ws=0,tw=0;const cs={},cw={};qs.forEach(q=>{tw+=q.weight;cw[q.category]=(cw[q.category]||0)+q.weight;if(ta.answers[q.id]!==undefined){let r=0;if(q.type==='yesno')r=ta.answers[q.id]===1?1:0;else r=Math.min(ta.answers[q.id]/q.target,1);ws+=r*q.weight;cs[q.category]=(cs[q.category]||0)+r*q.weight;}});const score=tw?Math.round(ws/tw*100):0;const cp={};Object.keys(cw).forEach(c=>{cp[c]=Math.round((cs[c]||0)/cw[c]*100);});const d=gD(),t=getToday();const entry={date:t,score,catScores:cp,actuals:ta.answers};const idx=d.findIndex(x=>x.date===t);if(idx>=0)d[idx]=entry;else d.push(entry);sD(d);}
+function updateLiveScore(){const qs=gQ(),ta=getTodayAnswers();if(!qs.length){document.getElementById('liveScore').textContent='0%';document.getElementById('liveCount').textContent='0/0';return;}let ws=0,tw=0,dc=0;qs.forEach(q=>{tw+=q.weight;if(ta.answers[q.id]!==undefined){dc++;let r=q.type==='yesno'?(ta.answers[q.id]===1?1:0):Math.min(ta.answers[q.id]/q.target,1);ws+=r*q.weight;}});const score=tw?Math.round(ws/tw*100):0;const col=scoreColor(score);document.getElementById('liveScore').textContent=score+'%';document.getElementById('liveScore').style.color=col;document.getElementById('liveCount').textContent=dc+'/'+qs.length+' done';document.getElementById('liveProgressFill').style.width=score+'%';document.getElementById('liveProgressFill').style.background=col;}
 
-// Save individual answer
-function saveSingle(id){
-  const qs=gQ(),q=qs.find(x=>x.id===id);if(!q)return;
-  const ta=getTodayAnswers();
-  if(q.type==='yesno'){
-    const checked=document.getElementById('inp_'+id)?.checked||false;
-    ta.answers[id]=checked?1:0;
-  }else{
-    const val=parseFloat(document.getElementById('inp_'+id)?.value)||0;
-    if(val===0){alert('Enter a value first');return;}
-    ta.answers[id]=val;
-  }
-  saveTodayAnswers(ta.answers);
-  // Also save/update daily record
-  saveDailyRecord();
-  renderCheckin();
+// ===== STATS =====
+function renderStats(){const data=gD(),te=data.find(d=>d.date===getToday()),l7=data.slice(-7);const avg7=l7.length?Math.round(l7.reduce((s,d)=>s+d.score,0)/l7.length):0;let streak=0;const sorted=[...data].sort((a,b)=>b.date.localeCompare(a.date));for(let i=0;i<sorted.length;i++){const d=new Date();d.setDate(d.getDate()-i);if(sorted[i]?.date===d.toISOString().slice(0,10))streak++;else break;}document.getElementById('todayScore').textContent=te?te.score+'%':'—';document.getElementById('avgScore').textContent=avg7?avg7+'%':'—';document.getElementById('streak').textContent=streak;const box=document.getElementById('bigScoreBox'),ds=avg7||(te?te.score:null);if(ds!==null){box.className='big-score-container '+scoreClass(ds);document.getElementById('bigScoreValue').textContent=ds+'%';document.getElementById('bigScoreLabel').textContent=scoreText(ds);document.getElementById('bigScoreSub').textContent='7-day weighted average';box.classList.add('score-animate');setTimeout(()=>box.classList.remove('score-animate'),700);}else{box.className='big-score-container score-none';document.getElementById('bigScoreValue').textContent='—';document.getElementById('bigScoreLabel').textContent='No Data';document.getElementById('bigScoreSub').textContent='Complete your first check-in';}renderSummaryGrid(data);renderGauge(avg7);renderTrend(data);renderRadar(data);renderHistory(data);}
+function renderSummaryGrid(data){const now=new Date(),grid=document.getElementById('summaryGrid');if(!data.length){grid.innerHTML='';return;}const ws=new Date(now);ws.setDate(now.getDate()-now.getDay());const wd=data.filter(d=>d.date>=ws.toISOString().slice(0,10));const wa=wd.length?Math.round(wd.reduce((s,d)=>s+d.score,0)/wd.length):null;const mk=now.toISOString().slice(0,7);const md=data.filter(d=>d.date.startsWith(mk));const ma=md.length?Math.round(md.reduce((s,d)=>s+d.score,0)/md.length):null;const yk=String(now.getFullYear());const yd=data.filter(d=>d.date.startsWith(yk));const ya=yd.length?Math.round(yd.reduce((s,d)=>s+d.score,0)/yd.length):null;const aa=data.length?Math.round(data.reduce((s,d)=>s+d.score,0)/data.length):null;function c(l,s){if(s===null)return'<div class="summary-card"><div class="period-label">'+l+'</div><div class="period-score" style="color:var(--color-text-muted)">—</div></div>';return'<div class="summary-card"><div class="period-label">'+l+'</div><div class="period-score" style="color:'+scoreColor(s)+'">'+s+'%</div><div class="period-status" style="color:'+scoreColor(s)+'">'+scoreText(s)+'</div></div>';}grid.innerHTML=c('This Week',wa)+c('This Month',ma)+c('This Year',ya)+c('All Time',aa);}
+function renderGauge(s){Highcharts.chart('gaugeChart',{chart:{type:'solidgauge',backgroundColor:'transparent'},title:{text:'Life Gauge',style:{fontSize:'15px',fontWeight:'700'}},pane:{startAngle:-90,endAngle:90,background:[{innerRadius:'60%',outerRadius:'100%',shape:'arc',backgroundColor:'#e8e8f0',borderWidth:0}]},yAxis:{min:0,max:100,lineWidth:0,tickWidth:0,minorTickInterval:null,labels:{y:16,style:{fontSize:'12px'}},stops:[[0.4,'#ef4444'],[0.55,'#f59e0b'],[0.6,'#10b981'],[0.8,'#059669']]},series:[{data:[s],dataLabels:{format:'<div style="text-align:center"><span style="font-size:2em;font-weight:800;color:'+scoreColor(s)+'">{y}%</span></div>',borderWidth:0,y:-20},innerRadius:'60%',radius:'100%'}],credits:{enabled:false},tooltip:{enabled:false}});}
+function renderTrend(data){const l=data.slice(-30);if(l.length<2){document.getElementById('trendChart').innerHTML='<div class="empty-state">Need 2+ entries</div>';return;}Highcharts.chart('trendChart',{chart:{type:'areaspline',backgroundColor:'transparent'},title:{text:'30-Day Trend',style:{fontSize:'15px',fontWeight:'700'}},xAxis:{categories:l.map(d=>d.date.slice(5)),labels:{style:{fontSize:'11px'},step:Math.ceil(l.length/7)}},yAxis:{min:0,max:100,title:{text:''},gridLineColor:'#e8e8f0',plotBands:[{from:80,to:100,color:'rgba(16,185,129,0.07)'},{from:0,to:40,color:'rgba(239,68,68,0.04)'}]},plotOptions:{areaspline:{fillOpacity:0.15,marker:{radius:4},color:'#4361ee',lineWidth:3}},series:[{name:'Score',data:l.map(d=>d.score)}],tooltip:{valueSuffix:'%'},legend:{enabled:false},credits:{enabled:false}});}
+function renderRadar(data){const l=data.slice(-7);if(!l.length){document.getElementById('radarChart').innerHTML='<div class="empty-state">No data</div>';return;}const cats=[...new Set(l.flatMap(d=>Object.keys(d.catScores||{})))];if(cats.length<3){document.getElementById('radarChart').innerHTML='<div class="empty-state">Need 3+ categories</div>';return;}const avg=cats.map(c=>{const v=l.map(d=>(d.catScores||{})[c]||0);return Math.round(v.reduce((s,x)=>s+x,0)/v.length);});Highcharts.chart('radarChart',{chart:{polar:true,type:'area',backgroundColor:'transparent'},title:{text:'Balance',style:{fontSize:'15px',fontWeight:'700'}},xAxis:{categories:cats,tickmarkPlacement:'on',lineWidth:0,labels:{style:{fontSize:'12px'}}},yAxis:{min:0,max:100,gridLineInterpolation:'polygon',lineWidth:0,gridLineColor:'#e8e8f0'},series:[{name:'Score',data:avg,pointPlacement:'on',color:'#4361ee',fillOpacity:0.2,lineWidth:2.5}],tooltip:{valueSuffix:'%'},legend:{enabled:false},credits:{enabled:false}});}
+function renderHistory(data){const r=[...data].reverse().slice(0,10),list=document.getElementById('historyList');if(!r.length){list.innerHTML='<div class="empty-state">No entries</div>';return;}list.innerHTML=r.map(d=>'<div class="history-item"><span class="history-date">'+d.date+'</span><div class="bar-bg"><div class="bar-fill" style="width:'+d.score+'%;background:'+scoreColor(d.score)+'"></div></div><span class="history-score" style="color:'+scoreColor(d.score)+'">'+d.score+'%</span></div>').join('');}
+
+// ===== CATEGORY =====
+function setCatPeriod(d,el){catPeriod=d;document.querySelectorAll('#tab-category .period-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderCatReport();}
+function renderCatReport(){const data=gD(),qs=gQ(),cats=[...new Set(qs.map(q=>q.category))].sort();if(!data.length||!cats.length){document.getElementById('catReportList').innerHTML='<div class="empty-state">No data</div>';document.getElementById('catBarChart').innerHTML='';document.getElementById('catTrendChart').innerHTML='';return;}const cut=new Date();cut.setDate(cut.getDate()-catPeriod);const f=catPeriod>=9999?data:data.filter(d=>d.date>=cut.toISOString().slice(0,10));if(!f.length){document.getElementById('catReportList').innerHTML='<div class="empty-state">No data in period</div>';return;}const ca={},ct={};cats.forEach(c=>{const sc=f.map(d=>(d.catScores||{})[c]).filter(v=>v!==undefined);ca[c]=sc.length?Math.round(sc.reduce((s,v)=>s+v,0)/sc.length):null;if(sc.length>=4){const m=Math.floor(sc.length/2);ct[c]=Math.round(sc.slice(m).reduce((s,v)=>s+v,0)/(sc.length-m)-sc.slice(0,m).reduce((s,v)=>s+v,0)/m);}else ct[c]=0;});const cw={};qs.forEach(q=>{cw[q.category]=(cw[q.category]||0)+q.weight;});const tw=Object.values(cw).reduce((s,v)=>s+v,0);let h='';cats.forEach(c=>{if(ca[c]===null)return;const s=ca[c],col=scoreColor(s),wp=Math.round((cw[c]/tw)*100),tr=ct[c],ti=tr>2?'<span class="up">↑+'+tr+'%</span>':tr<-2?'<span class="down">↓'+tr+'%</span>':'<span class="flat">→</span>';h+='<div class="cat-report-item"><div class="cat-report-header"><span class="cat-report-name">'+c+'</span><span class="cat-report-score" style="color:'+col+'">'+s+'%</span></div><div class="cat-progress-bar"><div class="cat-progress-fill" style="width:'+s+'%;background:'+col+'"></div></div><div class="cat-detail"><span>'+wp+'% weight</span><div class="cat-trend">'+ti+'</div></div></div>';});document.getElementById('catReportList').innerHTML=h;const vc=cats.filter(c=>ca[c]!==null);Highcharts.chart('catBarChart',{chart:{type:'bar',backgroundColor:'transparent'},title:{text:'Scores',style:{fontSize:'15px',fontWeight:'700'}},xAxis:{categories:vc,labels:{style:{fontSize:'13px'}}},yAxis:{min:0,max:100,title:{text:''},gridLineColor:'#e8e8f0'},plotOptions:{bar:{dataLabels:{enabled:true,format:'{y}%'},colorByPoint:true,borderRadius:4}},colors:vc.map(c=>scoreColor(ca[c])),series:[{name:'Score',data:vc.map(c=>ca[c])}],legend:{enabled:false},credits:{enabled:false},tooltip:{valueSuffix:'%'}});if(f.length>=2){Highcharts.chart('catTrendChart',{chart:{type:'spline',backgroundColor:'transparent'},title:{text:'Trends',style:{fontSize:'15px',fontWeight:'700'}},xAxis:{categories:f.map(d=>d.date.slice(5)),labels:{style:{fontSize:'10px'},rotation:-45,step:Math.ceil(f.length/7)}},yAxis:{min:0,max:100,title:{text:''},gridLineColor:'#e8e8f0'},plotOptions:{spline:{marker:{radius:3},lineWidth:2.5}},series:vc.map(c=>({name:c,data:f.map(d=>(d.catScores||{})[c]||0)})),tooltip:{valueSuffix:'%',shared:true},legend:{itemStyle:{fontSize:'11px'}},credits:{enabled:false}});}else document.getElementById('catTrendChart').innerHTML='<div class="empty-state">Need 2+</div>';}
+
+// ===== HISTORY TAB =====
+function setHistPeriod(p,el){histPeriod=p;document.querySelectorAll('#tab-history .period-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderHistoryTab();}
+function renderHistoryTab(){const data=gD();if(!data.length){document.getElementById('historyChart').innerHTML='<div class="empty-state">No data</div>';document.getElementById('historyDetailList').innerHTML='';return;}let grouped={};if(histPeriod==='daily')data.slice(-30).forEach(d=>{grouped[d.date]=[d.score];});else if(histPeriod==='weekly')data.forEach(d=>{const dt=new Date(d.date),wk=dt.getFullYear()+'W'+String(Math.ceil(((dt-new Date(dt.getFullYear(),0,1))/86400000+1)/7)).padStart(2,'0');(grouped[wk]=grouped[wk]||[]).push(d.score);});else if(histPeriod==='monthly')data.forEach(d=>{const k=d.date.slice(0,7);(grouped[k]=grouped[k]||[]).push(d.score);});else data.forEach(d=>{const k=d.date.slice(0,4);(grouped[k]=grouped[k]||[]).push(d.score);});const keys=Object.keys(grouped).sort(),avgs=keys.map(k=>Math.round(grouped[k].reduce((s,v)=>s+v,0)/grouped[k].length)),counts=keys.map(k=>grouped[k].length);Highcharts.chart('historyChart',{chart:{type:'column',backgroundColor:'transparent'},title:{text:histPeriod[0].toUpperCase()+histPeriod.slice(1)+' Scores',style:{fontSize:'15px',fontWeight:'700'}},xAxis:{categories:keys.map(k=>histPeriod==='daily'?k.slice(5):k),labels:{style:{fontSize:'10px'},rotation:-45,step:keys.length>15?Math.ceil(keys.length/10):1}},yAxis:{min:0,max:100,title:{text:''},gridLineColor:'#e8e8f0'},plotOptions:{column:{colorByPoint:true,borderRadius:4,dataLabels:{enabled:keys.length<=12,format:'{y}%',style:{fontSize:'10px'}}}},colors:avgs.map(a=>scoreColor(a)),series:[{name:'Score',data:avgs}],legend:{enabled:false},credits:{enabled:false}});let html='';keys.slice().reverse().slice(0,20).forEach((k,i)=>{const idx=keys.length-1-i;html+='<div class="history-item"><span class="history-date">'+k+'</span><span style="font-size:11px;color:var(--color-text-muted)">'+counts[idx]+'d</span><div class="bar-bg"><div class="bar-fill" style="width:'+avgs[idx]+'%;background:'+scoreColor(avgs[idx])+'"></div></div><span class="history-score" style="color:'+scoreColor(avgs[idx])+'">'+avgs[idx]+'%</span></div>';});document.getElementById('historyDetailList').innerHTML=html;}
+
+// ===== TIMER TAB =====
+let activeTimers = {}; // {activityId: startTimestamp}
+
+function getTimeTargets(){try{return JSON.parse(localStorage.getItem(TTK))||[];}catch(e){return[];}}
+function setTimeTargets(t){localStorage.setItem(TTK,JSON.stringify(t));}
+function getTimeLog(){try{const raw=localStorage.getItem(TLK);if(!raw)return{date:getToday(),logs:{}};const d=JSON.parse(raw);if(d.date!==getToday())return{date:getToday(),logs:{}};return d;}catch(e){return{date:getToday(),logs:{}};}
+}
+function setTimeLog(logs){localStorage.setItem(TLK,JSON.stringify({date:getToday(),logs}));}
+
+function addTimeTarget(){
+  const name=document.getElementById('timerNewName').value.trim();
+  const target=parseInt(document.getElementById('timerNewTarget').value)||0;
+  if(!name){alert('Enter activity name');return;}
+  if(!target){alert('Enter target minutes');return;}
+  const targets=getTimeTargets();
+  targets.push({id:Date.now(),name,targetMin:target});
+  setTimeTargets(targets);
+  document.getElementById('timerNewName').value='';
+  document.getElementById('timerNewTarget').value='';
+  renderTimerTab();
 }
 
-// Undo — move back to pending
-function undoSingle(id){
-  const ta=getTodayAnswers();
-  delete ta.answers[id];
-  saveTodayAnswers(ta.answers);
-  saveDailyRecord();
-  renderCheckin();
+function removeTimeTarget(id){
+  if(!confirm('Remove this activity?'))return;
+  setTimeTargets(getTimeTargets().filter(t=>t.id!==id));
+  const log=getTimeLog();delete log.logs[id];setTimeLog(log.logs);
+  renderTimerTab();
 }
 
-// Calculate and save daily record from current answers
-function saveDailyRecord(){
-  const qs=gQ(),ta=getTodayAnswers();
-  let ws=0,tw=0;const cs={},cw={};
-  qs.forEach(q=>{
-    tw+=q.weight;cw[q.category]=(cw[q.category]||0)+q.weight;
-    if(ta.answers[q.id]!==undefined){
-      let r=0;
-      if(q.type==='yesno')r=ta.answers[q.id]===1?1:0;
-      else r=Math.min(ta.answers[q.id]/q.target,1);
-      ws+=r*q.weight;
-      cs[q.category]=(cs[q.category]||0)+r*q.weight;
+function startTimer(id){
+  activeTimers[id]=Date.now();
+  renderTimerTab();
+}
+
+function stopTimer(id){
+  if(!activeTimers[id])return;
+  const elapsed=Math.round((Date.now()-activeTimers[id])/60000); // minutes
+  delete activeTimers[id];
+  const log=getTimeLog();
+  log.logs[id]=(log.logs[id]||0)+elapsed;
+  setTimeLog(log.logs);
+  renderTimerTab();
+}
+
+function addManualTime(id){
+  const inp=document.getElementById('manual_'+id);
+  const val=parseInt(inp?.value)||0;
+  if(val<=0)return;
+  const log=getTimeLog();
+  log.logs[id]=(log.logs[id]||0)+val;
+  setTimeLog(log.logs);
+  if(inp)inp.value='';
+  renderTimerTab();
+}
+
+function renderTimerTab(){
+  const targets=getTimeTargets();
+  const log=getTimeLog();
+  const totalPlanned=targets.reduce((s,t)=>s+t.targetMin,0);
+  const totalUtilized=targets.reduce((s,t)=>s+(log.logs[t.id]||0),0);
+  const totalRemaining=Math.max(0,totalPlanned-totalUtilized);
+
+  // Time discipline score
+  let tdScore=0;
+  if(targets.length&&totalPlanned){tdScore=Math.min(100,Math.round((totalUtilized/totalPlanned)*100));}
+  const tdEl=document.getElementById('timeDisciplineScore');
+  if(targets.length){tdEl.textContent=tdScore+'%';tdEl.style.color=scoreColor(tdScore);}else{tdEl.textContent='—';tdEl.style.color='var(--color-text-muted)';}
+
+  // Status
+  document.getElementById('tsPlanned').textContent=fmtMin(totalPlanned);
+  document.getElementById('tsUtilized').textContent=fmtMin(totalUtilized);
+  document.getElementById('tsRemaining').textContent=fmtMin(totalRemaining);
+
+  const now=new Date();
+  const minsLeftInDay=Math.max(0,(24*60)-(now.getHours()*60+now.getMinutes()));
+  const badge=document.getElementById('tsStatusBadge');
+  if(!targets.length){badge.textContent='Add activities below';badge.style.background='var(--color-bg)';badge.style.color='var(--color-text-muted)';}
+  else if(totalRemaining<=0){badge.textContent='✅ All targets met!';badge.style.background='#d1fae5';badge.style.color='#065f46';}
+  else if(totalRemaining<=minsLeftInDay){badge.textContent='✅ On track — '+fmtMin(totalRemaining)+' left to go';badge.style.background='#ecfdf5';badge.style.color='#047857';}
+  else if(totalRemaining<=minsLeftInDay*1.5){badge.textContent='⚠️ Running behind — need '+fmtMin(totalRemaining);badge.style.background='#fef3c7';badge.style.color='#92400e';}
+  else{badge.textContent='❌ Not enough time — need '+fmtMin(totalRemaining)+', only '+fmtMin(minsLeftInDay)+' left';badge.style.background='#fee2e2';badge.style.color='#991b1b';}
+
+  // Activity cards
+  let html='';
+  targets.forEach(t=>{
+    const logged=log.logs[t.id]||0;
+    const pct=Math.min(100,Math.round((logged/t.targetMin)*100));
+    const col=pct>=100?'#10b981':pct>=50?'#4361ee':'#ef4444';
+    const isRunning=!!activeTimers[t.id];
+    const runningElapsed=isRunning?Math.round((Date.now()-activeTimers[t.id])/60000):0;
+    const displayLogged=logged+runningElapsed;
+
+    html+='<div class="timer-activity-card'+(isRunning?' timer-running':'')+'">';
+    html+='<div class="timer-activity-header"><span class="timer-activity-name">'+esc(t.name)+'</span><span class="timer-activity-time">'+fmtMin(displayLogged)+' / '+fmtMin(t.targetMin)+'</span><button class="btn-icon" onclick="removeTimeTarget('+t.id+')">🗑️</button></div>';
+    html+='<div class="timer-activity-bar"><div class="timer-activity-bar-fill" style="width:'+pct+'%;background:'+col+'"></div></div>';
+    html+='<div class="timer-activity-actions">';
+    if(isRunning){
+      html+='<button class="timer-btn-stop" onclick="stopTimer('+t.id+')">⏹ Stop</button>';
+      html+='<span style="font-size:12px;color:var(--color-error);font-weight:600;">⏱ Running...</span>';
+    }else{
+      html+='<button class="timer-btn-start" onclick="startTimer('+t.id+')">▶ Start</button>';
+      html+='<input type="number" class="timer-manual-input" id="manual_'+t.id+'" placeholder="min" min="1">';
+      html+='<button class="timer-btn-manual" onclick="addManualTime('+t.id+')">+Add</button>';
     }
+    html+='</div></div>';
   });
-  const score=tw?Math.round(ws/tw*100):0;
-  const cp={};Object.keys(cw).forEach(c=>{cp[c]=Math.round((cs[c]||0)/cw[c]*100);});
-  const d=gD(),t=getToday();
-  const entry={date:t,score,catScores:cp,actuals:ta.answers};
-  const idx=d.findIndex(x=>x.date===t);if(idx>=0)d[idx]=entry;else d.push(entry);sD(d);
+  if(!targets.length)html='<div class="empty-state" style="padding:20px;">Add time targets below to start tracking!</div>';
+  document.getElementById('timerActivityList').innerHTML=html;
 }
 
-// Live score display
-function updateLiveScore(){
+// Reverse clock updater
+function updateReverseClock(){
+  const now=new Date();
+  const endOfDay=new Date(now);endOfDay.setHours(23,59,59,999);
+  const diff=endOfDay-now;
+  const h=Math.floor(diff/3600000);
+  const m=Math.floor((diff%3600000)/60000);
+  const s=Math.floor((diff%60000)/1000);
+  document.getElementById('reverseClockValue').textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  const usedPct=Math.round(((now.getHours()*60+now.getMinutes())/(24*60))*100);
+  document.getElementById('dayProgressInner').style.width=usedPct+'%';
+  document.getElementById('dayPct').textContent=usedPct+'% of day used • '+fmtMin(h*60+m)+' remaining';
+  // Also update dashboard on check-in page
+  const mc=document.getElementById('mainClockValue');if(mc)mc.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  const mb=document.getElementById('mainClockBar');if(mb)mb.style.width=usedPct+'%';
+  const mr=document.getElementById('mainClockRemaining');if(mr)mr.textContent=fmtMin(h*60+m)+' until midnight';
+  const dt=document.getElementById('dashTimePct');if(dt)dt.textContent=usedPct+'%';
+  // Update dashboard stats
+  updateDashStats();
+}
+
+// ===== EXPORT/IMPORT =====
+function exportExcel(){const data=gD(),qs=gQ();if(!data.length){alert('No data');return;}const cats=[...new Set(qs.map(q=>q.category))].sort();let csv='Date,Overall Score,Status';cats.forEach(c=>{csv+=','+c+'%';});qs.forEach(q=>{csv+=','+(q.type==='yesno'?q.text+' (Y/N)':q.text+' ('+q.target+' '+q.uom+')');});csv+='\n';data.forEach(d=>{csv+=d.date+','+d.score+','+scoreText(d.score).replace(/[^\w\s]/g,'').trim();cats.forEach(c=>{csv+=','+(d.catScores&&d.catScores[c]!==undefined?d.catScores[c]:'');});qs.forEach(q=>{const v=d.actuals?d.actuals[q.id]:'';csv+=','+(q.type==='yesno'?(v===1?'Yes':v===0?'No':''):v||'');});csv+='\n';});csv+='\n--- SUMMARY ---\nPeriod,Score,Status,Days\n';const now=new Date();const w7=data.filter(d=>d.date>=new Date(now-7*86400000).toISOString().slice(0,10));if(w7.length)csv+='Last 7 Days,'+Math.round(w7.reduce((s,d)=>s+d.score,0)/w7.length)+'%,,'+w7.length+'\n';const mm=data.filter(d=>d.date.startsWith(now.toISOString().slice(0,7)));if(mm.length)csv+='This Month,'+Math.round(mm.reduce((s,d)=>s+d.score,0)/mm.length)+'%,,'+mm.length+'\n';const yy=data.filter(d=>d.date.startsWith(String(now.getFullYear())));if(yy.length)csv+='This Year,'+Math.round(yy.reduce((s,d)=>s+d.score,0)/yy.length)+'%,,'+yy.length+'\n';csv+='All Time,'+Math.round(data.reduce((s,d)=>s+d.score,0)/data.length)+'%,,'+data.length+'\n';const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Life_Tracker_'+getToday()+'.csv';a.click();}
+function exportJSON(){const p={questions:gQ(),data:gD(),todayAnswers:getTodayAnswers(),timeTargets:getTimeTargets(),timeLog:getTimeLog(),exported:new Date().toISOString(),version:'v7'};const b=new Blob([JSON.stringify(p,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='life_tracker_backup_'+getToday()+'.json';a.click();}
+function importBackup(){const i=document.createElement('input');i.type='file';i.accept='.json,.csv';i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{if(f.name.endsWith('.json')){const p=JSON.parse(ev.target.result);if(p.questions)sQ(p.questions);if(p.data)sD(p.data);if(p.todayAnswers)localStorage.setItem(TDK,JSON.stringify(p.todayAnswers));if(p.timeTargets)setTimeTargets(p.timeTargets);if(p.timeLog)localStorage.setItem(TLK,JSON.stringify(p.timeLog));}else{const lines=ev.target.result.split('\n'),data=gD();for(let i=1;i<lines.length;i++){const cols=lines[i].split(',');if(cols.length<2||!cols[0].match(/^\d{4}-\d{2}-\d{2}$/))continue;const date=cols[0],score=parseInt(cols[1]);if(!isNaN(score)&&!data.find(d=>d.date===date))data.push({date,score,catScores:{},actuals:{}});}sD(data);}renderCheckin();renderSettings();updateDashStats();renderTimerTab();alert('✅ Imported!');}catch(err){alert('❌ Invalid file');}};r.readAsText(f);};i.click();}
+function clearAll(){if(!confirm('⚠️ Delete ALL data?'))return;localStorage.removeItem(DK);localStorage.removeItem(QK);localStorage.removeItem(TDK);localStorage.removeItem(TTK);localStorage.removeItem(TLK);renderCheckin();renderSettings();updateDashStats();renderTimerTab();}
+
+
+// ===== DASHBOARD STATS (check-in page) =====
+function updateDashStats(){
   const qs=gQ(),ta=getTodayAnswers();
-  if(!qs.length){document.getElementById('liveScore').textContent='0%';document.getElementById('liveCount').textContent='0/0';return;}
+  if(!qs.length){
+    const el=document.getElementById('dashScoreToday');if(el)el.textContent='0%';
+    const dc=document.getElementById('dashDoneCount');if(dc)dc.textContent='0';
+    const pc=document.getElementById('dashPendingCount');if(pc)pc.textContent='0';
+    const chart=document.getElementById('dashTargetChart');if(chart)chart.innerHTML='<div style="text-align:center;color:#64748b;font-size:11px;padding:8px;">Add questions in Settings to see progress</div>';
+    return;
+  }
   let ws=0,tw=0,doneCount=0;
   qs.forEach(q=>{
     tw+=q.weight;
@@ -489,96 +699,43 @@ function updateLiveScore(){
     }
   });
   const score=tw?Math.round(ws/tw*100):0;
-  const col=scoreColor(score);
-  document.getElementById('liveScore').textContent=score+'%';
-  document.getElementById('liveScore').style.color=col;
-  document.getElementById('liveCount').textContent=doneCount+'/'+qs.length+' done';
-  document.getElementById('liveProgressFill').style.width=score+'%';
-  document.getElementById('liveProgressFill').style.background=col;
+  const el=document.getElementById('dashScoreToday');
+  if(el){el.textContent=score+'%';el.className='dash-stat-value'+(score>=60?' score-up':score<40?' score-down':'');}
+  const dc=document.getElementById('dashDoneCount');if(dc)dc.textContent=doneCount;
+  const pc=document.getElementById('dashPendingCount');if(pc)pc.textContent=(qs.length-doneCount);
+  // Render target deviation bars
+  renderDashTargets(qs,ta);
 }
 
-// STATS
-function renderStats(){
-  const data=gD(),te=data.find(d=>d.date===getToday()),l7=data.slice(-7);
-  const avg7=l7.length?Math.round(l7.reduce((s,d)=>s+d.score,0)/l7.length):0;
-  let streak=0;const sorted=[...data].sort((a,b)=>b.date.localeCompare(a.date));
-  for(let i=0;i<sorted.length;i++){const d=new Date();d.setDate(d.getDate()-i);if(sorted[i]?.date===d.toISOString().slice(0,10))streak++;else break;}
-  document.getElementById('todayScore').textContent=te?te.score+'%':'—';
-  document.getElementById('avgScore').textContent=avg7?avg7+'%':'—';
-  document.getElementById('streak').textContent=streak;
-  const box=document.getElementById('bigScoreBox'),ds=avg7||(te?te.score:null);
-  if(ds!==null){box.className='big-score-container '+scoreClass(ds);document.getElementById('bigScoreValue').textContent=ds+'%';document.getElementById('bigScoreLabel').textContent=scoreText(ds);document.getElementById('bigScoreSub').textContent='7-day weighted average';box.classList.add('score-animate');setTimeout(()=>box.classList.remove('score-animate'),700);}
-  else{box.className='big-score-container score-none';document.getElementById('bigScoreValue').textContent='—';document.getElementById('bigScoreLabel').textContent='No Data';document.getElementById('bigScoreSub').textContent='Complete your first check-in';}
-  renderSummaryGrid(data);renderGauge(avg7);renderTrend(data);renderRadar(data);renderHistory(data);
-}
-function renderSummaryGrid(data){
-  const now=new Date(),grid=document.getElementById('summaryGrid');if(!data.length){grid.innerHTML='';return;}
-  const ws=new Date(now);ws.setDate(now.getDate()-now.getDay());const wd=data.filter(d=>d.date>=ws.toISOString().slice(0,10));const wa=wd.length?Math.round(wd.reduce((s,d)=>s+d.score,0)/wd.length):null;
-  const mk=now.toISOString().slice(0,7);const md=data.filter(d=>d.date.startsWith(mk));const ma=md.length?Math.round(md.reduce((s,d)=>s+d.score,0)/md.length):null;
-  const yk=String(now.getFullYear());const yd=data.filter(d=>d.date.startsWith(yk));const ya=yd.length?Math.round(yd.reduce((s,d)=>s+d.score,0)/yd.length):null;
-  const aa=data.length?Math.round(data.reduce((s,d)=>s+d.score,0)/data.length):null;
-  function c(l,s){if(s===null)return'<div class="summary-card"><div class="period-label">'+l+'</div><div class="period-score" style="color:var(--color-text-muted)">—</div></div>';return'<div class="summary-card"><div class="period-label">'+l+'</div><div class="period-score" style="color:'+scoreColor(s)+'">'+s+'%</div><div class="period-status" style="color:'+scoreColor(s)+'">'+scoreText(s)+'</div></div>';}
-  grid.innerHTML=c('This Week',wa)+c('This Month',ma)+c('This Year',ya)+c('All Time',aa);
-}
-function renderGauge(s){Highcharts.chart('gaugeChart',{chart:{type:'solidgauge',backgroundColor:'transparent'},title:{text:'Life Gauge',style:{fontSize:'15px',fontWeight:'700'}},pane:{startAngle:-90,endAngle:90,background:[{innerRadius:'60%',outerRadius:'100%',shape:'arc',backgroundColor:'#e8e8f0',borderWidth:0}]},yAxis:{min:0,max:100,lineWidth:0,tickWidth:0,minorTickInterval:null,labels:{y:16,style:{fontSize:'12px'}},stops:[[0.4,'#ef4444'],[0.55,'#f59e0b'],[0.6,'#10b981'],[0.8,'#059669']]},series:[{data:[s],dataLabels:{format:'<div style="text-align:center"><span style="font-size:2em;font-weight:800;color:'+scoreColor(s)+'">{y}%</span></div>',borderWidth:0,y:-20},innerRadius:'60%',radius:'100%'}],credits:{enabled:false},tooltip:{enabled:false}});}
-function renderTrend(data){const l=data.slice(-30);if(l.length<2){document.getElementById('trendChart').innerHTML='<div class="empty-state">Need 2+ entries</div>';return;}Highcharts.chart('trendChart',{chart:{type:'areaspline',backgroundColor:'transparent'},title:{text:'30-Day Trend',style:{fontSize:'15px',fontWeight:'700'}},xAxis:{categories:l.map(d=>d.date.slice(5)),labels:{style:{fontSize:'11px'},step:Math.ceil(l.length/7)}},yAxis:{min:0,max:100,title:{text:''},gridLineColor:'#e8e8f0',plotBands:[{from:80,to:100,color:'rgba(16,185,129,0.07)'},{from:0,to:40,color:'rgba(239,68,68,0.04)'}]},plotOptions:{areaspline:{fillOpacity:0.15,marker:{radius:4},color:'#4361ee',lineWidth:3}},series:[{name:'Score',data:l.map(d=>d.score)}],tooltip:{valueSuffix:'%'},legend:{enabled:false},credits:{enabled:false}});}
-function renderRadar(data){const l=data.slice(-7);if(!l.length){document.getElementById('radarChart').innerHTML='<div class="empty-state">No data</div>';return;}const cats=[...new Set(l.flatMap(d=>Object.keys(d.catScores||{})))];if(cats.length<3){document.getElementById('radarChart').innerHTML='<div class="empty-state">Need 3+ categories</div>';return;}const avg=cats.map(c=>{const v=l.map(d=>(d.catScores||{})[c]||0);return Math.round(v.reduce((s,x)=>s+x,0)/v.length);});Highcharts.chart('radarChart',{chart:{polar:true,type:'area',backgroundColor:'transparent'},title:{text:'Balance',style:{fontSize:'15px',fontWeight:'700'}},xAxis:{categories:cats,tickmarkPlacement:'on',lineWidth:0,labels:{style:{fontSize:'12px'}}},yAxis:{min:0,max:100,gridLineInterpolation:'polygon',lineWidth:0,gridLineColor:'#e8e8f0'},series:[{name:'Score',data:avg,pointPlacement:'on',color:'#4361ee',fillOpacity:0.2,lineWidth:2.5}],tooltip:{valueSuffix:'%'},legend:{enabled:false},credits:{enabled:false}});}
-function renderHistory(data){const r=[...data].reverse().slice(0,10),list=document.getElementById('historyList');if(!r.length){list.innerHTML='<div class="empty-state">No entries</div>';return;}list.innerHTML=r.map(d=>'<div class="history-item"><span class="history-date">'+d.date+'</span><div class="bar-bg"><div class="bar-fill" style="width:'+d.score+'%;background:'+scoreColor(d.score)+'"></div></div><span class="history-score" style="color:'+scoreColor(d.score)+'">'+d.score+'%</span></div>').join('');}
-
-// CATEGORY
-function setCatPeriod(d,el){catPeriod=d;document.querySelectorAll('#tab-category .period-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderCatReport();}
-function renderCatReport(){
-  const data=gD(),qs=gQ(),cats=[...new Set(qs.map(q=>q.category))].sort();
-  if(!data.length||!cats.length){document.getElementById('catReportList').innerHTML='<div class="empty-state">No data</div>';document.getElementById('catBarChart').innerHTML='';document.getElementById('catTrendChart').innerHTML='';return;}
-  const cut=new Date();cut.setDate(cut.getDate()-catPeriod);const f=catPeriod>=9999?data:data.filter(d=>d.date>=cut.toISOString().slice(0,10));
-  if(!f.length){document.getElementById('catReportList').innerHTML='<div class="empty-state">No data in period</div>';return;}
-  const ca={},ct={};cats.forEach(c=>{const sc=f.map(d=>(d.catScores||{})[c]).filter(v=>v!==undefined);ca[c]=sc.length?Math.round(sc.reduce((s,v)=>s+v,0)/sc.length):null;if(sc.length>=4){const m=Math.floor(sc.length/2);ct[c]=Math.round(sc.slice(m).reduce((s,v)=>s+v,0)/(sc.length-m)-sc.slice(0,m).reduce((s,v)=>s+v,0)/m);}else ct[c]=0;});
-  const cw={};qs.forEach(q=>{cw[q.category]=(cw[q.category]||0)+q.weight;});const tw=Object.values(cw).reduce((s,v)=>s+v,0);
-  let h='';cats.forEach(c=>{if(ca[c]===null)return;const s=ca[c],col=scoreColor(s),wp=Math.round((cw[c]/tw)*100),tr=ct[c],ti=tr>2?'<span class="up">↑+'+tr+'%</span>':tr<-2?'<span class="down">↓'+tr+'%</span>':'<span class="flat">→</span>';
-  h+='<div class="cat-report-item"><div class="cat-report-header"><span class="cat-report-name">'+c+'</span><span class="cat-report-score" style="color:'+col+'">'+s+'%</span></div><div class="cat-progress-bar"><div class="cat-progress-fill" style="width:'+s+'%;background:'+col+'"></div></div><div class="cat-detail"><span>'+wp+'% weight</span><div class="cat-trend">'+ti+'</div></div></div>';});
-  document.getElementById('catReportList').innerHTML=h;
-  const vc=cats.filter(c=>ca[c]!==null);
-  Highcharts.chart('catBarChart',{chart:{type:'bar',backgroundColor:'transparent'},title:{text:'Scores',style:{fontSize:'15px',fontWeight:'700'}},xAxis:{categories:vc,labels:{style:{fontSize:'13px'}}},yAxis:{min:0,max:100,title:{text:''},gridLineColor:'#e8e8f0'},plotOptions:{bar:{dataLabels:{enabled:true,format:'{y}%'},colorByPoint:true,borderRadius:4}},colors:vc.map(c=>scoreColor(ca[c])),series:[{name:'Score',data:vc.map(c=>ca[c])}],legend:{enabled:false},credits:{enabled:false},tooltip:{valueSuffix:'%'}});
-  if(f.length>=2){Highcharts.chart('catTrendChart',{chart:{type:'spline',backgroundColor:'transparent'},title:{text:'Trends',style:{fontSize:'15px',fontWeight:'700'}},xAxis:{categories:f.map(d=>d.date.slice(5)),labels:{style:{fontSize:'10px'},rotation:-45,step:Math.ceil(f.length/7)}},yAxis:{min:0,max:100,title:{text:''},gridLineColor:'#e8e8f0'},plotOptions:{spline:{marker:{radius:3},lineWidth:2.5}},series:vc.map(c=>({name:c,data:f.map(d=>(d.catScores||{})[c]||0)})),tooltip:{valueSuffix:'%',shared:true},legend:{itemStyle:{fontSize:'11px'}},credits:{enabled:false}});}
-  else document.getElementById('catTrendChart').innerHTML='<div class="empty-state">Need 2+</div>';
+function renderDashTargets(qs,ta){
+  const chart=document.getElementById('dashTargetChart');if(!chart)return;
+  // Only show target-type questions that have been answered or have targets
+  const targetQs=qs.filter(q=>q.type==='target').slice(0,5);
+  if(!targetQs.length){chart.innerHTML='<div style="text-align:center;color:#64748b;font-size:11px;padding:6px;">No target-based questions yet</div>';return;}
+  let html='';
+  targetQs.forEach(q=>{
+    const actual=ta.answers[q.id]||0;
+    const pct=Math.min(100,Math.round((actual/q.target)*100));
+    const col=pct>=100?'linear-gradient(90deg,#34d399,#10b981)':pct>=60?'linear-gradient(90deg,#06b6d4,#8b5cf6)':pct>=30?'linear-gradient(90deg,#fbbf24,#f59e0b)':'linear-gradient(90deg,#f87171,#ef4444)';
+    // Position marker at 100% target line
+    const markerPos=Math.min(100,100);
+    html+='<div class="dash-target-item">';
+    html+='<span class="dash-target-name">'+esc(q.text)+'</span>';
+    html+='<div class="dash-target-bar-outer"><div class="dash-target-bar-fill" style="width:'+pct+'%;background:'+col+'"></div><div class="dash-target-marker" style="left:calc(100% - 2px)"></div></div>';
+    html+='<span class="dash-target-pct">'+pct+'%</span>';
+    html+='</div>';
+  });
+  chart.innerHTML=html;
 }
 
-// HISTORY TAB
-function setHistPeriod(p,el){histPeriod=p;document.querySelectorAll('#tab-history .period-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderHistoryTab();}
-function renderHistoryTab(){
-  const data=gD();if(!data.length){document.getElementById('historyChart').innerHTML='<div class="empty-state">No data</div>';document.getElementById('historyDetailList').innerHTML='';return;}
-  let grouped={};
-  if(histPeriod==='daily')data.slice(-30).forEach(d=>{grouped[d.date]=[d.score];});
-  else if(histPeriod==='weekly')data.forEach(d=>{const dt=new Date(d.date),wk=dt.getFullYear()+'W'+String(Math.ceil(((dt-new Date(dt.getFullYear(),0,1))/86400000+1)/7)).padStart(2,'0');(grouped[wk]=grouped[wk]||[]).push(d.score);});
-  else if(histPeriod==='monthly')data.forEach(d=>{const k=d.date.slice(0,7);(grouped[k]=grouped[k]||[]).push(d.score);});
-  else data.forEach(d=>{const k=d.date.slice(0,4);(grouped[k]=grouped[k]||[]).push(d.score);});
-  const keys=Object.keys(grouped).sort(),avgs=keys.map(k=>Math.round(grouped[k].reduce((s,v)=>s+v,0)/grouped[k].length)),counts=keys.map(k=>grouped[k].length);
-  Highcharts.chart('historyChart',{chart:{type:'column',backgroundColor:'transparent'},title:{text:histPeriod[0].toUpperCase()+histPeriod.slice(1)+' Scores',style:{fontSize:'15px',fontWeight:'700'}},xAxis:{categories:keys.map(k=>histPeriod==='daily'?k.slice(5):k),labels:{style:{fontSize:'10px'},rotation:-45,step:keys.length>15?Math.ceil(keys.length/10):1}},yAxis:{min:0,max:100,title:{text:''},gridLineColor:'#e8e8f0'},plotOptions:{column:{colorByPoint:true,borderRadius:4,dataLabels:{enabled:keys.length<=12,format:'{y}%',style:{fontSize:'10px'}}}},colors:avgs.map(a=>scoreColor(a)),series:[{name:'Score',data:avgs}],legend:{enabled:false},credits:{enabled:false}});
-  let html='';keys.slice().reverse().slice(0,20).forEach((k,i)=>{const idx=keys.length-1-i;html+='<div class="history-item"><span class="history-date">'+k+'</span><span style="font-size:11px;color:var(--color-text-muted)">'+counts[idx]+'d</span><div class="bar-bg"><div class="bar-fill" style="width:'+avgs[idx]+'%;background:'+scoreColor(avgs[idx])+'"></div></div><span class="history-score" style="color:'+scoreColor(avgs[idx])+'">'+avgs[idx]+'%</span></div>';});
-  document.getElementById('historyDetailList').innerHTML=html;
-}
-
-// EXPORT
-function exportExcel(){
-  const data=gD(),qs=gQ();if(!data.length){alert('No data');return;}
-  const cats=[...new Set(qs.map(q=>q.category))].sort();
-  let csv='Date,Overall Score,Status';cats.forEach(c=>{csv+=','+c+'%';});qs.forEach(q=>{csv+=','+(q.type==='yesno'?q.text+' (Y/N)':q.text+' ('+q.target+' '+q.uom+')');});csv+='\n';
-  data.forEach(d=>{csv+=d.date+','+d.score+','+scoreText(d.score).replace(/[^\w\s]/g,'').trim();cats.forEach(c=>{csv+=','+(d.catScores&&d.catScores[c]!==undefined?d.catScores[c]:'');});qs.forEach(q=>{const v=d.actuals?d.actuals[q.id]:'';csv+=','+(q.type==='yesno'?(v===1?'Yes':v===0?'No':''):v||'');});csv+='\n';});
-  csv+='\n--- SUMMARY ---\nPeriod,Score,Status,Days\n';const now=new Date();
-  const w7=data.filter(d=>d.date>=new Date(now-7*86400000).toISOString().slice(0,10));if(w7.length)csv+='Last 7 Days,'+Math.round(w7.reduce((s,d)=>s+d.score,0)/w7.length)+'%,'+scoreText(Math.round(w7.reduce((s,d)=>s+d.score,0)/w7.length)).replace(/[^\w\s]/g,'')+','+w7.length+'\n';
-  const mm=data.filter(d=>d.date.startsWith(now.toISOString().slice(0,7)));if(mm.length)csv+='This Month,'+Math.round(mm.reduce((s,d)=>s+d.score,0)/mm.length)+'%,,'+mm.length+'\n';
-  const yy=data.filter(d=>d.date.startsWith(String(now.getFullYear())));if(yy.length)csv+='This Year,'+Math.round(yy.reduce((s,d)=>s+d.score,0)/yy.length)+'%,,'+yy.length+'\n';
-  csv+='All Time,'+Math.round(data.reduce((s,d)=>s+d.score,0)/data.length)+'%,,'+data.length+'\n';
-  const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Life_Tracker_'+getToday()+'.csv';a.click();
-}
-function exportJSON(){const p={questions:gQ(),data:gD(),todayAnswers:getTodayAnswers(),exported:new Date().toISOString(),version:'v7'};const b=new Blob([JSON.stringify(p,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='life_tracker_backup_'+getToday()+'.json';a.click();}
-function importBackup(){const i=document.createElement('input');i.type='file';i.accept='.json,.csv';i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{if(f.name.endsWith('.json')){const p=JSON.parse(ev.target.result);if(p.questions)sQ(p.questions);if(p.data)sD(p.data);if(p.todayAnswers)localStorage.setItem(TDK,JSON.stringify(p.todayAnswers));}else{const lines=ev.target.result.split('\n'),data=gD();for(let i=1;i<lines.length;i++){const cols=lines[i].split(',');if(cols.length<2||!cols[0].match(/^\d{4}-\d{2}-\d{2}$/))continue;const date=cols[0],score=parseInt(cols[1]);if(!isNaN(score)&&!data.find(d=>d.date===date))data.push({date,score,catScores:{},actuals:{}});}sD(data);}renderCheckin();renderSettings();alert('✅ Imported!');}catch(err){alert('❌ Invalid file');}};r.readAsText(f);};i.click();}
-function clearAll(){if(!confirm('⚠️ Delete ALL data?'))return;localStorage.removeItem(DK);localStorage.removeItem(QK);localStorage.removeItem(TDK);renderCheckin();renderSettings();}
-
-// INIT
+// ===== INIT =====
 document.getElementById('todayDate').textContent='📅 '+new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short',year:'numeric'});
-renderCheckin();renderSettings();
+renderCheckin();renderSettings();updateDashStats();
+updateReverseClock();
+setInterval(updateReverseClock,1000);
+// Update timer display every 10s if running
+setInterval(()=>{if(Object.keys(activeTimers).length)renderTimerTab();},10000);
 </script>
+<script>if('serviceWorker' in navigator && location.protocol==='https:'){navigator.serviceWorker.register('sw.js');}</script>
 </body>
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
 </html>

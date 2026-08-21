@@ -284,7 +284,8 @@
   .subgoal-input-row { display: flex; gap: 6px; margin-bottom: 8px; align-items: center; }
   .subgoal-input-row input { font-size: 13px; padding: 8px 10px; border: 1px solid var(--color-border); border-radius: 8px; }
   .subgoal-input-row .sg-title { flex: 2; }
-  .subgoal-input-row .sg-target { flex: 1; max-width: 80px; }
+  .subgoal-input-row .sg-target { flex: 1; max-width: 70px; }
+  .subgoal-input-row .sg-freq { flex: 1; max-width: 90px; font-size: 12px; padding: 8px 4px; border: 1px solid var(--color-border); border-radius: 8px; background: white; }
   .subgoal-input-row .sg-deadline { flex: 1; }
   .subgoal-remove { width: 28px; height: 28px; border-radius: 50%; border: none; background: var(--color-error); color: white; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
   
@@ -575,7 +576,7 @@ function addQuestion(){
   if(selectedType==='target'){q.target=parseFloat(document.getElementById('newTarget').value)||1;q.uom=document.getElementById('newUOM').value.trim()||'units';}
   const qs=gQ();qs.push(q);sQ(qs);
   document.getElementById('newQuestion').value='';document.getElementById('newTarget').value='';document.getElementById('newUOM').value='';document.getElementById('newCategory').value='';
-  renderSettings();renderCheckin();
+  renderSettings();renderCheckin();updateDashStats();
 }
 function removeQuestion(id){if(!confirm('Remove?'))return;sQ(gQ().filter(q=>q.id!==id));renderSettings();renderCheckin();}
 function addPreset(key){
@@ -889,7 +890,7 @@ function addSubGoalField(){
   const div=document.createElement('div');
   div.className='subgoal-input-row';
   div.id='sg_row_'+subGoalCount;
-  div.innerHTML='<input class="sg-title" type="text" placeholder="Sub-goal title"><input class="sg-target" type="number" placeholder="Target" min="1"><input class="sg-deadline" type="date"><button class="subgoal-remove" onclick="this.parentElement.remove()">×</button>';
+  div.innerHTML='<input class="sg-title" type="text" placeholder="Sub-goal title"><input class="sg-target" type="number" placeholder="Target" min="1"><select class="sg-freq"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly" selected>Monthly</option><option value="quarterly">Quarterly</option></select><input class="sg-deadline" type="date"><button class="subgoal-remove" onclick="this.parentElement.remove()">×</button>';
   container.appendChild(div);
 }
 
@@ -911,9 +912,10 @@ function addGoal(){
   document.querySelectorAll('#subGoalsList .subgoal-input-row').forEach((row,i)=>{
     const sg_title=row.querySelector('.sg-title').value.trim();
     const sg_target=parseFloat(row.querySelector('.sg-target').value)||0;
+    const sg_freq=row.querySelector('.sg-freq')?.value||'monthly';
     const sg_deadline=row.querySelector('.sg-deadline').value;
     if(sg_title&&sg_target){
-      subGoals.push({id:Date.now()+i,title:sg_title,targetValue:sg_target,achieved:0,deadline:sg_deadline||deadline});
+      subGoals.push({id:Date.now()+i,title:sg_title,targetValue:sg_target,achieved:0,frequency:sg_freq,deadline:sg_deadline||deadline,createdAt:new Date().toISOString().slice(0,10)});
     }
   });
   
@@ -946,7 +948,7 @@ function addGoal(){
   subGoalCount=0;
   
   alert('Goal created! 🎯');
-  renderGoals();
+  renderGoals();renderCheckin();updateDashStats();
 }
 
 function renderGoals(){
@@ -1161,7 +1163,9 @@ function getAllDueItems(){
   goals.forEach(g=>{
     if(g.subGoals&&g.subGoals.length){
       g.subGoals.forEach(sg=>{
-        if(isDueInCurrentPeriod({frequency:g.frequency,createdAt:sg.deadline?undefined:g.createdAt,...sg})){
+        const sgFreq=sg.frequency||g.frequency||'daily';
+        const sgCreated=sg.createdAt||g.createdAt;
+        if(isDueInCurrentPeriod({frequency:sgFreq,createdAt:sgCreated})){
           goalItems.push({
             id:'goal_'+g.id+'_'+sg.id,
             text:sg.title,
@@ -1170,8 +1174,8 @@ function getAllDueItems(){
             uom:g.unit||'units',
             category:g.category||'Goals',
             weight:g.weight||3,
-            frequency:g.frequency,
-            createdAt:g.createdAt,
+            frequency:sgFreq,
+            createdAt:sgCreated,
             isGoalItem:true,
             goalId:g.id,
             subGoalId:sg.id

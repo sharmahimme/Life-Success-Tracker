@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#4361ee">
+<meta name="theme-color" content="#080c14">
 <link rel="manifest" href="manifest.json">
 <title>Life Improvement Tracker</title>
 <script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts.js"></script>
@@ -15,37 +15,41 @@
 <script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/accessibility.js"></script>
 <style>
   :root {
-    --color-bg: #f0f2f5; --color-bg-secondary: #ffffff; --color-text: #1a1a2e;
-    --color-text-secondary: #4a4a6a; --color-text-muted: #8c8ca1;
-    --color-border-light: #e8e8f0; --color-border: #d0d0e0;
-    --color-primary: #4361ee; --color-primary-light: #eef1ff;
-    --color-success: #10b981; --color-error: #ef4444; --color-warning: #f59e0b;
+    --color-bg: #080c14; --color-bg-secondary: rgba(180,220,255,0.04); --color-text: #d4e4f8;
+    --color-text-secondary: #8aa8cc; --color-text-muted: #5578a0;
+    --color-border-light: rgba(180,220,255,0.08); --color-border: rgba(180,220,255,0.12);
+    --color-primary: #88ccff; --color-primary-light: rgba(180,220,255,0.08);
+    --color-success: #66eebb; --color-error: #ff6688; --color-warning: #ffcc66;
     --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-mono: 'SF Mono', Consolas, monospace;
-    --radius: 16px; --radius-sm: 12px;
-    --shadow: 0 2px 12px rgba(0,0,0,0.06); --shadow-lg: 0 8px 30px rgba(0,0,0,0.1);
+    --radius: 20px; --radius-sm: 14px;
+    --shadow: 0 4px 30px rgba(150,200,240,0.05); --shadow-lg: 0 12px 50px rgba(150,200,240,0.08);
+    --glass-bg: rgba(180,220,255,0.03); --glass-border: rgba(180,220,255,0.1);
+    --glass-blur: 20px; --neon-glow: 0 0 20px rgba(180,220,255,0.1);
+    --holographic: linear-gradient(135deg, rgba(180,220,255,0.05), rgba(200,240,255,0.03), rgba(150,200,240,0.04));
+    --frost-highlight: rgba(200,230,255,0.5);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { height: 100%; overflow: hidden; }
-  body { background: var(--color-bg); font-family: var(--font-sans); color: var(--color-text); font-size: 16px; display: flex; flex-direction: column; }
+  body { background: var(--color-bg); font-family: var(--font-sans); color: var(--color-text); font-size: 16px; display: flex; flex-direction: column; background-image: radial-gradient(ellipse at 20% 50%, rgba(150,200,240,0.04) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(180,220,255,0.03) 0%, transparent 40%), radial-gradient(ellipse at 50% 90%, rgba(100,180,220,0.02) 0%, transparent 40%); }
 
-  .app-header { background: linear-gradient(135deg, #4361ee, #3a0ca3); color: white; padding: 20px 20px 16px; position: sticky; top: 0; z-index: 100; }
+  .app-header { background: rgba(8,12,20,0.7); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-bottom: 1px solid rgba(180,220,255,0.06); color: white; padding: 20px 20px 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 30px rgba(0,0,0,0.2), inset 0 1px 0 rgba(200,230,255,0.04); }
   .app-header h1 { font-size: 22px; font-weight: 700; }
   .app-header .date { font-size: 13px; opacity: 0.85; margin-top: 4px; font-family: var(--font-mono); }
 
-  .main-content { flex: 1; overflow-y: auto; padding: 20px 16px 100px; -webkit-overflow-scrolling: touch; }
+  .main-content { flex: 1; overflow-y: auto; padding: 20px 16px 100px; -webkit-overflow-scrolling: touch; background: transparent; }
 
-  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; align-items: center; padding: 6px 0 calc(6px + env(safe-area-inset-bottom)); box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 200; }
+  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(8,12,20,0.88); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-top: 1px solid rgba(180,220,255,0.06); display: flex; justify-content: space-around; align-items: center; padding: 6px 0 calc(6px + env(safe-area-inset-bottom)); box-shadow: 0 -4px 30px rgba(0,0,0,0.4); z-index: 200; }
   .nav-item { display: flex; flex-direction: column; align-items: center; gap: 1px; cursor: pointer; padding: 4px 8px; border-radius: 10px; transition: 0.2s; border: none; background: none; font-family: inherit; }
   .nav-item .icon { font-size: 18px; }
-  .nav-item .label { font-size: 8px; font-weight: 500; color: var(--color-text-muted); }
-  .nav-item.active .label { color: var(--color-primary); font-weight: 600; }
-  .nav-item.active { background: var(--color-primary-light); }
+  .nav-item .label { font-size: 8px; font-weight: 500; color: #4a6888; }
+  .nav-item.active .label { color: #88ccff; font-weight: 600; text-shadow: 0 0 6px rgba(136,204,255,0.3); }
+  .nav-item.active { background: rgba(136,204,255,0.08); box-shadow: 0 0 12px rgba(136,204,255,0.08); border: 1px solid rgba(136,204,255,0.18); }
 
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
-  .card { background: var(--color-bg-secondary); border-radius: var(--radius); padding: 18px; margin-bottom: 16px; box-shadow: var(--shadow); }
+  .card { background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 18px; margin-bottom: 16px; box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.04); }
   .card-title { font-size: 17px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
 
   /* Big Score */
@@ -115,9 +119,9 @@
   .save-single-btn { background: var(--color-success); color: white; border: none; border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer; margin-top: 6px; }
   .save-single-btn:active { transform: scale(0.95); }
 
-  .btn { padding: 14px 24px; border: none; border-radius: var(--radius-sm); font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn { padding: 14px 24px; border: 1px solid var(--glass-border); border-radius: var(--radius-sm); font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--glass-bg); backdrop-filter: blur(10px); color: var(--color-text); }
   .btn-sm { padding: 10px 16px; font-size: 14px; border-radius: 10px; }
-  .btn-primary { background: var(--color-primary); color: white; width: 100%; }
+  .btn-primary { background: linear-gradient(135deg, #4488bb, #66aadd); color: white; width: 100%; border: 1px solid rgba(136,204,255,0.3); box-shadow: 0 0 15px rgba(136,204,255,0.12), inset 0 1px 0 rgba(255,255,255,0.08); text-shadow: 0 0 8px rgba(255,255,255,0.2); }
   .btn-primary:active { transform: scale(0.97); }
   .btn-success { background: var(--color-success); color: white; }
   .btn-danger { background: var(--color-error); color: white; }
@@ -180,39 +184,68 @@
   .summary-card .period-score { font-size: 28px; font-weight: 800; }
   .summary-card .period-status { font-size: 12px; margin-top: 4px; font-weight: 600; }
 
-  .live-score-bar { background: var(--color-bg-secondary); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 16px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 12px; }
-  .live-score-bar .live-value { font-size: 22px; font-weight: 800; }
-  .live-score-bar .live-label { font-size: 12px; color: var(--color-text-muted); }
-  .live-score-bar .live-progress { flex: 1; height: 8px; border-radius: 4px; background: var(--color-border-light); overflow: hidden; }
-  .live-score-bar .live-progress-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
-  .live-count { font-size: 12px; color: var(--color-text-muted); font-weight: 500; }
+  
+  .live-score-bar 
+  .live-score-bar 
+  .live-score-bar 
+  .live-score-bar 
+  
 
-  /* Reverse clock & dashboard on check-in page */
-  .checkin-dashboard { background: linear-gradient(145deg, #0f172a, #1e293b); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: 0 8px 32px rgba(15,23,42,0.3); position: relative; overflow: hidden; }
-  .checkin-dashboard::before { content: ''; position: absolute; top: -50%; right: -30%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(99,102,241,0.15), transparent 70%); border-radius: 50%; }
-  .checkin-dashboard::after { content: ''; position: absolute; bottom: -30%; left: -20%; width: 150px; height: 150px; background: radial-gradient(circle, rgba(14,165,233,0.1), transparent 70%); border-radius: 50%; }
-  .dash-clock-row { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; position: relative; z-index: 1; }
-  .dash-clock-time { font-family: var(--font-mono); font-size: 36px; font-weight: 900; background: linear-gradient(135deg, #67e8f9, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 2px; }
-  .dash-clock-meta { flex: 1; }
-  .dash-clock-label { font-size: 11px; color: #94a3b8; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
-  .dash-clock-remaining { font-size: 13px; color: #e2e8f0; font-weight: 600; margin-top: 2px; }
-  .dash-progress-outer { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.08); overflow: hidden; margin-bottom: 14px; position: relative; z-index: 1; }
-  .dash-progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #06b6d4, #8b5cf6, #ec4899); transition: width 1s ease; }
+  /* Reverse clock & dashboard - SUNSET SKY */
+  .checkin-dashboard { background: linear-gradient(160deg, rgba(26,10,46,0.8), rgba(13,27,42,0.7)); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.25); position: relative; overflow: hidden; border: 1px solid rgba(255,150,100,0.08); }
+  
+  /* Sunset Sky Clock */
+  .sunset-clock { position: relative; height: 125px; border-radius: 14px; overflow: hidden; background: linear-gradient(135deg, #1a0a2e, #0d1b2a); border: 1px solid rgba(255,150,100,0.1); margin-bottom: 10px; }
+  .sunset-sky { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,100,150,0.08) 0%, rgba(255,160,60,0.1) 30%, rgba(100,200,255,0.05) 70%, rgba(20,40,80,0.3) 100%); }
+  .sunset-sun { position: absolute; top: 18%; right: 12%; width: 28px; height: 28px; background: radial-gradient(circle, rgba(255,200,100,0.7), rgba(255,140,50,0.3), transparent 70%); border-radius: 50%; animation: sunFloat 6s ease-in-out infinite; }
+  @keyframes sunFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
+  .sunset-horizon { position: absolute; bottom: 0; left: 0; right: 0; height: 25%; background: linear-gradient(0deg, rgba(20,10,40,0.8), transparent); }
+  .sunset-time-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; padding-bottom: 36px; }
+  .sunset-time { font-family: var(--font-mono); font-size: 30px; font-weight: 700; color: #fff; text-shadow: 0 0 20px rgba(255,150,80,0.3); letter-spacing: 2px; }
+  .sunset-sub { font-size: 9px; color: rgba(255,200,150,0.7); margin-top: 3px; }
+  
+  /* Stars and Moon */
+  .sunset-stars { position: absolute; inset: 0; opacity: 0; transition: opacity 1.5s ease; pointer-events: none; }
+  .sunset-stars.visible { opacity: 1; }
+  .star { position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%; animation: twinkle 2.5s ease-in-out infinite; }
+  .star:nth-child(odd) { animation-delay: 0.8s; width: 1.5px; height: 1.5px; }
+  .star:nth-child(3n) { animation-delay: 1.5s; animation-duration: 3s; }
+  @keyframes twinkle { 0%,100%{opacity:0.3;transform:scale(1)} 50%{opacity:1;transform:scale(1.3)} }
+  .sunset-moon { position: absolute; top: 20%; right: 15%; font-size: 20px; opacity: 0; transition: opacity 1.5s ease; filter: drop-shadow(0 0 8px rgba(200,220,255,0.4)); }
+  .sunset-moon.visible { opacity: 1; }
+  /* Sun arc path */
+  .sunset-sun { transition: top 2s ease, left 2s ease, opacity 1s ease, transform 1s ease; }
+  
+  .sunset-bar { position: absolute; bottom: 12px; left: 16px; right: 16px; height: 18px; border-radius: 9px; background: rgba(255,255,255,0.08); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); overflow: hidden; z-index: 3; border: 1px solid rgba(255,255,255,0.12); box-shadow: inset 0 1px 2px rgba(0,0,0,0.2); }
+  .sunset-bar-fill { height: 100%; border-radius: 9px; transition: width 1s ease; position: relative; overflow: hidden; background: transparent; }
+  .sunset-bar-fill::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--wc1, rgba(74,222,128,0.6)), var(--wc2, rgba(56,189,248,0.6)), var(--wc1, rgba(74,222,128,0.6)), var(--wc2, rgba(56,189,248,0.6))); background-size: 200% 100%; animation: water-flow 2s linear infinite; border-radius: 9px; }
+  .sunset-bar-fill::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent, rgba(255,255,255,0.15) 25%, transparent 50%); background-size: 30px 100%; animation: water-wave 1.5s linear infinite; border-radius: 9px; }
+  @keyframes water-flow { 0%{background-position: 0% 0%} 100%{background-position: -200% 0%} }
+  @keyframes water-wave { 0%{background-position: 0 0} 100%{background-position: 30px 0} }
+  .sunset-stats { position: absolute; bottom: 4px; left: 18px; right: 18px; display: flex; justify-content: space-between; font-size: 10px; z-index: 3; color: rgba(255,255,255,0.7); }
+  .sunset-stats .gone { color: #ff8888; }
+  .sunset-stats .left { color: #88ddaa; }
+  
+  /* Stats row */
   .dash-stats-row { display: flex; gap: 8px; position: relative; z-index: 1; }
-  .dash-stat { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 8px; text-align: center; }
-  .dash-stat-value { font-size: 18px; font-weight: 800; color: #f1f5f9; }
-  .dash-stat-label { font-size: 9px; color: #64748b; text-transform: uppercase; font-weight: 600; margin-top: 2px; letter-spacing: 0.3px; }
-  .dash-stat-value.score-up { color: #34d399; }
-  .dash-stat-value.score-down { color: #fb923c; }
-  .dash-target-chart { margin-top: 14px; position: relative; z-index: 1; }
-  .dash-target-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-  .dash-target-name { font-size: 11px; color: #94a3b8; min-width: 70px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .dash-target-bar-outer { flex: 1; height: 10px; border-radius: 5px; background: rgba(255,255,255,0.06); overflow: hidden; position: relative; }
-  .dash-target-bar-fill { height: 100%; border-radius: 5px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); position: relative; }
-  .dash-target-bar-fill::after { content: ''; position: absolute; top: 0; right: 0; width: 3px; height: 100%; background: rgba(255,255,255,0.6); border-radius: 2px; animation: target-pulse 1.5s ease-in-out infinite; }
+  .dash-stat { flex: 1; background: rgba(255,200,150,0.03); border: 1px solid rgba(255,150,100,0.08); border-radius: 10px; padding: 10px 8px; text-align: center; }
+  .dash-stat-value { font-size: 18px; font-weight: 800; color: #f0e0d0; }
+  .dash-stat-label { font-size: 9px; color: #7a6050; text-transform: uppercase; font-weight: 600; margin-top: 2px; letter-spacing: 0.3px; }
+  .dash-stat-value.score-up { color: #69db7c; }
+  .dash-stat-value.score-down { color: #ff6b6b; }
+  
+  /* Target bars */
+  
+  
+  
+  
+  
+  
+  
+  
   @keyframes target-pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-  .dash-target-pct { font-size: 11px; font-weight: 700; color: #e2e8f0; min-width: 35px; text-align: right; font-family: var(--font-mono); }
-  .dash-target-marker { position: absolute; top: -2px; width: 2px; height: 14px; background: #fbbf24; border-radius: 1px; opacity: 0.8; }
+  
+  
 
   /* ===== TIMER TAB STYLES ===== */
   .reverse-clock-card { background: linear-gradient(135deg, #1e1b4b, #312e81); border-radius: var(--radius); padding: 24px 20px; margin-bottom: 16px; box-shadow: var(--shadow-lg); text-align: center; color: white; }
@@ -299,6 +332,141 @@
   .goal-modal-btns .cancel { background: #f1f5f9; color: var(--color-text); }
   .goal-modal-btns .save { background: var(--color-primary); color: white; }
 
+
+  /* ===== FROSTED ICE THEME ===== */
+  
+  /* Frozen dark background with subtle ice crystalline patterns */
+  body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at 30% 10%, rgba(180,220,255,0.04), transparent 50%), radial-gradient(ellipse at 70% 90%, rgba(150,200,240,0.03), transparent 40%), radial-gradient(ellipse at 50% 50%, rgba(200,230,255,0.02), transparent 60%); pointer-events: none; z-index: -1; }
+  
+  /* Frost crystal grid - very subtle */
+  body::after { content: ''; position: fixed; inset: 0; background-image: radial-gradient(circle at center, rgba(200,230,255,0.015) 1px, transparent 1px); background-size: 30px 30px; pointer-events: none; z-index: -1; opacity: 0.6; }
+  
+  /* Header - frosted glass with ice accent */
+  .app-header::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(180,220,255,0.4), rgba(200,240,255,0.2), transparent); }
+  .app-header h1 { background: linear-gradient(135deg, #ffffff, #b8d8f8, #88ccff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: none; }
+  .app-header .date { color: #5578a0; }
+  
+  /* Inputs - frosted */
+  input[type="text"], input[type="number"], input[type="date"], select, textarea { background: rgba(180,220,255,0.03); border: 1px solid rgba(180,220,255,0.1); color: var(--color-text); border-radius: 10px; padding: 12px 14px; font-size: 14px; transition: 0.3s; backdrop-filter: blur(8px); }
+  input:focus, select:focus { outline: none; border-color: rgba(180,220,255,0.3); box-shadow: 0 0 20px rgba(180,220,255,0.08), inset 0 0 15px rgba(180,220,255,0.02); }
+  input::placeholder { color: #3a5a7a; }
+  
+  /* Save button - cool ice */
+  .save-btn { background: rgba(100,220,200,0.08); border: 1px solid rgba(100,220,200,0.2); color: #66eebb; border-radius: 8px; padding: 8px 14px; font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; backdrop-filter: blur(5px); }
+  .save-btn:active { box-shadow: 0 0 15px rgba(100,220,200,0.2); transform: scale(0.95); }
+  
+  /* Type selector */
+  .type-option { background: rgba(180,220,255,0.03); border: 1px solid rgba(180,220,255,0.08) !important; color: var(--color-text-secondary); backdrop-filter: blur(8px); }
+  .type-option.active { background: rgba(180,220,255,0.08) !important; border-color: rgba(180,220,255,0.25) !important; color: #b8d8f8 !important; box-shadow: 0 0 15px rgba(180,220,255,0.06), inset 0 0 10px rgba(180,220,255,0.02); }
+  
+  /* Toggle */
+  .toggle-cb { accent-color: #88ccff; }
+  
+  /* Question items */
+  .q-item { background: rgba(180,220,255,0.02); border: 1px solid rgba(180,220,255,0.06); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 10px; backdrop-filter: blur(8px); transition: 0.2s; }
+  .q-item:hover { border-color: rgba(180,220,255,0.12); background: rgba(180,220,255,0.04); }
+  
+  /* Done section */
+  .done-group { background: rgba(100,220,200,0.02); border: 1px solid rgba(100,220,200,0.08); border-radius: var(--radius); padding: 14px; margin-top: 14px; }
+  .done-label { color: #66eebb; text-shadow: 0 0 8px rgba(100,220,200,0.2); }
+  .done-item { border-bottom-color: rgba(180,220,255,0.04); }
+  .done-text { color: #5588aa; }
+  
+  /* Category labels */
+  .cat-label, .cat-group .cat-label, .category-header { color: #88aacc; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-size: 11px; }
+  
+  /* Progress bars - icy gradient */
+  .q-progress-mini { background: rgba(180,220,255,0.04); }
+  .q-progress-mini-fill { background: linear-gradient(90deg, #5588cc, #88ccff, #aaeeff) !important; box-shadow: 0 0 6px rgba(150,200,240,0.2); }
+  
+  /* Live score */
+  .live-value, #liveScore { text-shadow: 0 0 15px currentColor; }
+  #liveProgressFill { box-shadow: 0 0 8px rgba(150,200,240,0.2); }
+  
+  /* Big Score */
+  .big-score { text-shadow: 0 0 20px currentColor, 0 0 40px currentColor; }
+  
+  /* Info box */
+  .info-box { background: rgba(180,220,255,0.03); border: 1px solid rgba(180,220,255,0.08); color: var(--color-text-secondary); border-radius: var(--radius-sm); }
+  
+  /* Goal cards */
+  .goal-card { background: rgba(180,220,255,0.025) !important; border: 1px solid rgba(180,220,255,0.08) !important; backdrop-filter: blur(12px); box-shadow: 0 4px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(200,230,255,0.04); }
+  .goal-title { color: #d4e4f8; }
+  .goal-progress-ring .ring-fill { filter: drop-shadow(0 0 3px currentColor); }
+  .goal-actions button { background: rgba(180,220,255,0.03); border-color: rgba(180,220,255,0.08); color: var(--color-text-secondary); }
+  .goal-actions button.update-btn { background: rgba(136,204,255,0.1); color: #88ccff; border-color: rgba(136,204,255,0.2); box-shadow: 0 0 10px rgba(136,204,255,0.06); }
+  
+  /* Subgoal bars - icy */
+  .subgoal-track { background: rgba(180,220,255,0.04); }
+  .subgoal-fill.green { background: linear-gradient(90deg, #44bb99, #66eebb) !important; box-shadow: 0 0 6px rgba(100,220,200,0.2); }
+  .subgoal-fill.blue { background: linear-gradient(90deg, #5588cc, #88ccff) !important; box-shadow: 0 0 6px rgba(136,204,255,0.2); }
+  .subgoal-fill.yellow { background: linear-gradient(90deg, #ccaa44, #ffcc66) !important; box-shadow: 0 0 6px rgba(255,200,100,0.2); }
+  .subgoal-fill.red { background: linear-gradient(90deg, #cc4466, #ff6688) !important; box-shadow: 0 0 6px rgba(255,100,130,0.2); }
+  
+  /* Period buttons */
+  .period-btn { background: rgba(180,220,255,0.03); border: 1px solid rgba(180,220,255,0.06); color: var(--color-text-muted); }
+  .period-btn.active { background: rgba(136,204,255,0.08); border-color: rgba(136,204,255,0.2); color: #88ccff; box-shadow: 0 0 10px rgba(136,204,255,0.06); }
+  
+  /* Presets */
+  .preset-btn { background: rgba(180,220,255,0.03); border: 1px solid rgba(180,220,255,0.06); color: var(--color-text-secondary); }
+  .preset-btn:active { background: rgba(180,220,255,0.08); }
+  
+  /* Existing questions */
+  .existing-q { background: rgba(180,220,255,0.02); border: 1px solid rgba(180,220,255,0.06); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
+  .existing-q .text { color: var(--color-text); }
+  .existing-q .meta { color: var(--color-text-muted); }
+  
+  /* Dashboard card - Sunset Sky overrides */
+  .checkin-dashboard { border-color: rgba(255,150,100,0.08) !important; }
+  .dash-stat { background: rgba(255,200,150,0.02) !important; border-color: rgba(255,150,100,0.06) !important; }
+  .dash-stat-value { color: #f0e0d0 !important; }
+  .dash-stat-label { color: #7a6050 !important; }
+  
+  
+  
+  /* Timer */
+  .timer-card, .time-target-item { background: rgba(180,220,255,0.02); border: 1px solid rgba(180,220,255,0.06); border-radius: var(--radius-sm); backdrop-filter: blur(8px); }
+  
+  /* Empty state */
+  .empty-state { color: var(--color-text-muted); }
+  
+  /* Modal */
+  .goal-modal { background: rgba(8,12,20,0.95) !important; border: 1px solid rgba(180,220,255,0.1); backdrop-filter: blur(25px); }
+  .goal-modal h3 { color: #d4e4f8; }
+  .goal-modal-btns .cancel { background: rgba(180,220,255,0.04); color: var(--color-text-secondary); border: 1px solid rgba(180,220,255,0.08); }
+  .goal-modal-btns .save { background: linear-gradient(135deg, #5588cc, #88ccff); box-shadow: 0 0 12px rgba(136,204,255,0.15); }
+  
+  /* Scrollbar */
+  .main-content::-webkit-scrollbar { width: 3px; }
+  .main-content::-webkit-scrollbar-track { background: transparent; }
+  .main-content::-webkit-scrollbar-thumb { background: rgba(180,220,255,0.15); border-radius: 2px; }
+  
+  /* Frost text utility */
+  .neon-text { text-shadow: 0 0 8px currentColor; }
+
+
+  /* Mini Donuts Progress Display */
+  .donuts-progress { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 14px; margin-bottom: 14px; background: rgba(180,220,255,0.02); border: 1px solid rgba(180,220,255,0.06); border-radius: var(--radius-sm); }
+  .donut-item { text-align: center; width: 52px; }
+  .donut-ring { position: relative; width: 40px; height: 40px; margin: 0 auto 3px; }
+  .donut-ring svg { transform: rotate(-90deg); width: 40px; height: 40px; }
+  .donut-ring .d-bg { fill: none; stroke: rgba(255,255,255,0.04); stroke-width: 4; }
+  .donut-ring .d-fill { fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 0.6s ease; }
+  .donut-ring .d-fill.green { stroke: #4ade80; filter: drop-shadow(0 0 3px rgba(74,222,128,0.3)); }
+  .donut-ring .d-fill.yellow { stroke: #fbbf24; filter: drop-shadow(0 0 3px rgba(251,191,36,0.3)); }
+  .donut-ring .d-fill.red { stroke: #f87171; filter: drop-shadow(0 0 3px rgba(248,113,113,0.2)); }
+  .donut-ring .d-fill.empty { stroke: rgba(180,220,255,0.08); }
+  .donut-center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #d4e4f8; }
+  .donut-center.done { color: #4ade80; }
+  .donut-label { font-size: 7px; color: #6688aa; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 52px; }
+
+
+  .live-score-bar { display: flex; align-items: center; gap: 12px; padding: 12px 14px; margin-bottom: 12px; border-radius: var(--radius-sm); background: rgba(180,220,255,0.02); border: 1px solid rgba(180,220,255,0.06); }
+  .live-value { font-size: 22px; font-weight: 800; color: #88ccff; font-family: var(--font-mono); }
+  .live-label { font-size: 9px; color: #6688aa; text-transform: uppercase; }
+  .live-progress { flex: 1; height: 6px; background: rgba(180,220,255,0.06); border-radius: 3px; overflow: hidden; }
+  .live-progress-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease, background 0.5s ease; }
+  .live-count { font-size: 11px; color: #6688aa; font-family: var(--font-mono); white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -311,31 +479,48 @@
 <div class="main-content">
   <!-- CHECK-IN -->
   <div class="tab-content active" id="tab-checkin">
-    <!-- Modern Dashboard: Clock + Stats + Target Chart -->
+    <!-- Sunset Sky Clock + Stats -->
     <div class="checkin-dashboard">
-      <div class="dash-clock-row">
-        <div class="dash-clock-time" id="mainClockValue">00:00:00</div>
-        <div class="dash-clock-meta">
-          <div class="dash-clock-label">Time Remaining</div>
-          <div class="dash-clock-remaining" id="mainClockRemaining">calculating...</div>
+      <div class="sunset-clock" id="sunsetClock">
+        <div class="sunset-sky" id="sunsetSky"></div>
+        <div class="sunset-stars" id="sunsetStars">
+          <div class="star" style="top:15%;left:12%"></div>
+          <div class="star" style="top:25%;left:35%"></div>
+          <div class="star" style="top:10%;left:55%"></div>
+          <div class="star" style="top:30%;left:72%"></div>
+          <div class="star" style="top:18%;left:88%"></div>
+          <div class="star" style="top:40%;left:20%"></div>
+          <div class="star" style="top:35%;left:48%"></div>
+          <div class="star" style="top:12%;left:78%"></div>
+          <div class="star" style="top:45%;left:62%"></div>
+          <div class="star" style="top:22%;left:42%"></div>
         </div>
+        <div class="sunset-moon" id="sunsetMoon">🌙</div>
+        <div class="sunset-sun" id="sunsetSun"></div>
+        <div class="sunset-horizon"></div>
+        <div class="sunset-time-wrap">
+          <div class="sunset-time" id="mainClockValue">00:00:00</div>
+          <div class="sunset-sub" id="sunsetSub">before darkness falls</div>
+        </div>
+        <div class="sunset-bar"><div class="sunset-bar-fill" id="sunsetBarFill" style="width:0%"></div></div>
+        
       </div>
-      <div class="dash-progress-outer"><div class="dash-progress-fill" id="mainClockBar" style="width:0%"></div></div>
       <div class="dash-stats-row">
-        <div class="dash-stat"><div class="dash-stat-value" id="dashScoreToday">—</div><div class="dash-stat-label">Today</div></div>
+        <div class="dash-stat"><div class="dash-stat-value" id="dashScoreToday">—</div><div class="dash-stat-label">Score</div></div>
         <div class="dash-stat"><div class="dash-stat-value" id="dashDoneCount">0</div><div class="dash-stat-label">Done</div></div>
         <div class="dash-stat"><div class="dash-stat-value" id="dashPendingCount">0</div><div class="dash-stat-label">Pending</div></div>
-        <div class="dash-stat"><div class="dash-stat-value" id="dashTimePct">—</div><div class="dash-stat-label">Time Used</div></div>
+        <div class="dash-stat"><div class="dash-stat-value" id="dashTimePct">—</div><div class="dash-stat-label">Used</div></div>
       </div>
-      <div class="dash-target-chart" id="dashTargetChart"></div>
-    </div>
-    <div class="live-score-bar" id="liveScoreBar">
+          </div>
+    
+    <div class="card" id="pendingCard">
+      <div class="card-title">📝 Pending</div>
+      <div class="live-score-bar" id="liveScoreBar">
       <div><div class="live-value" id="liveScore">0%</div><div class="live-label">Today's Score</div></div>
       <div class="live-progress"><div class="live-progress-fill" id="liveProgressFill" style="width:0%;background:var(--color-border)"></div></div>
       <div class="live-count" id="liveCount">0/0 done</div>
     </div>
-    <div class="card" id="pendingCard">
-      <div class="card-title">📝 Pending</div>
+    <div class="donuts-progress" id="donutsProgress"></div>
       <div id="pendingList"></div>
     </div>
     <div id="doneSection"></div>
@@ -619,6 +804,7 @@ function renderCheckin(){
   // Done section
   if(done.length){let dh='<div class="done-group"><div class="done-label">✅ Done ('+done.length+')</div>';done.forEach(q=>{const val=ta.answers[q.id];let display=q.type==='yesno'?(val?'Yes ✓':'No'):(val+' / '+q.target+' '+esc(q.uom));dh+='<div class="done-item"><span class="done-text">'+esc(q.text)+'</span><span class="done-value">'+display+'</span><button class="undo-btn" onclick="undoSingle(\''+q.id+'\')" title="Undo">↩️</button></div>';});dh+='</div>';document.getElementById('doneSection').innerHTML=dh;}else{document.getElementById('doneSection').innerHTML='';}
   updateLiveScore();
+  renderDonutsProgress();
 }
 
 function updateYN(id){const i=document.getElementById('inp_'+id),l=document.getElementById('ynl_'+id);if(!i||!l)return;l.textContent=i.checked?'Yes ✓':'No';l.classList.toggle('active',i.checked);}
@@ -693,7 +879,11 @@ function saveDailyRecord(){
 function updateLiveScore(){
   const allItems=getAllDueItems();
   const ta=getTodayAnswers();
-  if(!allItems.length){document.getElementById('liveScore').textContent='0%';document.getElementById('liveCount').textContent='0/0';return;}
+  if(!allItems.length){
+    const el=document.getElementById('liveScore');if(el)el.textContent='0%';
+    const ct=document.getElementById('liveCount');if(ct)ct.textContent='0/0';
+    return;
+  }
   let ws=0,tw=0,dc=0;
   allItems.forEach(q=>{
     tw+=q.weight;
@@ -705,14 +895,10 @@ function updateLiveScore(){
   });
   const score=tw?Math.round(ws/tw*100):0;
   const col=scoreColor(score);
-  document.getElementById('liveScore').textContent=score+'%';
-  document.getElementById('liveScore').style.color=col;
-  document.getElementById('liveCount').textContent=dc+'/'+allItems.length+' done';
-  document.getElementById('liveProgressFill').style.width=score+'%';
-  document.getElementById('liveProgressFill').style.background=col;
+  const el=document.getElementById('liveScore');if(el){el.textContent=score+'%';el.style.color=col;}
+  const ct=document.getElementById('liveCount');if(ct)ct.textContent=dc+'/'+allItems.length+' done';
+  const pf=document.getElementById('liveProgressFill');if(pf){pf.style.width=score+'%';pf.style.background=col;}
 }
-
-
 function renderStats(){const data=gD(),te=data.find(d=>d.date===getToday()),l7=data.slice(-7);const avg7=l7.length?Math.round(l7.reduce((s,d)=>s+d.score,0)/l7.length):0;let streak=0;const sorted=[...data].sort((a,b)=>b.date.localeCompare(a.date));for(let i=0;i<sorted.length;i++){const d=new Date();d.setDate(d.getDate()-i);if(sorted[i]?.date===d.toISOString().slice(0,10))streak++;else break;}document.getElementById('todayScore').textContent=te?te.score+'%':'—';document.getElementById('avgScore').textContent=avg7?avg7+'%':'—';document.getElementById('streak').textContent=streak;const box=document.getElementById('bigScoreBox'),ds=avg7||(te?te.score:null);if(ds!==null){box.className='big-score-container '+scoreClass(ds);document.getElementById('bigScoreValue').textContent=ds+'%';document.getElementById('bigScoreLabel').textContent=scoreText(ds);document.getElementById('bigScoreSub').textContent='7-day weighted average';box.classList.add('score-animate');setTimeout(()=>box.classList.remove('score-animate'),700);}else{box.className='big-score-container score-none';document.getElementById('bigScoreValue').textContent='—';document.getElementById('bigScoreLabel').textContent='No Data';document.getElementById('bigScoreSub').textContent='Complete your first check-in';}renderSummaryGrid(data);renderGauge(avg7);renderTrend(data);renderRadar(data);renderHistory(data);}
 function renderSummaryGrid(data){const now=new Date(),grid=document.getElementById('summaryGrid');if(!data.length){grid.innerHTML='';return;}const ws=new Date(now);ws.setDate(now.getDate()-now.getDay());const wd=data.filter(d=>d.date>=ws.toISOString().slice(0,10));const wa=wd.length?Math.round(wd.reduce((s,d)=>s+d.score,0)/wd.length):null;const mk=now.toISOString().slice(0,7);const md=data.filter(d=>d.date.startsWith(mk));const ma=md.length?Math.round(md.reduce((s,d)=>s+d.score,0)/md.length):null;const yk=String(now.getFullYear());const yd=data.filter(d=>d.date.startsWith(yk));const ya=yd.length?Math.round(yd.reduce((s,d)=>s+d.score,0)/yd.length):null;const aa=data.length?Math.round(data.reduce((s,d)=>s+d.score,0)/data.length):null;function c(l,s){if(s===null)return'<div class="summary-card"><div class="period-label">'+l+'</div><div class="period-score" style="color:var(--color-text-muted)">—</div></div>';return'<div class="summary-card"><div class="period-label">'+l+'</div><div class="period-score" style="color:'+scoreColor(s)+'">'+s+'%</div><div class="period-status" style="color:'+scoreColor(s)+'">'+scoreText(s)+'</div></div>';}grid.innerHTML=c('This Week',wa)+c('This Month',ma)+c('This Year',ya)+c('All Time',aa);}
 function renderGauge(s){Highcharts.chart('gaugeChart',{chart:{type:'solidgauge',backgroundColor:'transparent'},title:{text:'Life Gauge',style:{fontSize:'15px',fontWeight:'700'}},pane:{startAngle:-90,endAngle:90,background:[{innerRadius:'60%',outerRadius:'100%',shape:'arc',backgroundColor:'#e8e8f0',borderWidth:0}]},yAxis:{min:0,max:100,lineWidth:0,tickWidth:0,minorTickInterval:null,labels:{y:16,style:{fontSize:'12px'}},stops:[[0.4,'#ef4444'],[0.55,'#f59e0b'],[0.6,'#10b981'],[0.8,'#059669']]},series:[{data:[s],dataLabels:{format:'<div style="text-align:center"><span style="font-size:2em;font-weight:800;color:'+scoreColor(s)+'">{y}%</span></div>',borderWidth:0,y:-20},innerRadius:'60%',radius:'100%'}],credits:{enabled:false},tooltip:{enabled:false}});}
@@ -850,11 +1036,66 @@ function updateReverseClock(){
   const usedPct=Math.round(((now.getHours()*60+now.getMinutes())/(24*60))*100);
   document.getElementById('dayProgressInner').style.width=usedPct+'%';
   document.getElementById('dayPct').textContent=usedPct+'% of day used • '+fmtMin(h*60+m)+' remaining';
-  // Also update dashboard on check-in page
+  // Update Sunset Sky on check-in page
   const mc=document.getElementById('mainClockValue');if(mc)mc.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-  const mb=document.getElementById('mainClockBar');if(mb)mb.style.width=usedPct+'%';
-  const mr=document.getElementById('mainClockRemaining');if(mr)mr.textContent=fmtMin(h*60+m)+' until midnight';
-  const dt=document.getElementById('dashTimePct');if(dt)dt.textContent=usedPct+'%';
+  updateTaskUsedPct();
+  // Rainbow bar width
+  const sb=document.getElementById('sunsetBarFill');if(sb)sb.style.width=(100-usedPct)+'%';
+  // Sun parabolic arc + Moon/Stars + sky colors
+  const sun=document.getElementById('sunsetSun');
+  const moon=document.getElementById('sunsetMoon');
+  const stars=document.getElementById('sunsetStars');
+  const sky=document.getElementById('sunsetSky');
+  if(sun&&moon&&stars&&sky){
+    const hour=(usedPct/100)*24;
+    // Sun visible 6am-18pm (hours 6-18), parabolic arc left→right
+    const sunStart=6,sunEnd=18;
+    if(hour>=sunStart&&hour<=sunEnd){
+      const t=(hour-sunStart)/(sunEnd-sunStart); // 0 to 1
+      // x: 5% to 88% (left to right)
+      const sunX=5+t*83;
+      // y: parabolic, lowest at t=0.5 (noon = highest point in sky = lowest top%)
+      // top: 60% at edges, 8% at peak
+      const sunY=8+52*Math.pow(2*t-1,2);
+      sun.style.left=sunX+'%';sun.style.top=sunY+'%';
+      sun.style.opacity=t<0.05?String(t/0.05):t>0.95?String((1-t)/0.05):'1';
+      sun.style.transform='scale('+(0.7+0.3*Math.sin(t*Math.PI))+')';
+      moon.classList.remove('visible');
+      if(t>0.9){stars.classList.add('visible');}else{stars.classList.remove('visible');}
+      // Sky color shifts through day
+      if(t<0.15){
+        sky.style.background='linear-gradient(180deg, rgba(255,120,80,0.12), rgba(255,180,100,0.08), rgba(20,30,60,0.4))';
+      } else if(t<0.7){
+        sky.style.background='linear-gradient(180deg, rgba(80,160,255,0.07), rgba(120,200,255,0.05), rgba(30,50,80,0.2))';
+      } else {
+        const evPct=(t-0.7)/0.3;
+        sky.style.background='linear-gradient(180deg, rgba(255,100,130,'+(0.06+evPct*0.06)+'), rgba(255,140,50,'+(0.08+evPct*0.06)+'), rgba(20,15,50,'+(0.3+evPct*0.4)+'))';
+      }
+    } else {
+      // Night
+      sun.style.opacity='0';
+      moon.classList.add('visible');stars.classList.add('visible');
+      sky.style.background='linear-gradient(180deg, rgba(5,5,20,0.9), rgba(8,12,30,0.85))';
+    }
+  }
+  // Remaining time bar: color shifts green → yellow → orange → red
+  const barEl=document.getElementById('sunsetBarFill');
+  if(barEl){
+    const remainPct=100-usedPct;
+    let c1,c2;
+    if(remainPct>60){c1='rgba(34,197,94,0.6)';c2='rgba(56,189,248,0.6)';}
+    else if(remainPct>40){c1='rgba(132,204,22,0.6)';c2='rgba(250,204,21,0.6)';}
+    else if(remainPct>20){c1='rgba(245,158,11,0.6)';c2='rgba(249,115,22,0.6)';}
+    else{c1='rgba(239,68,68,0.6)';c2='rgba(220,38,38,0.6)';}
+    barEl.style.setProperty('--wc1',c1);barEl.style.setProperty('--wc2',c2);
+  }
+  // Stats
+  const goneH=Math.floor((usedPct/100)*24);const goneM=Math.round(((usedPct/100)*24-goneH)*60);
+  const sg=document.getElementById('sunsetGone');if(sg)sg.textContent='🌅 '+goneH+'h '+goneM+'m spent';
+  const sl=document.getElementById('sunsetLeft');if(sl)sl.textContent='🌙 '+h+'h '+m+'m left';
+  // Sub message
+  const ss=document.getElementById('sunsetSub');
+  if(ss){if(usedPct<40)ss.textContent='morning light';else if(usedPct<60)ss.textContent='afternoon glow';else if(usedPct<80)ss.textContent='golden hour fading';else ss.textContent='darkness approaching';}
   // Update dashboard stats
   updateDashStats();
 }
@@ -862,8 +1103,8 @@ function updateReverseClock(){
 // ===== EXPORT/IMPORT =====
 function exportExcel(){const data=gD(),qs=gQ();if(!data.length){alert('No data');return;}const cats=[...new Set(qs.map(q=>q.category))].sort();let csv='Date,Overall Score,Status';cats.forEach(c=>{csv+=','+c+'%';});qs.forEach(q=>{csv+=','+(q.type==='yesno'?q.text+' (Y/N)':q.text+' ('+q.target+' '+q.uom+')');});csv+='\n';data.forEach(d=>{csv+=d.date+','+d.score+','+scoreText(d.score).replace(/[^\w\s]/g,'').trim();cats.forEach(c=>{csv+=','+(d.catScores&&d.catScores[c]!==undefined?d.catScores[c]:'');});qs.forEach(q=>{const v=d.actuals?d.actuals[q.id]:'';csv+=','+(q.type==='yesno'?(v===1?'Yes':v===0?'No':''):v||'');});csv+='\n';});csv+='\n--- SUMMARY ---\nPeriod,Score,Status,Days\n';const now=new Date();const w7=data.filter(d=>d.date>=new Date(now-7*86400000).toISOString().slice(0,10));if(w7.length)csv+='Last 7 Days,'+Math.round(w7.reduce((s,d)=>s+d.score,0)/w7.length)+'%,,'+w7.length+'\n';const mm=data.filter(d=>d.date.startsWith(now.toISOString().slice(0,7)));if(mm.length)csv+='This Month,'+Math.round(mm.reduce((s,d)=>s+d.score,0)/mm.length)+'%,,'+mm.length+'\n';const yy=data.filter(d=>d.date.startsWith(String(now.getFullYear())));if(yy.length)csv+='This Year,'+Math.round(yy.reduce((s,d)=>s+d.score,0)/yy.length)+'%,,'+yy.length+'\n';csv+='All Time,'+Math.round(data.reduce((s,d)=>s+d.score,0)/data.length)+'%,,'+data.length+'\n';const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Life_Tracker_'+getToday()+'.csv';a.click();}
 function exportJSON(){const p={questions:gQ(),data:gD(),todayAnswers:getTodayAnswers(),timeTargets:getTimeTargets(),timeLog:getTimeLog(),exported:new Date().toISOString(),version:'v7'};const b=new Blob([JSON.stringify(p,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='life_tracker_backup_'+getToday()+'.json';a.click();}
-function importBackup(){const i=document.createElement('input');i.type='file';i.accept='.json,.csv';i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{if(f.name.endsWith('.json')){const p=JSON.parse(ev.target.result);if(p.questions)sQ(p.questions);if(p.data)sD(p.data);if(p.todayAnswers)localStorage.setItem(TDK,JSON.stringify(p.todayAnswers));if(p.timeTargets)setTimeTargets(p.timeTargets);if(p.timeLog)localStorage.setItem(TLK,JSON.stringify(p.timeLog));}else{const lines=ev.target.result.split('\n'),data=gD();for(let i=1;i<lines.length;i++){const cols=lines[i].split(',');if(cols.length<2||!cols[0].match(/^\d{4}-\d{2}-\d{2}$/))continue;const date=cols[0],score=parseInt(cols[1]);if(!isNaN(score)&&!data.find(d=>d.date===date))data.push({date,score,catScores:{},actuals:{}});}sD(data);}renderCheckin();renderSettings();updateDashStats();renderGoals();renderTimerTab();alert('✅ Imported!');}catch(err){alert('❌ Invalid file');}};r.readAsText(f);};i.click();}
-function clearAll(){if(!confirm('⚠️ Delete ALL data?'))return;localStorage.removeItem(DK);localStorage.removeItem(QK);localStorage.removeItem(TDK);localStorage.removeItem(TTK);localStorage.removeItem(TLK);renderCheckin();renderSettings();updateDashStats();renderGoals();renderTimerTab();}
+function importBackup(){const i=document.createElement('input');i.type='file';i.accept='.json,.csv';i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{if(f.name.endsWith('.json')){const p=JSON.parse(ev.target.result);if(p.questions)sQ(p.questions);if(p.data)sD(p.data);if(p.todayAnswers)localStorage.setItem(TDK,JSON.stringify(p.todayAnswers));if(p.timeTargets)setTimeTargets(p.timeTargets);if(p.timeLog)localStorage.setItem(TLK,JSON.stringify(p.timeLog));}else{const lines=ev.target.result.split('\n'),data=gD();for(let i=1;i<lines.length;i++){const cols=lines[i].split(',');if(cols.length<2||!cols[0].match(/^\d{4}-\d{2}-\d{2}$/))continue;const date=cols[0],score=parseInt(cols[1]);if(!isNaN(score)&&!data.find(d=>d.date===date))data.push({date,score,catScores:{},actuals:{}});}sD(data);}renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();renderTimerTab();alert('✅ Imported!');}catch(err){alert('❌ Invalid file');}};r.readAsText(f);};i.click();}
+function clearAll(){if(!confirm('⚠️ Delete ALL data?'))return;localStorage.removeItem(DK);localStorage.removeItem(QK);localStorage.removeItem(TDK);localStorage.removeItem(TTK);localStorage.removeItem(TLK);renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();renderTimerTab();}
 
 
 
@@ -1207,6 +1448,17 @@ function getAllDueItems(){
 }
 
 // ===== DASHBOARD STATS (check-in page) =====
+
+function updateTaskUsedPct(){
+  const allItems=getAllDueItems();
+  const ta=getTodayAnswers();
+  const total=allItems.length;
+  const done=allItems.filter(q=>ta.answers[q.id]!==undefined).length;
+  const pct=total?Math.round((done/total)*100):0;
+  const dt=document.getElementById('dashTimePct');
+  if(dt)dt.textContent=pct+'%';
+}
+
 function updateDashStats(){
   const allItems=getAllDueItems();
   const ta=getTodayAnswers();
@@ -1232,35 +1484,47 @@ function updateDashStats(){
   const dc=document.getElementById('dashDoneCount');if(dc)dc.textContent=doneCount;
   const pc=document.getElementById('dashPendingCount');if(pc)pc.textContent=(allItems.length-doneCount);
   // Render target deviation bars (show all target-type items)
-  renderDashTargets(allItems,ta);
+  
 }
 
 
-function renderDashTargets(qs,ta){
-  const chart=document.getElementById('dashTargetChart');if(!chart)return;
-  // Only show target-type questions that have been answered or have targets
-  const targetQs=qs.filter(q=>q.type==='target').slice(0,5);
-  if(!targetQs.length){chart.innerHTML='<div style="text-align:center;color:#64748b;font-size:11px;padding:6px;">No target-based questions yet</div>';return;}
+
+
+// ===== MINI DONUTS PROGRESS =====
+function renderDonutsProgress(){
+  const allItems=getAllDueItems();
+  const ta=getTodayAnswers();
+  const container=document.getElementById('donutsProgress');
+  if(!container)return;
+  if(!allItems.length){container.style.display='none';return;}
+  container.style.display='flex';
   let html='';
-  targetQs.forEach(q=>{
-    const actual=ta.answers[q.id]||0;
-    const pct=Math.min(100,Math.round((actual/q.target)*100));
-    const col=pct>=100?'linear-gradient(90deg,#34d399,#10b981)':pct>=60?'linear-gradient(90deg,#06b6d4,#8b5cf6)':pct>=30?'linear-gradient(90deg,#fbbf24,#f59e0b)':'linear-gradient(90deg,#f87171,#ef4444)';
-    // Position marker at 100% target line
-    const markerPos=Math.min(100,100);
-    html+='<div class="dash-target-item">';
-    html+='<span class="dash-target-name">'+esc(q.text)+'</span>';
-    html+='<div class="dash-target-bar-outer"><div class="dash-target-bar-fill" style="width:'+pct+'%;background:'+col+'"></div><div class="dash-target-marker" style="left:calc(100% - 2px)"></div></div>';
-    html+='<span class="dash-target-pct">'+pct+'%</span>';
+  allItems.forEach(q=>{
+    const answered=ta.answers[q.id]!==undefined;
+    let pct=0;
+    if(answered){
+      if(q.type==='yesno') pct=ta.answers[q.id]===1?100:0;
+      else pct=Math.min(100,Math.round((ta.answers[q.id]/q.target)*100));
+    }
+    const circ=100.5;
+    const offset=circ-(pct/100)*circ;
+    const colorClass=pct>=100?'green':pct>=40?'yellow':pct>0?'red':'empty';
+    const centerText=pct>=100?'\u2713':pct>0?pct+'%':'\u2014';
+    const centerClass=pct>=100?' done':'';
+    const label=q.text.length>8?q.text.slice(0,7)+'\u2026':q.text;
+    html+='<div class="donut-item">';
+    html+='<div class="donut-ring"><svg><circle class="d-bg" cx="20" cy="20" r="16"/><circle class="d-fill '+colorClass+'" cx="20" cy="20" r="16" style="stroke-dasharray:'+circ+';stroke-dashoffset:'+offset+'"/></svg>';
+    html+='<div class="donut-center'+centerClass+'">'+centerText+'</div></div>';
+    html+='<div class="donut-label">'+esc(label)+'</div>';
     html+='</div>';
   });
-  chart.innerHTML=html;
+  container.innerHTML=html;
 }
 
 // ===== INIT =====
 try{
 document.getElementById('todayDate').textContent='📅 '+new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short',year:'numeric'});
-renderCheckin();renderSettings();updateDashStats();renderGoals();
+renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();
 updateReverseClock();
 setInterval(updateReverseClock,1000);
 setInterval(()=>{if(Object.keys(activeTimers).length)renderTimerTab();},10000);

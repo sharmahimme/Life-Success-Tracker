@@ -372,7 +372,7 @@
       <div id="goalsListContainer">
         <div class="empty-state">No goals yet. Add one in ⚙️ Settings.</div>
       </div>
-      <button class="btn-primary" style="width:100%;margin-top:12px;" onclick="switchTab('settings',document.querySelectorAll('.nav-item')[5]);setTimeout(()=>showAddForm('goal'),100)">+ Add New Goal</button>
+      <button class="btn-primary" style="width:100%;margin-top:12px;" onclick="switchTab('settings',document.querySelectorAll('.nav-item')[5]);setTimeout(function(){showAddForm('goal')},100)">+ Add New Goal</button>
     </div>
     <div class="card">
       <div class="card-title">📈 Goal Trajectory</div>
@@ -481,6 +481,10 @@
           <select id="goalFrequency" style="flex:1;"><option value="monthly">🗓️ Monthly tracking</option><option value="quarterly">📊 Quarterly tracking</option><option value="halfyearly">📈 Half-Yearly tracking</option><option value="yearly">🎆 Yearly tracking</option><option value="weekly">📆 Weekly tracking</option><option value="daily">📅 Daily tracking</option></select>
         </div>
         <div class="setting-row"><input type="text" id="goalCategory" placeholder="Category (Finance, Fitness, Career...)"></div>
+        <div class="setting-row">
+          <label style="font-size:13px;color:var(--color-text-secondary);">Weightage:</label>
+          <select id="goalWeight"><option value="1">⭐1</option><option value="2">⭐2</option><option value="3" selected>⭐3</option><option value="4">⭐4</option><option value="5">⭐5</option></select>
+        </div>
         
         <!-- Sub-goals section -->
         <div style="margin:12px 0 8px;font-size:14px;font-weight:600;color:var(--color-text);">Sub-goals <span style="font-weight:400;color:var(--color-text-muted);font-size:12px;">(break it down)</span></div>
@@ -567,7 +571,7 @@ function addQuestion(){
   const text=document.getElementById('newQuestion').value.trim();if(!text){alert('Enter a question');return;}
   const cat=document.getElementById('newCategory').value.trim()||'General';
   const w=parseInt(document.getElementById('newWeight').value);
-  const q={id:Date.now(),text,type:selectedType,category:cat,weight:w};
+  const freq=document.getElementById('newFrequency').value||'daily';const q={id:Date.now(),text,type:selectedType,category:cat,weight:w,frequency:freq,createdAt:new Date().toISOString().slice(0,10)};
   if(selectedType==='target'){q.target=parseFloat(document.getElementById('newTarget').value)||1;q.uom=document.getElementById('newUOM').value.trim()||'units';}
   const qs=gQ();qs.push(q);sQ(qs);
   document.getElementById('newQuestion').value='';document.getElementById('newTarget').value='';document.getElementById('newUOM').value='';document.getElementById('newCategory').value='';
@@ -589,26 +593,125 @@ function renderSettings(){
 
 // ===== CHECK-IN =====
 function renderCheckin(){
-  const qs=gQ(),ta=getTodayAnswers();
-  if(!qs.length){document.getElementById('pendingList').innerHTML='<div class="empty-state">Go to ⚙️ Settings to add questions</div>';document.getElementById('doneSection').innerHTML='';updateLiveScore();return;}
+  const allItems=getAllDueItems();
+  const ta=getTodayAnswers();
+  if(!allItems.length){document.getElementById('pendingList').innerHTML='<div class="empty-state">No items due today. Add habits or goals in ⚙️ Settings.</div>';document.getElementById('doneSection').innerHTML='';updateLiveScore();return;}
   const pending=[],done=[];
-  qs.forEach(q=>{if(ta.answers[q.id]!==undefined)done.push(q);else pending.push(q);});
+  allItems.forEach(q=>{if(ta.answers[q.id]!==undefined)done.push(q);else pending.push(q);});
   const pg={};pending.forEach(q=>{(pg[q.category]=pg[q.category]||[]).push(q);});
   let ph='';
-  if(!pending.length)ph='<div class="empty-state" style="padding:20px;">✅ All done for today!</div>';
-  else{Object.keys(pg).sort().forEach(cat=>{ph+='<div class="category-header">'+cat+'</div>';pg[cat].forEach(q=>{ph+='<div class="q-item"><div class="q-item-top"><label>'+esc(q.text)+'</label><span class="q-weight">⭐'+q.weight+'</span></div>';if(q.type==='yesno')ph+='<div class="yn-toggle"><label class="yn-switch"><input type="checkbox" id="inp_'+q.id+'" onchange="updateYN('+q.id+')"><span class="yn-slider"></span></label><span class="yn-label" id="ynl_'+q.id+'">No</span><button class="save-single-btn" onclick="saveSingle('+q.id+')">Save ✓</button></div>';else ph+='<div class="q-item-input"><input type="number" id="inp_'+q.id+'" placeholder="0" min="0" step="any" oninput="updateProg('+q.id+','+q.target+')"><span class="q-target">/ <strong>'+q.target+'</strong> '+esc(q.uom)+'</span><div class="q-progress-mini"><div class="q-progress-mini-fill" id="prog_'+q.id+'" style="width:0%"></div></div><button class="save-single-btn" onclick="saveSingle('+q.id+')">Save ✓</button></div>';ph+='</div>';});});}
+  if(!pending.length)ph='<div class="empty-state" style="padding:20px;">All done for today! 🎉</div>';
+  else{Object.keys(pg).sort().forEach(cat=>{
+    ph+='<div class="cat-group"><div class="cat-label">'+esc(cat)+'</div>';
+    pg[cat].forEach(q=>{
+      const isGoal=q.isGoalItem;
+      const badge=isGoal?'<span style="font-size:9px;background:#eef1ff;color:#4361ee;padding:2px 6px;border-radius:4px;margin-left:6px;">🎯 Goal</span>':'';
+      const freqBadge=q.frequency&&q.frequency!=='daily'?'<span style="font-size:9px;background:#f0fdf4;color:#16a34a;padding:2px 6px;border-radius:4px;margin-left:4px;">'+q.frequency+'</span>':'';
+      ph+='<div class="q-item"><div class="q-item-header"><span class="q-text">'+esc(q.text)+badge+freqBadge+'</span><span class="q-weight">'+'⭐'.repeat(q.weight)+'</span></div>';
+      if(q.type==='yesno')ph+='<div class="q-item-input"><label class="toggle-row"><input type="checkbox" id="inp_'+q.id+'" class="toggle-cb"><span class="toggle-label">Done</span></label><button class="save-btn" onclick="saveSingle(\''+q.id+'\')">Save ✓</button></div>';
+      else ph+='<div class="q-item-input"><input type="number" id="inp_'+q.id+'" placeholder="0" min="0" step="any" oninput="updateProg(\''+q.id+'\','+q.target+')"><span class="q-target">/ <strong>'+q.target+'</strong> '+esc(q.uom)+'</span><div class="q-progress-mini"><div class="q-progress-mini-fill" id="prog_'+q.id+'" style="width:0%"></div></div><button class="save-btn" onclick="saveSingle(\''+q.id+'\')">Save ✓</button></div>';
+      ph+='</div>';
+    });
+    ph+='</div>';
+  });}
   document.getElementById('pendingList').innerHTML=ph;
-  if(done.length){let dh='<div class="done-section"><div class="done-header">✅ Done ('+done.length+'/'+qs.length+')</div>';done.forEach(q=>{const val=ta.answers[q.id];let display='';if(q.type==='yesno')display=val===1?'Yes ✓':'No ✗';else display=val+' / '+q.target+' '+esc(q.uom);dh+='<div class="done-item"><span class="text">'+esc(q.text)+'</span><span class="done-value">'+display+'</span><button class="undo-btn" onclick="undoSingle('+q.id+')" title="Undo">↩️</button></div>';});dh+='</div>';document.getElementById('doneSection').innerHTML=dh;}else{document.getElementById('doneSection').innerHTML='';}
+  // Done section
+  if(done.length){let dh='<div class="done-group"><div class="done-label">✅ Done ('+done.length+')</div>';done.forEach(q=>{const val=ta.answers[q.id];let display=q.type==='yesno'?(val?'Yes ✓':'No'):(val+' / '+q.target+' '+esc(q.uom));dh+='<div class="done-item"><span class="done-text">'+esc(q.text)+'</span><span class="done-value">'+display+'</span><button class="undo-btn" onclick="undoSingle(\''+q.id+'\')" title="Undo">↩️</button></div>';});dh+='</div>';document.getElementById('doneSection').innerHTML=dh;}else{document.getElementById('doneSection').innerHTML='';}
   updateLiveScore();
 }
+
 function updateYN(id){const i=document.getElementById('inp_'+id),l=document.getElementById('ynl_'+id);if(!i||!l)return;l.textContent=i.checked?'Yes ✓':'No';l.classList.toggle('active',i.checked);}
 function updateProg(id,t){const i=document.getElementById('inp_'+id),p=document.getElementById('prog_'+id);if(!i||!p)return;const v=parseFloat(i.value)||0,pct=Math.min(100,Math.round(v/t*100));p.style.width=pct+'%';p.style.background=pct>=100?'#10b981':pct>=60?'#4361ee':pct>=30?'#f59e0b':'#ef4444';}
-function saveSingle(id){const qs=gQ(),q=qs.find(x=>x.id===id);if(!q)return;const ta=getTodayAnswers();if(q.type==='yesno'){ta.answers[id]=document.getElementById('inp_'+id)?.checked?1:0;}else{const val=parseFloat(document.getElementById('inp_'+id)?.value)||0;if(val===0){alert('Enter a value first');return;}ta.answers[id]=val;}saveTodayAnswers(ta.answers);saveDailyRecord();renderCheckin();updateDashStats();}
-function undoSingle(id){const ta=getTodayAnswers();delete ta.answers[id];saveTodayAnswers(ta.answers);saveDailyRecord();renderCheckin();updateDashStats();}
-function saveDailyRecord(){const qs=gQ(),ta=getTodayAnswers();let ws=0,tw=0;const cs={},cw={};qs.forEach(q=>{tw+=q.weight;cw[q.category]=(cw[q.category]||0)+q.weight;if(ta.answers[q.id]!==undefined){let r=0;if(q.type==='yesno')r=ta.answers[q.id]===1?1:0;else r=Math.min(ta.answers[q.id]/q.target,1);ws+=r*q.weight;cs[q.category]=(cs[q.category]||0)+r*q.weight;}});const score=tw?Math.round(ws/tw*100):0;const cp={};Object.keys(cw).forEach(c=>{cp[c]=Math.round((cs[c]||0)/cw[c]*100);});const d=gD(),t=getToday();const entry={date:t,score,catScores:cp,actuals:ta.answers};const idx=d.findIndex(x=>x.date===t);if(idx>=0)d[idx]=entry;else d.push(entry);sD(d);}
-function updateLiveScore(){const qs=gQ(),ta=getTodayAnswers();if(!qs.length){document.getElementById('liveScore').textContent='0%';document.getElementById('liveCount').textContent='0/0';return;}let ws=0,tw=0,dc=0;qs.forEach(q=>{tw+=q.weight;if(ta.answers[q.id]!==undefined){dc++;let r=q.type==='yesno'?(ta.answers[q.id]===1?1:0):Math.min(ta.answers[q.id]/q.target,1);ws+=r*q.weight;}});const score=tw?Math.round(ws/tw*100):0;const col=scoreColor(score);document.getElementById('liveScore').textContent=score+'%';document.getElementById('liveScore').style.color=col;document.getElementById('liveCount').textContent=dc+'/'+qs.length+' done';document.getElementById('liveProgressFill').style.width=score+'%';document.getElementById('liveProgressFill').style.background=col;}
+function saveSingle(id){
+  const allItems=getAllDueItems();
+  const item=allItems.find(x=>x.id===id||x.id===parseInt(id));
+  if(!item)return;
+  const ta=getTodayAnswers();
+  
+  if(item.type==='yesno'){
+    ta.answers[id]=document.getElementById('inp_'+id)?.checked?1:0;
+  } else {
+    const val=parseFloat(document.getElementById('inp_'+id)?.value)||0;
+    if(val===0){alert('Enter a value first');return;}
+    ta.answers[id]=val;
+  }
+  
+  saveTodayAnswers(ta.answers);
+  
+  // If it's a goal item, also update the goal's achieved value
+  if(item.isGoalItem){
+    const goals=getGoals();
+    const goal=goals.find(g=>g.id===item.goalId);
+    if(goal){
+      if(item.subGoalId){
+        const sg=goal.subGoals.find(s=>s.id===item.subGoalId);
+        if(sg)sg.achieved=ta.answers[id];
+        // Recalculate parent from sub-goals
+        goal.achieved=goal.subGoals.reduce((sum,s)=>sum+s.achieved,0);
+      } else {
+        goal.achieved=ta.answers[id];
+      }
+      goal.history=goal.history||[];
+      goal.history.push({date:getToday(),value:goal.achieved});
+      saveGoals(goals);
+    }
+  }
+  
+  saveDailyRecord();renderCheckin();updateDashStats();
+}
 
-// ===== STATS =====
+function undoSingle(id){
+  const ta=getTodayAnswers();
+  delete ta.answers[id];
+  saveTodayAnswers(ta.answers);
+  saveDailyRecord();renderCheckin();updateDashStats();
+}
+
+function saveDailyRecord(){
+  const allItems=getAllDueItems();
+  const ta=getTodayAnswers();
+  let ws=0,tw=0;const cs={},cw={};
+  allItems.forEach(q=>{
+    tw+=q.weight;
+    cw[q.category]=(cw[q.category]||0)+q.weight;
+    if(ta.answers[q.id]!==undefined){
+      let r=0;
+      if(q.type==='yesno')r=ta.answers[q.id]===1?1:0;
+      else r=Math.min(ta.answers[q.id]/q.target,1);
+      ws+=r*q.weight;
+      cs[q.category]=(cs[q.category]||0)+r*q.weight;
+    }
+  });
+  const score=tw?Math.round(ws/tw*100):0;
+  const cp={};Object.keys(cw).forEach(c=>{cp[c]=Math.round((cs[c]||0)/cw[c]*100);});
+  const d=gD(),t=getToday();
+  const entry={date:t,score,catScores:cp,actuals:ta.answers};
+  const idx=d.findIndex(x=>x.date===t);if(idx>=0)d[idx]=entry;else d.push(entry);sD(d);
+}
+
+function updateLiveScore(){
+  const allItems=getAllDueItems();
+  const ta=getTodayAnswers();
+  if(!allItems.length){document.getElementById('liveScore').textContent='0%';document.getElementById('liveCount').textContent='0/0';return;}
+  let ws=0,tw=0,dc=0;
+  allItems.forEach(q=>{
+    tw+=q.weight;
+    if(ta.answers[q.id]!==undefined){
+      dc++;
+      let r=q.type==='yesno'?(ta.answers[q.id]===1?1:0):Math.min(ta.answers[q.id]/q.target,1);
+      ws+=r*q.weight;
+    }
+  });
+  const score=tw?Math.round(ws/tw*100):0;
+  const col=scoreColor(score);
+  document.getElementById('liveScore').textContent=score+'%';
+  document.getElementById('liveScore').style.color=col;
+  document.getElementById('liveCount').textContent=dc+'/'+allItems.length+' done';
+  document.getElementById('liveProgressFill').style.width=score+'%';
+  document.getElementById('liveProgressFill').style.background=col;
+}
+
+
 function renderStats(){const data=gD(),te=data.find(d=>d.date===getToday()),l7=data.slice(-7);const avg7=l7.length?Math.round(l7.reduce((s,d)=>s+d.score,0)/l7.length):0;let streak=0;const sorted=[...data].sort((a,b)=>b.date.localeCompare(a.date));for(let i=0;i<sorted.length;i++){const d=new Date();d.setDate(d.getDate()-i);if(sorted[i]?.date===d.toISOString().slice(0,10))streak++;else break;}document.getElementById('todayScore').textContent=te?te.score+'%':'—';document.getElementById('avgScore').textContent=avg7?avg7+'%':'—';document.getElementById('streak').textContent=streak;const box=document.getElementById('bigScoreBox'),ds=avg7||(te?te.score:null);if(ds!==null){box.className='big-score-container '+scoreClass(ds);document.getElementById('bigScoreValue').textContent=ds+'%';document.getElementById('bigScoreLabel').textContent=scoreText(ds);document.getElementById('bigScoreSub').textContent='7-day weighted average';box.classList.add('score-animate');setTimeout(()=>box.classList.remove('score-animate'),700);}else{box.className='big-score-container score-none';document.getElementById('bigScoreValue').textContent='—';document.getElementById('bigScoreLabel').textContent='No Data';document.getElementById('bigScoreSub').textContent='Complete your first check-in';}renderSummaryGrid(data);renderGauge(avg7);renderTrend(data);renderRadar(data);renderHistory(data);}
 function renderSummaryGrid(data){const now=new Date(),grid=document.getElementById('summaryGrid');if(!data.length){grid.innerHTML='';return;}const ws=new Date(now);ws.setDate(now.getDate()-now.getDay());const wd=data.filter(d=>d.date>=ws.toISOString().slice(0,10));const wa=wd.length?Math.round(wd.reduce((s,d)=>s+d.score,0)/wd.length):null;const mk=now.toISOString().slice(0,7);const md=data.filter(d=>d.date.startsWith(mk));const ma=md.length?Math.round(md.reduce((s,d)=>s+d.score,0)/md.length):null;const yk=String(now.getFullYear());const yd=data.filter(d=>d.date.startsWith(yk));const ya=yd.length?Math.round(yd.reduce((s,d)=>s+d.score,0)/yd.length):null;const aa=data.length?Math.round(data.reduce((s,d)=>s+d.score,0)/data.length):null;function c(l,s){if(s===null)return'<div class="summary-card"><div class="period-label">'+l+'</div><div class="period-score" style="color:var(--color-text-muted)">—</div></div>';return'<div class="summary-card"><div class="period-label">'+l+'</div><div class="period-score" style="color:'+scoreColor(s)+'">'+s+'%</div><div class="period-status" style="color:'+scoreColor(s)+'">'+scoreText(s)+'</div></div>';}grid.innerHTML=c('This Week',wa)+c('This Month',ma)+c('This Year',ya)+c('All Time',aa);}
 function renderGauge(s){Highcharts.chart('gaugeChart',{chart:{type:'solidgauge',backgroundColor:'transparent'},title:{text:'Life Gauge',style:{fontSize:'15px',fontWeight:'700'}},pane:{startAngle:-90,endAngle:90,background:[{innerRadius:'60%',outerRadius:'100%',shape:'arc',backgroundColor:'#e8e8f0',borderWidth:0}]},yAxis:{min:0,max:100,lineWidth:0,tickWidth:0,minorTickInterval:null,labels:{y:16,style:{fontSize:'12px'}},stops:[[0.4,'#ef4444'],[0.55,'#f59e0b'],[0.6,'#10b981'],[0.8,'#059669']]},series:[{data:[s],dataLabels:{format:'<div style="text-align:center"><span style="font-size:2em;font-weight:800;color:'+scoreColor(s)+'">{y}%</span></div>',borderWidth:0,y:-20},innerRadius:'60%',radius:'100%'}],credits:{enabled:false},tooltip:{enabled:false}});}
@@ -797,6 +900,7 @@ function addGoal(){
   const deadline=document.getElementById('goalDeadline').value;
   const frequency=document.getElementById('goalFrequency').value;
   const category=document.getElementById('goalCategory').value.trim()||'General';
+  const weight=parseInt(document.getElementById('goalWeight').value)||3;
   
   if(!title){alert('Enter a goal title');return;}
   if(!targetValue){alert('Enter a target value');return;}
@@ -821,6 +925,7 @@ function addGoal(){
     deadline:deadline,
     frequency:frequency,
     category:category,
+    weight:weight,
     achieved:0,
     createdAt:new Date().toISOString().slice(0,10),
     subGoals:subGoals,
@@ -980,18 +1085,136 @@ function renderGoalChart(goals){
 
 // ===== SWITCHAB UPDATE FOR GOALS =====
 
+
+// ===== FREQUENCY / DUE DATE LOGIC =====
+function isDueToday(item){
+  const freq=item.frequency||'daily';
+  if(freq==='daily')return true;
+  
+  const created=new Date(item.createdAt||'2026-01-01');
+  const today=new Date(getToday());
+  
+  // Reset time parts for clean comparison
+  created.setHours(0,0,0,0);
+  today.setHours(0,0,0,0);
+  
+  const diffDays=Math.floor((today-created)/(1000*60*60*24));
+  
+  switch(freq){
+    case 'weekly': return diffDays%7===0;
+    case 'monthly': return today.getDate()===created.getDate();
+    case 'quarterly': {
+      const mDiff=(today.getFullYear()-created.getFullYear())*12+(today.getMonth()-created.getMonth());
+      return mDiff%3===0 && today.getDate()===created.getDate();
+    }
+    case 'halfyearly': {
+      const mDiff=(today.getFullYear()-created.getFullYear())*12+(today.getMonth()-created.getMonth());
+      return mDiff%6===0 && today.getDate()===created.getDate();
+    }
+    case 'yearly': {
+      return today.getMonth()===created.getMonth() && today.getDate()===created.getDate();
+    }
+    default: return true;
+  }
+}
+
+// Check if item is due in current period (for showing overdue items until filled)
+function isDueInCurrentPeriod(item){
+  const freq=item.frequency||'daily';
+  if(freq==='daily')return true;
+  
+  const created=new Date(item.createdAt||'2026-01-01');
+  const today=new Date(getToday());
+  created.setHours(0,0,0,0);
+  today.setHours(0,0,0,0);
+  
+  const diffDays=Math.floor((today-created)/(1000*60*60*24));
+  if(diffDays<0)return false;
+  
+  switch(freq){
+    case 'weekly': return diffDays%7<=6; // within current week cycle
+    case 'monthly': {
+      // Due if we're past the due date this month and haven't filled
+      return today.getDate()>=created.getDate();
+    }
+    case 'quarterly': {
+      const mDiff=(today.getFullYear()-created.getFullYear())*12+(today.getMonth()-created.getMonth());
+      return mDiff%3===0 && today.getDate()>=created.getDate();
+    }
+    case 'halfyearly': {
+      const mDiff=(today.getFullYear()-created.getFullYear())*12+(today.getMonth()-created.getMonth());
+      return mDiff%6===0 && today.getDate()>=created.getDate();
+    }
+    case 'yearly': {
+      return today.getMonth()===created.getMonth() && today.getDate()>=created.getDate();
+    }
+    default: return true;
+  }
+}
+
+// Get all items due today: habits + goal sub-goals
+function getAllDueItems(){
+  const habits=gQ().filter(q=>isDueInCurrentPeriod(q)).map(q=>({...q,id:String(q.id)}));
+  const goals=getGoals();
+  const goalItems=[];
+  
+  goals.forEach(g=>{
+    if(g.subGoals&&g.subGoals.length){
+      g.subGoals.forEach(sg=>{
+        if(isDueInCurrentPeriod({frequency:g.frequency,createdAt:sg.deadline?undefined:g.createdAt,...sg})){
+          goalItems.push({
+            id:'goal_'+g.id+'_'+sg.id,
+            text:sg.title,
+            type:'target',
+            target:sg.targetValue,
+            uom:g.unit||'units',
+            category:g.category||'Goals',
+            weight:g.weight||3,
+            frequency:g.frequency,
+            createdAt:g.createdAt,
+            isGoalItem:true,
+            goalId:g.id,
+            subGoalId:sg.id
+          });
+        }
+      });
+    } else {
+      // Goal without sub-goals - show the goal itself as a target item
+      if(isDueInCurrentPeriod(g)){
+        goalItems.push({
+          id:'goal_'+g.id,
+          text:g.title,
+          type:'target',
+          target:g.targetValue,
+          uom:g.unit||'units',
+          category:g.category||'Goals',
+          weight:g.weight||3,
+          frequency:g.frequency,
+          createdAt:g.createdAt,
+          isGoalItem:true,
+          goalId:g.id,
+          subGoalId:null
+        });
+      }
+    }
+  });
+  
+  return [...habits, ...goalItems];
+}
+
 // ===== DASHBOARD STATS (check-in page) =====
 function updateDashStats(){
-  const qs=gQ(),ta=getTodayAnswers();
-  if(!qs.length){
+  const allItems=getAllDueItems();
+  const ta=getTodayAnswers();
+  if(!allItems.length){
     const el=document.getElementById('dashScoreToday');if(el)el.textContent='0%';
     const dc=document.getElementById('dashDoneCount');if(dc)dc.textContent='0';
     const pc=document.getElementById('dashPendingCount');if(pc)pc.textContent='0';
-    const chart=document.getElementById('dashTargetChart');if(chart)chart.innerHTML='<div style="text-align:center;color:#64748b;font-size:11px;padding:8px;">Add questions in Settings to see progress</div>';
+    const chart=document.getElementById('dashTargetChart');if(chart)chart.innerHTML='<div style="text-align:center;color:#64748b;font-size:11px;padding:8px;">Add habits or goals in Settings to see progress</div>';
     return;
   }
   let ws=0,tw=0,doneCount=0;
-  qs.forEach(q=>{
+  allItems.forEach(q=>{
     tw+=q.weight;
     if(ta.answers[q.id]!==undefined){
       doneCount++;
@@ -1003,10 +1226,11 @@ function updateDashStats(){
   const el=document.getElementById('dashScoreToday');
   if(el){el.textContent=score+'%';el.className='dash-stat-value'+(score>=60?' score-up':score<40?' score-down':'');}
   const dc=document.getElementById('dashDoneCount');if(dc)dc.textContent=doneCount;
-  const pc=document.getElementById('dashPendingCount');if(pc)pc.textContent=(qs.length-doneCount);
-  // Render target deviation bars
-  renderDashTargets(qs,ta);
+  const pc=document.getElementById('dashPendingCount');if(pc)pc.textContent=(allItems.length-doneCount);
+  // Render target deviation bars (show all target-type items)
+  renderDashTargets(allItems,ta);
 }
+
 
 function renderDashTargets(qs,ta){
   const chart=document.getElementById('dashTargetChart');if(!chart)return;
@@ -1030,13 +1254,14 @@ function renderDashTargets(qs,ta){
 }
 
 // ===== INIT =====
+try{
 document.getElementById('todayDate').textContent='📅 '+new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short',year:'numeric'});
 renderCheckin();renderSettings();updateDashStats();renderGoals();
 updateReverseClock();
 setInterval(updateReverseClock,1000);
-// Update timer display every 10s if running
 setInterval(()=>{if(Object.keys(activeTimers).length)renderTimerTab();},10000);
+}catch(e){}
 </script>
-<script>if('serviceWorker' in navigator && location.protocol==='https:'){navigator.serviceWorker.register('sw.js');}</script>
+<script>if("serviceWorker" in navigator&&location.protocol==="https:"){navigator.serviceWorker.register("sw.js");}</script>
 </body>
 </html>

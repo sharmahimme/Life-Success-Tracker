@@ -251,6 +251,53 @@
   .timer-running { animation: timer-pulse 1.5s infinite; border: 2px solid var(--color-error); }
 
   .timer-add-card { background: var(--color-bg-secondary); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow); }
+
+  /* Goals tab */
+  .goal-card { background: linear-gradient(135deg, #f8fafc, #f1f5f9); border: 1px solid var(--color-border-light); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 12px; }
+  .goal-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .goal-progress-ring { width: 52px; height: 52px; position: relative; }
+  .goal-progress-ring svg { transform: rotate(-90deg); }
+  .goal-progress-ring .ring-bg { fill: none; stroke: #e2e8f0; stroke-width: 5; }
+  .goal-progress-ring .ring-fill { fill: none; stroke: var(--color-primary); stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 0.8s ease; }
+  .goal-progress-ring .ring-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--color-text); }
+  .goal-info { flex: 1; min-width: 0; }
+  .goal-title { font-size: 15px; font-weight: 700; color: var(--color-text); margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .goal-meta { font-size: 12px; color: var(--color-text-muted); }
+  .goal-deadline { font-size: 11px; color: var(--color-warning); font-weight: 600; }
+  .goal-stats { display: flex; gap: 12px; margin: 10px 0; }
+  .goal-stat { font-size: 12px; color: var(--color-text-secondary); }
+  .goal-stat strong { color: var(--color-text); }
+  .subgoal-bar { margin: 6px 0; }
+  .subgoal-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--color-text-secondary); margin-bottom: 3px; }
+  .subgoal-track { height: 8px; border-radius: 4px; background: #e2e8f0; overflow: hidden; }
+  .subgoal-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+  .subgoal-fill.green { background: linear-gradient(90deg, #10b981, #34d399); }
+  .subgoal-fill.blue { background: linear-gradient(90deg, #4361ee, #818cf8); }
+  .subgoal-fill.yellow { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .subgoal-fill.red { background: linear-gradient(90deg, #ef4444, #f87171); }
+  .goal-expand { font-size: 12px; color: var(--color-primary); cursor: pointer; font-weight: 600; margin-top: 8px; }
+  .goal-actions { display: flex; gap: 8px; margin-top: 10px; }
+  .goal-actions button { font-size: 12px; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--color-border); background: white; cursor: pointer; font-weight: 500; }
+  .goal-actions button.update-btn { background: var(--color-primary); color: white; border: none; }
+  
+  /* Sub-goal input fields in settings */
+  .subgoal-input-row { display: flex; gap: 6px; margin-bottom: 8px; align-items: center; }
+  .subgoal-input-row input { font-size: 13px; padding: 8px 10px; border: 1px solid var(--color-border); border-radius: 8px; }
+  .subgoal-input-row .sg-title { flex: 2; }
+  .subgoal-input-row .sg-target { flex: 1; max-width: 80px; }
+  .subgoal-input-row .sg-deadline { flex: 1; }
+  .subgoal-remove { width: 28px; height: 28px; border-radius: 50%; border: none; background: var(--color-error); color: white; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  
+  /* Update progress modal */
+  .goal-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .goal-modal { background: white; border-radius: var(--radius); padding: 24px; width: 100%; max-width: 360px; }
+  .goal-modal h3 { font-size: 16px; margin-bottom: 14px; }
+  .goal-modal input { width: 100%; padding: 10px 12px; border: 1px solid var(--color-border); border-radius: 8px; font-size: 15px; margin-bottom: 12px; }
+  .goal-modal-btns { display: flex; gap: 8px; }
+  .goal-modal-btns button { flex: 1; padding: 10px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; }
+  .goal-modal-btns .cancel { background: #f1f5f9; color: var(--color-text); }
+  .goal-modal-btns .save { background: var(--color-primary); color: white; }
+
 </style>
 </head>
 <body>
@@ -319,18 +366,18 @@
   </div>
 
   <!-- CATEGORY -->
-  <div class="tab-content" id="tab-category">
-    <div class="period-selector">
-      <button class="period-btn active" onclick="setCatPeriod(7,this)">7D</button>
-      <button class="period-btn" onclick="setCatPeriod(14,this)">14D</button>
-      <button class="period-btn" onclick="setCatPeriod(30,this)">30D</button>
-      <button class="period-btn" onclick="setCatPeriod(90,this)">90D</button>
-      <button class="period-btn" onclick="setCatPeriod(365,this)">1Y</button>
-      <button class="period-btn" onclick="setCatPeriod(9999,this)">All</button>
+  <div class="tab-content" id="tab-goals">
+    <div class="card">
+      <div class="card-title">🎯 Long-term Goals</div>
+      <div id="goalsListContainer">
+        <div class="empty-state">No goals yet. Add one in ⚙️ Settings.</div>
+      </div>
+      <button class="btn-primary" style="width:100%;margin-top:12px;" onclick="switchTab('settings',document.querySelectorAll('.nav-item')[5]);setTimeout(()=>showAddForm('goal'),100)">+ Add New Goal</button>
     </div>
-    <div id="catReportList"></div>
-    <div class="chart-box"><div id="catBarChart" style="height:280px;"></div></div>
-    <div class="chart-box"><div id="catTrendChart" style="height:280px;"></div></div>
+    <div class="card">
+      <div class="card-title">📈 Goal Trajectory</div>
+      <div id="goalTrajectoryChart" style="height:300px;"></div>
+    </div>
   </div>
 
   <!-- HISTORY TAB -->
@@ -391,21 +438,57 @@
       📌 <strong>Save one at a time!</strong> Answer any question whenever you want — it moves to "Done" and saves immediately. Come back later to fill the rest. Next day = fresh start.
     </div>
     <div class="card">
-      <div class="card-title">➕ Add Question</div>
-      <div class="setting-row"><input type="text" id="newQuestion" placeholder="Question..."></div>
-      <div class="type-selector">
-        <div class="type-option active" id="typeYN" onclick="selectType('yesno')">✅ Yes/No</div>
-        <div class="type-option" id="typeTarget" onclick="selectType('target')">🎯 Target</div>
+      <div class="card-title">➕ Add New</div>
+      <!-- Step 1: Habit or Goal -->
+      <div class="type-selector" id="itemTypeSelector">
+        <div class="type-option active" id="typeHabit" onclick="selectItemType('habit')">🔄 Habit</div>
+        <div class="type-option" id="typeGoal" onclick="selectItemType('goal')">🎯 Goal</div>
       </div>
-      <div class="target-fields" id="targetFields">
-        <input type="number" id="newTarget" placeholder="Target" style="max-width:80px;" min="1">
-        <input type="text" id="newUOM" placeholder="Unit (glasses, km)" style="flex:1;">
+
+      <!-- HABIT FORM -->
+      <div id="habitForm">
+        <div class="setting-row"><input type="text" id="newQuestion" placeholder="Habit / Question..."></div>
+        <div class="type-selector">
+          <div class="type-option active" id="typeYN" onclick="selectType('yesno')">✅ Yes/No</div>
+          <div class="type-option" id="typeTarget" onclick="selectType('target')">🎯 Target</div>
+        </div>
+        <div class="target-fields" id="targetFields">
+          <input type="number" id="newTarget" placeholder="Target" style="max-width:80px;" min="1">
+          <input type="text" id="newUOM" placeholder="Unit (glasses, km)" style="flex:1;">
+        </div>
+        <div class="setting-row">
+          <input type="text" id="newCategory" placeholder="Category">
+          <select id="newWeight"><option value="1">⭐1</option><option value="2">⭐2</option><option value="3" selected>⭐3</option><option value="4">⭐4</option><option value="5">⭐5</option></select>
+        </div>
+        <div class="setting-row">
+          <select id="newFrequency" style="flex:1;"><option value="daily">📅 Daily</option><option value="weekly">📆 Weekly</option><option value="monthly">🗓️ Monthly</option><option value="quarterly">📊 Quarterly</option><option value="halfyearly">📈 Half-Yearly</option><option value="yearly">🎆 Yearly</option></select>
+        </div>
+        <button class="btn btn-primary" onclick="addQuestion()">Add Habit</button>
       </div>
-      <div class="setting-row">
-        <input type="text" id="newCategory" placeholder="Category">
-        <select id="newWeight"><option value="1">⭐1</option><option value="2">⭐2</option><option value="3" selected>⭐3</option><option value="4">⭐4</option><option value="5">⭐5</option></select>
+
+      <!-- GOAL FORM -->
+      <div id="goalForm" style="display:none;">
+        <div class="setting-row"><input type="text" id="goalTitle" placeholder="Goal title (e.g., Generate ₹1Cr wealth)"></div>
+        <div class="setting-row" style="gap:8px;">
+          <input type="number" id="goalTargetValue" placeholder="Target value" style="flex:1;" min="1">
+          <input type="text" id="goalUnit" placeholder="Unit (₹, kg, hrs)" style="max-width:100px;">
+        </div>
+        <div class="setting-row" style="gap:8px;">
+          <label style="font-size:13px;color:var(--color-text-secondary);min-width:60px;">Deadline:</label>
+          <input type="date" id="goalDeadline" style="flex:1;">
+        </div>
+        <div class="setting-row">
+          <select id="goalFrequency" style="flex:1;"><option value="monthly">🗓️ Monthly tracking</option><option value="quarterly">📊 Quarterly tracking</option><option value="halfyearly">📈 Half-Yearly tracking</option><option value="yearly">🎆 Yearly tracking</option><option value="weekly">📆 Weekly tracking</option><option value="daily">📅 Daily tracking</option></select>
+        </div>
+        <div class="setting-row"><input type="text" id="goalCategory" placeholder="Category (Finance, Fitness, Career...)"></div>
+        
+        <!-- Sub-goals section -->
+        <div style="margin:12px 0 8px;font-size:14px;font-weight:600;color:var(--color-text);">Sub-goals <span style="font-weight:400;color:var(--color-text-muted);font-size:12px;">(break it down)</span></div>
+        <div id="subGoalsList"></div>
+        <button class="btn" style="width:100%;margin:8px 0;background:var(--color-primary-light);color:var(--color-primary);font-weight:600;border:1px dashed var(--color-primary);" onclick="addSubGoalField()">+ Add Sub-goal</button>
+        
+        <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="addGoal()">Create Goal</button>
       </div>
-      <button class="btn btn-primary" onclick="addQuestion()">Add Question</button>
     </div>
     <div class="card">
       <div class="card-title">📝 Questions <span style="font-weight:400;color:var(--color-text-muted);font-size:13px;margin-left:auto;" id="qCount"></span></div>
@@ -428,7 +511,7 @@
 <div class="bottom-nav">
   <button class="nav-item active" onclick="switchTab('checkin',this)"><span class="icon">✏️</span><span class="label">Check-in</span></button>
   <button class="nav-item" onclick="switchTab('stats',this)"><span class="icon">📊</span><span class="label">Overview</span></button>
-  <button class="nav-item" onclick="switchTab('category',this)"><span class="icon">📂</span><span class="label">Category</span></button>
+  <button class="nav-item" onclick="switchTab('goals',this)"><span class="icon">🎯</span><span class="label">Goals</span></button>
   <button class="nav-item" onclick="switchTab('history',this)"><span class="icon">📅</span><span class="label">History</span></button>
   <button class="nav-item" onclick="switchTab('timer',this)"><span class="icon">⏱️</span><span class="label">Timer</span></button>
   <button class="nav-item" onclick="switchTab('settings',this)"><span class="icon">⚙️</span><span class="label">Settings</span></button>
@@ -470,11 +553,11 @@ function saveTodayAnswers(ans){localStorage.setItem(TDK,JSON.stringify({date:get
 
 // ===== TAB SWITCHING =====
 function switchTab(n,el){
-  const tabs=['checkin','stats','category','history','timer','settings'];
+  const tabs=['checkin','stats','goals','history','timer','settings'];
   document.querySelectorAll('.tab-content').forEach((t,i)=>t.classList.toggle('active',tabs[i]===n));
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
   if(el)el.classList.add('active');
-  if(n==='stats')renderStats();if(n==='settings')renderSettings();if(n==='category')renderCatReport();if(n==='history')renderHistoryTab();if(n==='timer')renderTimerTab();
+  if(n==='stats')renderStats();if(n==='settings')renderSettings();if(n==='goals')renderGoals();if(n==='history')renderHistoryTab();if(n==='timer')renderTimerTab();
   document.querySelector('.main-content').scrollTop=0;
 }
 function selectType(t){selectedType=t;document.getElementById('typeYN').classList.toggle('active',t==='yesno');document.getElementById('typeTarget').classList.toggle('active',t==='target');document.getElementById('targetFields').classList.toggle('show',t==='target');}
@@ -675,9 +758,227 @@ function updateReverseClock(){
 // ===== EXPORT/IMPORT =====
 function exportExcel(){const data=gD(),qs=gQ();if(!data.length){alert('No data');return;}const cats=[...new Set(qs.map(q=>q.category))].sort();let csv='Date,Overall Score,Status';cats.forEach(c=>{csv+=','+c+'%';});qs.forEach(q=>{csv+=','+(q.type==='yesno'?q.text+' (Y/N)':q.text+' ('+q.target+' '+q.uom+')');});csv+='\n';data.forEach(d=>{csv+=d.date+','+d.score+','+scoreText(d.score).replace(/[^\w\s]/g,'').trim();cats.forEach(c=>{csv+=','+(d.catScores&&d.catScores[c]!==undefined?d.catScores[c]:'');});qs.forEach(q=>{const v=d.actuals?d.actuals[q.id]:'';csv+=','+(q.type==='yesno'?(v===1?'Yes':v===0?'No':''):v||'');});csv+='\n';});csv+='\n--- SUMMARY ---\nPeriod,Score,Status,Days\n';const now=new Date();const w7=data.filter(d=>d.date>=new Date(now-7*86400000).toISOString().slice(0,10));if(w7.length)csv+='Last 7 Days,'+Math.round(w7.reduce((s,d)=>s+d.score,0)/w7.length)+'%,,'+w7.length+'\n';const mm=data.filter(d=>d.date.startsWith(now.toISOString().slice(0,7)));if(mm.length)csv+='This Month,'+Math.round(mm.reduce((s,d)=>s+d.score,0)/mm.length)+'%,,'+mm.length+'\n';const yy=data.filter(d=>d.date.startsWith(String(now.getFullYear())));if(yy.length)csv+='This Year,'+Math.round(yy.reduce((s,d)=>s+d.score,0)/yy.length)+'%,,'+yy.length+'\n';csv+='All Time,'+Math.round(data.reduce((s,d)=>s+d.score,0)/data.length)+'%,,'+data.length+'\n';const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Life_Tracker_'+getToday()+'.csv';a.click();}
 function exportJSON(){const p={questions:gQ(),data:gD(),todayAnswers:getTodayAnswers(),timeTargets:getTimeTargets(),timeLog:getTimeLog(),exported:new Date().toISOString(),version:'v7'};const b=new Blob([JSON.stringify(p,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='life_tracker_backup_'+getToday()+'.json';a.click();}
-function importBackup(){const i=document.createElement('input');i.type='file';i.accept='.json,.csv';i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{if(f.name.endsWith('.json')){const p=JSON.parse(ev.target.result);if(p.questions)sQ(p.questions);if(p.data)sD(p.data);if(p.todayAnswers)localStorage.setItem(TDK,JSON.stringify(p.todayAnswers));if(p.timeTargets)setTimeTargets(p.timeTargets);if(p.timeLog)localStorage.setItem(TLK,JSON.stringify(p.timeLog));}else{const lines=ev.target.result.split('\n'),data=gD();for(let i=1;i<lines.length;i++){const cols=lines[i].split(',');if(cols.length<2||!cols[0].match(/^\d{4}-\d{2}-\d{2}$/))continue;const date=cols[0],score=parseInt(cols[1]);if(!isNaN(score)&&!data.find(d=>d.date===date))data.push({date,score,catScores:{},actuals:{}});}sD(data);}renderCheckin();renderSettings();updateDashStats();renderTimerTab();alert('✅ Imported!');}catch(err){alert('❌ Invalid file');}};r.readAsText(f);};i.click();}
-function clearAll(){if(!confirm('⚠️ Delete ALL data?'))return;localStorage.removeItem(DK);localStorage.removeItem(QK);localStorage.removeItem(TDK);localStorage.removeItem(TTK);localStorage.removeItem(TLK);renderCheckin();renderSettings();updateDashStats();renderTimerTab();}
+function importBackup(){const i=document.createElement('input');i.type='file';i.accept='.json,.csv';i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{if(f.name.endsWith('.json')){const p=JSON.parse(ev.target.result);if(p.questions)sQ(p.questions);if(p.data)sD(p.data);if(p.todayAnswers)localStorage.setItem(TDK,JSON.stringify(p.todayAnswers));if(p.timeTargets)setTimeTargets(p.timeTargets);if(p.timeLog)localStorage.setItem(TLK,JSON.stringify(p.timeLog));}else{const lines=ev.target.result.split('\n'),data=gD();for(let i=1;i<lines.length;i++){const cols=lines[i].split(',');if(cols.length<2||!cols[0].match(/^\d{4}-\d{2}-\d{2}$/))continue;const date=cols[0],score=parseInt(cols[1]);if(!isNaN(score)&&!data.find(d=>d.date===date))data.push({date,score,catScores:{},actuals:{}});}sD(data);}renderCheckin();renderSettings();updateDashStats();renderGoals();renderTimerTab();alert('✅ Imported!');}catch(err){alert('❌ Invalid file');}};r.readAsText(f);};i.click();}
+function clearAll(){if(!confirm('⚠️ Delete ALL data?'))return;localStorage.removeItem(DK);localStorage.removeItem(QK);localStorage.removeItem(TDK);localStorage.removeItem(TTK);localStorage.removeItem(TLK);renderCheckin();renderSettings();updateDashStats();renderGoals();renderTimerTab();}
 
+
+
+// ===== GOALS SYSTEM =====
+const GK='life_tracker_goals_v7';
+function getGoals(){try{return JSON.parse(localStorage.getItem(GK))||[];}catch(e){return[];}}
+function saveGoals(goals){localStorage.setItem(GK,JSON.stringify(goals));}
+
+function selectItemType(type){
+  document.getElementById('typeHabit').classList.toggle('active',type==='habit');
+  document.getElementById('typeGoal').classList.toggle('active',type==='goal');
+  document.getElementById('habitForm').style.display=type==='habit'?'block':'none';
+  document.getElementById('goalForm').style.display=type==='goal'?'block':'none';
+}
+
+function showAddForm(type){
+  if(type==='goal')selectItemType('goal');
+}
+
+let subGoalCount=0;
+function addSubGoalField(){
+  subGoalCount++;
+  const container=document.getElementById('subGoalsList');
+  const div=document.createElement('div');
+  div.className='subgoal-input-row';
+  div.id='sg_row_'+subGoalCount;
+  div.innerHTML='<input class="sg-title" type="text" placeholder="Sub-goal title"><input class="sg-target" type="number" placeholder="Target" min="1"><input class="sg-deadline" type="date"><button class="subgoal-remove" onclick="this.parentElement.remove()">×</button>';
+  container.appendChild(div);
+}
+
+function addGoal(){
+  const title=document.getElementById('goalTitle').value.trim();
+  const targetValue=parseFloat(document.getElementById('goalTargetValue').value)||0;
+  const unit=document.getElementById('goalUnit').value.trim();
+  const deadline=document.getElementById('goalDeadline').value;
+  const frequency=document.getElementById('goalFrequency').value;
+  const category=document.getElementById('goalCategory').value.trim()||'General';
+  
+  if(!title){alert('Enter a goal title');return;}
+  if(!targetValue){alert('Enter a target value');return;}
+  if(!deadline){alert('Set a deadline');return;}
+  
+  // Collect sub-goals
+  const subGoals=[];
+  document.querySelectorAll('#subGoalsList .subgoal-input-row').forEach((row,i)=>{
+    const sg_title=row.querySelector('.sg-title').value.trim();
+    const sg_target=parseFloat(row.querySelector('.sg-target').value)||0;
+    const sg_deadline=row.querySelector('.sg-deadline').value;
+    if(sg_title&&sg_target){
+      subGoals.push({id:Date.now()+i,title:sg_title,targetValue:sg_target,achieved:0,deadline:sg_deadline||deadline});
+    }
+  });
+  
+  const goal={
+    id:Date.now(),
+    title:title,
+    targetValue:targetValue,
+    unit:unit||'units',
+    deadline:deadline,
+    frequency:frequency,
+    category:category,
+    achieved:0,
+    createdAt:new Date().toISOString().slice(0,10),
+    subGoals:subGoals,
+    history:[] // [{date,value}]
+  };
+  
+  const goals=getGoals();
+  goals.push(goal);
+  saveGoals(goals);
+  
+  // Reset form
+  document.getElementById('goalTitle').value='';
+  document.getElementById('goalTargetValue').value='';
+  document.getElementById('goalUnit').value='';
+  document.getElementById('goalDeadline').value='';
+  document.getElementById('goalCategory').value='';
+  document.getElementById('subGoalsList').innerHTML='';
+  subGoalCount=0;
+  
+  alert('Goal created! 🎯');
+  renderGoals();
+}
+
+function renderGoals(){
+  const goals=getGoals();
+  const container=document.getElementById('goalsListContainer');
+  if(!container)return;
+  if(!goals.length){container.innerHTML='<div class="empty-state">No goals yet. Add one below or in ⚙️ Settings.</div>';renderGoalChart([]);return;}
+  
+  let html='';
+  goals.forEach(g=>{
+    const pct=Math.min(100,Math.round((g.achieved/g.targetValue)*100));
+    const circumference=2*Math.PI*20;
+    const offset=circumference-(pct/100)*circumference;
+    const daysLeft=Math.max(0,Math.ceil((new Date(g.deadline)-new Date())/(1000*60*60*24)));
+    const ringColor=pct>=100?'#10b981':pct>=60?'#4361ee':pct>=30?'#f59e0b':'#ef4444';
+    
+    html+='<div class="goal-card">';
+    html+='<div class="goal-header">';
+    html+='<div class="goal-progress-ring"><svg width="52" height="52"><circle class="ring-bg" cx="26" cy="26" r="20"/><circle class="ring-fill" cx="26" cy="26" r="20" style="stroke:'+ringColor+';stroke-dasharray:'+circumference+';stroke-dashoffset:'+offset+'"/></svg><div class="ring-text">'+pct+'%</div></div>';
+    html+='<div class="goal-info"><div class="goal-title">'+esc(g.title)+'</div><div class="goal-meta">'+formatNum(g.achieved)+' / '+formatNum(g.targetValue)+' '+esc(g.unit)+'</div></div>';
+    html+='</div>';
+    html+='<div class="goal-stats"><span class="goal-stat">🏁 <strong>'+formatNum(g.targetValue-g.achieved)+'</strong> remaining</span><span class="goal-deadline">⏰ '+daysLeft+' days left</span></div>';
+    
+    // Sub-goals
+    if(g.subGoals&&g.subGoals.length){
+      html+='<div style="margin-top:8px;">';
+      g.subGoals.forEach((sg,i)=>{
+        const sgPct=Math.min(100,Math.round((sg.achieved/sg.targetValue)*100));
+        const col=sgPct>=100?'green':sgPct>=60?'blue':sgPct>=30?'yellow':'red';
+        html+='<div class="subgoal-bar"><div class="subgoal-label"><span>'+esc(sg.title)+'</span><span>'+formatNum(sg.achieved)+'/'+formatNum(sg.targetValue)+' ('+sgPct+'%)</span></div><div class="subgoal-track"><div class="subgoal-fill '+col+'" style="width:'+sgPct+'%"></div></div></div>';
+      });
+      html+='</div>';
+    }
+    
+    html+='<div class="goal-actions"><button class="update-btn" onclick="showUpdateGoal('+g.id+')">📝 Update Progress</button><button onclick="deleteGoal('+g.id+')">🗑️ Delete</button></div>';
+    html+='</div>';
+  });
+  container.innerHTML=html;
+  renderGoalChart(goals);
+}
+
+function formatNum(n){
+  if(n>=10000000)return (n/10000000).toFixed(1)+'Cr';
+  if(n>=100000)return (n/100000).toFixed(1)+'L';
+  if(n>=1000)return (n/1000).toFixed(1)+'K';
+  return n.toString();
+}
+
+function showUpdateGoal(goalId){
+  const goals=getGoals();
+  const g=goals.find(x=>x.id===goalId);
+  if(!g)return;
+  
+  let html='<div class="goal-modal-overlay" id="goalModal" onclick="if(event.target===this)this.remove()">';
+  html+='<div class="goal-modal">';
+  html+='<h3>Update: '+esc(g.title)+'</h3>';
+  html+='<label style="font-size:12px;color:var(--color-text-muted);">Current: '+formatNum(g.achieved)+' / '+formatNum(g.targetValue)+' '+esc(g.unit)+'</label>';
+  html+='<input type="number" id="goalUpdateValue" placeholder="New total achieved value" value="'+g.achieved+'">';
+  
+  if(g.subGoals&&g.subGoals.length){
+    html+='<div style="font-size:13px;font-weight:600;margin:8px 0 6px;">Sub-goals:</div>';
+    g.subGoals.forEach((sg,i)=>{
+      html+='<div style="display:flex;gap:6px;align-items:center;margin-bottom:6px;"><span style="font-size:12px;flex:1;">'+esc(sg.title)+'</span><input type="number" id="sgUpdate_'+i+'" value="'+sg.achieved+'" style="width:80px;padding:6px 8px;border:1px solid var(--color-border);border-radius:6px;font-size:13px;"></div>';
+    });
+  }
+  
+  html+='<div class="goal-modal-btns"><button class="cancel" onclick="document.getElementById(\'goalModal\').remove()">Cancel</button><button class="save" onclick="saveGoalUpdate('+goalId+')">Save</button></div>';
+  html+='</div></div>';
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+
+function saveGoalUpdate(goalId){
+  const goals=getGoals();
+  const g=goals.find(x=>x.id===goalId);
+  if(!g)return;
+  
+  const newVal=parseFloat(document.getElementById('goalUpdateValue').value)||0;
+  g.achieved=newVal;
+  
+  // Update sub-goals
+  if(g.subGoals&&g.subGoals.length){
+    let totalFromSub=0;
+    g.subGoals.forEach((sg,i)=>{
+      const sgVal=parseFloat(document.getElementById('sgUpdate_'+i)?.value)||0;
+      sg.achieved=sgVal;
+      totalFromSub+=sgVal;
+    });
+    // If sub-goals are filled, auto-calculate parent
+    if(totalFromSub>0)g.achieved=totalFromSub;
+  }
+  
+  // Add to history
+  g.history=g.history||[];
+  g.history.push({date:new Date().toISOString().slice(0,10),value:g.achieved});
+  
+  saveGoals(goals);
+  document.getElementById('goalModal').remove();
+  renderGoals();
+}
+
+function deleteGoal(goalId){
+  if(!confirm('Delete this goal?'))return;
+  let goals=getGoals();
+  goals=goals.filter(x=>x.id!==goalId);
+  saveGoals(goals);
+  renderGoals();
+}
+
+function renderGoalChart(goals){
+  const chartDiv=document.getElementById('goalTrajectoryChart');
+  if(!chartDiv||typeof Highcharts==='undefined')return;
+  if(!goals.length){chartDiv.innerHTML='<div class="empty-state" style="padding:40px;">Add goals to see trajectory chart</div>';return;}
+  
+  // Show trajectory for each goal: expected pace vs actual
+  const series=[];
+  goals.forEach((g,i)=>{
+    const start=new Date(g.createdAt).getTime();
+    const end=new Date(g.deadline).getTime();
+    const now=Date.now();
+    
+    // Expected pace line
+    series.push({name:g.title+' (Expected)',type:'line',dashStyle:'Dash',color:['#4361ee','#10b981','#f59e0b','#ef4444'][i%4],data:[[start,0],[end,g.targetValue]],marker:{enabled:false}});
+    
+    // Actual progress
+    const actualData=[[start,0]];
+    if(g.history&&g.history.length){
+      g.history.forEach(h=>{actualData.push([new Date(h.date).getTime(),h.value]);});
+    } else {
+      actualData.push([now,g.achieved]);
+    }
+    series.push({name:g.title+' (Actual)',type:'area',color:['#4361ee','#10b981','#f59e0b','#ef4444'][i%4],fillOpacity:0.1,data:actualData,marker:{radius:3}});
+  });
+  
+  Highcharts.chart(chartDiv,{chart:{backgroundColor:'transparent',height:280},title:{text:null},xAxis:{type:'datetime',labels:{style:{fontSize:'10px'}}},yAxis:{title:{text:null},labels:{style:{fontSize:'10px'}}},legend:{enabled:true,itemStyle:{fontSize:'10px'}},series:series,credits:{enabled:false},tooltip:{shared:true}});
+}
+
+// ===== SWITCHAB UPDATE FOR GOALS =====
 
 // ===== DASHBOARD STATS (check-in page) =====
 function updateDashStats(){
@@ -730,7 +1031,7 @@ function renderDashTargets(qs,ta){
 
 // ===== INIT =====
 document.getElementById('todayDate').textContent='📅 '+new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short',year:'numeric'});
-renderCheckin();renderSettings();updateDashStats();
+renderCheckin();renderSettings();updateDashStats();renderGoals();
 updateReverseClock();
 setInterval(updateReverseClock,1000);
 // Update timer display every 10s if running

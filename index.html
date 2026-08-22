@@ -134,7 +134,7 @@
   .setting-row input:focus { border-color: var(--color-primary); outline: none; background: white; }
   .setting-row select { padding: 12px; border: 2px solid var(--color-border-light); border-radius: var(--radius-sm); font-size: 14px; background: var(--color-bg); }
 
-  .type-selector { display: flex; gap: 8px; margin-bottom: 10px; }
+  .type-selector { display: flex; gap: 8px; margin-bottom: 8px; }
   .type-option { flex: 1; padding: 12px; border: 2px solid var(--color-border-light); border-radius: var(--radius-sm); text-align: center; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.2s; }
   .type-option.active { border-color: var(--color-primary); background: var(--color-primary-light); color: var(--color-primary); }
   .target-fields { display: none; }
@@ -195,7 +195,7 @@
   .checkin-dashboard { background: linear-gradient(160deg, rgba(26,10,46,0.8), rgba(13,27,42,0.7)); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.25); position: relative; overflow: hidden; border: 1px solid rgba(255,150,100,0.08); }
   
   /* Sunset Sky Clock */
-  .sunset-clock { position: relative; height: 145px; border-radius: 14px; overflow: hidden; background: linear-gradient(180deg, #020617, #0c1a3d, #0a1628); border: 1px solid rgba(6,182,212,0.12); margin-bottom: 10px; }
+  .sunset-clock { position: relative; height: 130px; border-radius: 14px; overflow: hidden; background: linear-gradient(180deg, #020617, #0c1a3d, #0a1628); border: 1px solid rgba(6,182,212,0.12); margin-bottom: 10px; }
   .sunset-sky { position: absolute; inset: 0; background: transparent; transition: background 2s ease; }
   .sunset-sun { position: absolute; top: 18%; left: 60%; width: 28px; height: 28px; background: radial-gradient(circle, rgba(255,200,100,0.9), rgba(255,180,50,0.5), transparent 70%); border-radius: 50%; animation: sunFloat 6s ease-in-out infinite; box-shadow: 0 0 20px rgba(255,180,50,0.4), 0 0 40px rgba(255,140,30,0.2); }
   @keyframes sunFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
@@ -492,27 +492,210 @@
   
 
   /* Full Furnace Score Display */
-  .furnace-score { position: relative; height: 120px; border-radius: var(--radius-sm); background: #0a0200; border: 1px solid rgba(251,146,60,0.15); overflow: hidden; margin-bottom: 12px; }
-  .furnace-fire { position: absolute; bottom: 0; left: 0; right: 0; height: 0%; overflow: hidden; transition: height 0.8s ease, filter 0.8s ease; }
-  .furnace-fire .fire-l1 { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(220,38,38,0.9) 0%, rgba(234,88,12,0.7) 40%, rgba(251,191,36,0.4) 70%, transparent 100%); animation: furnace-pulse1 1.2s ease-in-out infinite alternate; }
-  .furnace-fire .fire-l2 { position: absolute; inset: 0; background: radial-gradient(ellipse 30% 50% at 20% 80%, rgba(251,191,36,0.6), transparent), radial-gradient(ellipse 25% 60% at 50% 70%, rgba(245,158,11,0.5), transparent), radial-gradient(ellipse 30% 55% at 80% 85%, rgba(251,191,36,0.5), transparent); animation: furnace-dance 0.8s ease-in-out infinite alternate; }
-  .furnace-fire .fire-l3 { position: absolute; inset: 0; background: radial-gradient(ellipse 15% 40% at 15% 60%, rgba(254,240,138,0.3), transparent), radial-gradient(ellipse 12% 45% at 40% 50%, rgba(254,240,138,0.25), transparent), radial-gradient(ellipse 18% 35% at 65% 65%, rgba(254,240,138,0.3), transparent), radial-gradient(ellipse 14% 40% at 88% 55%, rgba(254,240,138,0.2), transparent); animation: furnace-tips 0.5s ease-in-out infinite alternate-reverse; }
-  @keyframes furnace-pulse1 { 0%{opacity:0.85;transform:scaleY(0.95)} 100%{opacity:1;transform:scaleY(1.03)} }
-  @keyframes furnace-dance { 0%{transform:translateX(-2px) scaleY(0.97)} 100%{transform:translateX(2px) scaleY(1.03)} }
-  @keyframes furnace-tips { 0%{transform:translateY(3px);opacity:0.7} 100%{transform:translateY(-3px);opacity:1} }
-  .furnace-embers { position: absolute; bottom: 10%; left: 0; right: 0; height: 40%; pointer-events: none; }
-  .furnace-embers .ember { position: absolute; width: 3px; height: 3px; background: #fbbf24; border-radius: 50%; box-shadow: 0 0 4px #fbbf24; animation: ember-rise 2.5s ease-out infinite; }
-  .furnace-embers .ember:nth-child(1) { left: 15%; animation-delay: 0s; }
-  .furnace-embers .ember:nth-child(2) { left: 35%; animation-delay: 0.8s; width: 2px; height: 2px; }
-  .furnace-embers .ember:nth-child(3) { left: 55%; animation-delay: 0.4s; }
-  .furnace-embers .ember:nth-child(4) { left: 75%; animation-delay: 1.2s; width: 2px; height: 2px; }
-  .furnace-embers .ember:nth-child(5) { left: 90%; animation-delay: 0.6s; }
-  @keyframes ember-rise { 0%{transform:translateY(0);opacity:1} 100%{transform:translateY(-60px);opacity:0} }
-  .furnace-info { position: absolute; top: 10px; left: 0; right: 0; text-align: center; z-index: 3; }
-  .furnace-val { font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 0 20px rgba(251,191,36,0.3); }
-  .furnace-label { font-size: 9px; color: rgba(255,240,200,0.6); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
-  .furnace-stats { font-size: 12px; color: rgba(255,240,200,0.8); margin-top: 4px; }
-  .furnace-compare { font-size: 11px; color: #86efac; margin-top: 3px; }
+  
+  
+  .furnace-fire 
+  .furnace-fire 
+  .furnace-fire 
+   100%{opacity:1;transform:scaleY(1.03)} }
+   100%{transform:translateX(2px) scaleY(1.03)} }
+   100%{transform:translateY(-3px);opacity:1} }
+  
+  
+  
+  
+  
+  
+  
+   100%{transform:translateY(-60px);opacity:0} }
+  
+  
+  
+  
+  
+
+    @keyframes furnace-bg-glow { 0%{box-shadow: 0 0 8px rgba(220,38,38,0.1), inset 0 -20px 40px rgba(220,38,38,0.15)} 100%{box-shadow: 0 0 15px rgba(251,146,60,0.15), inset 0 -25px 50px rgba(251,146,60,0.2)} }
+  
+  
+  
+  
+
+    
+  
+    100% { filter: brightness(calc(1.0 + var(--fire-intensity)*0.2)); }
+  }
+  
+  
+  
+  
+  
+
+  /* Furnace Score Card - Realistic Fire */
+  
+  /* Flame tongues via pseudo-elements */
+  
+  
+  
+    100% { box-shadow: 0 0 18px rgba(251,146,60,0.2), inset 0 -18px 35px rgba(220,38,38,0.25); }
+  }
+  
+    100% { transform: scaleY(1.05) translateY(-2px); opacity: 1; }
+  }
+  
+    100% { transform: scaleY(1.08) scaleX(1.03); opacity: 1; }
+  }
+  .furnace-card .furnace-val { font-size: 28px; font-weight: 900; color: #fbbf24; text-shadow: 0 0 15px rgba(251,191,36,0.5); position: relative; z-index: 1; }
+  
+  
+  
+
+  /* Furnace - Real Fire with dynamic height */
+  .furnace-card {
+    --fire-h: 25%;
+    --fire-glow: 0.1;
+    display: block; padding: 18px; margin: 12px 0; border-radius: var(--radius-sm);
+    background: #080510;
+    border: 1px solid rgba(251,146,60,0.2);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    height: 110px;
+  }
+  .furnace-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: var(--fire-h);
+    background:
+      linear-gradient(0deg,
+        rgba(255,255,255,0.15) 0%,
+        rgba(254,240,138,0.6) 5%,
+        rgba(251,191,36,0.7) 15%,
+        rgba(234,88,12,0.7) 35%,
+        rgba(220,38,38,0.5) 55%,
+        rgba(127,29,29,0.3) 75%,
+        transparent 100%);
+    animation: fire-rise 0.7s ease-in-out infinite alternate;
+    transition: height 0.8s ease;
+    pointer-events: none;
+  }
+  .furnace-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: calc(var(--fire-h) * 0.7);
+    background:
+      radial-gradient(ellipse 25% 50% at 20% 85%, rgba(254,240,138,0.5), transparent 60%),
+      radial-gradient(ellipse 30% 55% at 45% 80%, rgba(251,191,36,0.4), transparent 60%),
+      radial-gradient(ellipse 25% 45% at 70% 90%, rgba(254,240,138,0.4), transparent 60%),
+      radial-gradient(ellipse 20% 50% at 90% 85%, rgba(245,158,11,0.3), transparent 60%);
+    animation: fire-flicker 0.5s ease-in-out infinite alternate-reverse;
+    transition: height 0.8s ease;
+    pointer-events: none;
+  }
+  @keyframes fire-rise {
+    0% { transform: scaleY(0.93) scaleX(0.98); opacity: 0.8; }
+    100% { transform: scaleY(1.04) scaleX(1.01); opacity: 1; }
+  }
+  @keyframes fire-flicker {
+    0% { transform: scaleY(0.9) translateX(-2px); opacity: 0.7; }
+    100% { transform: scaleY(1.06) translateX(2px); opacity: 1; }
+  }
+  .furnace-card .furnace-val { font-size: 28px; font-weight: 900; color: #fbbf24; position: relative; z-index: 1; transition: text-shadow 0.5s ease; }
+  .furnace-card .furnace-label { font-size: 9px; color: rgba(251,191,36,0.5); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; position: relative; z-index: 1; }
+  .furnace-card .furnace-stats { font-size: 12px; color: #fb923c; margin-top: 6px; position: relative; z-index: 1; }
+  .furnace-card .furnace-compare { font-size: 11px; color: #86efac; margin-top: 4px; position: relative; z-index: 1; }
+
+  /* Page Transitions & Micro-animations */
+  .tab-content { animation: none; }
+  .tab-content.active { animation: tab-fade-in 0.3s ease-out; }
+  @keyframes tab-fade-in { 0%{opacity:0;transform:translateY(8px)} 100%{opacity:1;transform:translateY(0)} }
+  
+  /* Card entrance */
+  .checkin-dashboard, .furnace-card, .donuts-progress, .card { animation: card-slide-up 0.4s ease-out both; }
+  .furnace-card { animation-delay: 0.1s; }
+  .donuts-progress { animation-delay: 0.15s; }
+  .card { animation-delay: 0.2s; }
+  @keyframes card-slide-up { 0%{opacity:0;transform:translateY(12px)} 100%{opacity:1;transform:translateY(0)} }
+  
+  /* Score number roll-up */
+  .furnace-val, .dash-stat-value { transition: transform 0.3s ease, color 0.3s ease; }
+  
+  /* Save button micro-animation */
+  .save-btn { transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease; }
+  .save-btn:active { transform: scale(0.92); }
+  .save-btn.saved { animation: save-pop 0.4s ease; }
+  @keyframes save-pop { 0%{transform:scale(1)} 30%{transform:scale(1.15)} 60%{transform:scale(0.95)} 100%{transform:scale(1)} }
+  
+  /* Checkin item entrance */
+  .ci-item { animation: item-appear 0.3s ease-out both; }
+  .ci-item:nth-child(1){animation-delay:0.05s}
+  .ci-item:nth-child(2){animation-delay:0.1s}
+  .ci-item:nth-child(3){animation-delay:0.15s}
+  .ci-item:nth-child(4){animation-delay:0.2s}
+  .ci-item:nth-child(5){animation-delay:0.25s}
+  .ci-item:nth-child(6){animation-delay:0.3s}
+  .ci-item:nth-child(7){animation-delay:0.35s}
+  .ci-item:nth-child(8){animation-delay:0.4s}
+  @keyframes item-appear { 0%{opacity:0;transform:translateX(-10px)} 100%{opacity:1;transform:translateX(0)} }
+  
+  /* Done item slide-out */
+  .ci-item.saving { animation: item-save-out 0.4s ease forwards; }
+  @keyframes item-save-out { 0%{opacity:1;transform:translateX(0)} 100%{opacity:0;transform:translateX(30px) scale(0.95)} }
+  
+  /* Donut pop-in */
+  .donut-item { animation: donut-pop 0.3s ease-out both; }
+  .donut-item:nth-child(1){animation-delay:0.05s}
+  .donut-item:nth-child(2){animation-delay:0.1s}
+  .donut-item:nth-child(3){animation-delay:0.15s}
+  .donut-item:nth-child(4){animation-delay:0.2s}
+  .donut-item:nth-child(5){animation-delay:0.25s}
+  .donut-item:nth-child(6){animation-delay:0.3s}
+  .donut-item:nth-child(7){animation-delay:0.35s}
+  .donut-item:nth-child(8){animation-delay:0.4s}
+  @keyframes donut-pop { 0%{opacity:0;transform:scale(0.5)} 70%{transform:scale(1.1)} 100%{opacity:1;transform:scale(1)} }
+  
+  /* Nav bar item tap */
+  .nav-item { transition: transform 0.15s ease, color 0.2s ease; }
+  .nav-item:active { transform: scale(0.9); }
+  
+  /* Stat tile pulse on update */
+  .dash-stat { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .dash-stat.updated { animation: stat-bump 0.3s ease; }
+  @keyframes stat-bump { 0%{transform:scale(1)} 50%{transform:scale(1.08)} 100%{transform:scale(1)} }
+  
+  /* Smooth number transition helper */
+  .score-anim { display: inline-block; animation: number-pop 0.4s ease; }
+  @keyframes number-pop { 0%{transform:translateY(8px);opacity:0} 100%{transform:translateY(0);opacity:1} }
+
+  /* Badges & Achievements */
+  .badges-section { margin: 12px 0; padding: 14px; border-radius: var(--radius-sm); background: rgba(6,182,212,0.03); border: 1px solid rgba(6,182,212,0.08); }
+  .badges-title { font-size: 11px; font-weight: 700; color: var(--color-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .badges-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .badge { width: 52px; text-align: center; padding: 6px 2px; border-radius: 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .badge.earned { border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.05); animation: badge-shine 2s ease-in-out infinite alternate; }
+  .badge.earned:active { transform: scale(1.1); }
+  @keyframes badge-shine { 0%{box-shadow: 0 0 0 rgba(251,191,36,0)} 100%{box-shadow: 0 0 8px rgba(251,191,36,0.15)} }
+  .badge .badge-icon { font-size: 22px; line-height: 1.2; }
+  .badge .badge-name { font-size: 7px; color: #3b7d99; margin-top: 3px; line-height: 1.2; }
+  .badge.earned .badge-name { color: #fbbf24; }
+  .badge:not(.earned) { opacity: 0.35; filter: grayscale(1); }
+  .badge-new { animation: badge-unlock 0.6s ease; }
+  @keyframes badge-unlock { 0%{transform:scale(0) rotate(-20deg)} 50%{transform:scale(1.3) rotate(5deg)} 100%{transform:scale(1) rotate(0)} }
+
+  /* Push Notification Settings */
+  .notif-settings { margin-top: 16px; padding: 14px; border-radius: var(--radius-sm); background: rgba(6,182,212,0.03); border: 1px solid rgba(6,182,212,0.08); }
+  .notif-title { font-size: 11px; font-weight: 700; color: var(--color-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .notif-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+  .notif-row:last-child { border-bottom: none; }
+  .notif-label { font-size: 12px; color: var(--color-text); }
+  .notif-time { padding: 4px 8px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--color-text); font-size: 12px; width: 80px; text-align: center; }
+  .notif-toggle { width: 40px; height: 22px; border-radius: 11px; background: rgba(255,255,255,0.1); position: relative; cursor: pointer; transition: background 0.3s; }
+  .notif-toggle.on { background: rgba(6,182,212,0.5); }
+  .notif-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform 0.3s; }
+  .notif-toggle.on::after { transform: translateX(18px); }
+  .notif-btn { margin-top: 10px; padding: 8px 14px; border-radius: 8px; background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.3); color: #22d3ee; font-size: 11px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .notif-btn:active { background: rgba(6,182,212,0.25); }
 </style>
 </head>
 <body>
@@ -559,27 +742,20 @@
         <div class="dash-stat"><div class="dash-stat-value" id="dashPendingCount">0</div><div class="dash-stat-label">Pending</div></div>
         <div class="dash-stat"><div class="dash-stat-value" id="dashTimePct">—</div><div class="dash-stat-label">Used</div></div>
       </div>
-          </div>
-    
-    <div class="card" id="pendingCard">
-      <div class="card-title">📝 Pending</div>
-      <div class="furnace-score" id="furnaceScore">
-      <div class="furnace-fire" id="furnaceFire">
-        <div class="fire-l1"></div>
-        <div class="fire-l2"></div>
-        <div class="fire-l3"></div>
       </div>
-      <div class="furnace-embers" id="furnaceEmbers">
-        <div class="ember"></div><div class="ember"></div><div class="ember"></div><div class="ember"></div><div class="ember"></div>
-      </div>
-      <div class="furnace-info">
-        <div class="furnace-val" id="furnaceVal">0%</div>
-        <div class="furnace-label">Today's Score</div>
-        <div class="furnace-stats" id="furnaceStats">0/0 done</div>
-        <div class="furnace-compare" id="furnaceCompare"></div>
-      </div>
+    <div class="furnace-card" id="furnaceScore">
+      <div class="furnace-val" id="furnaceVal">0%</div>
+      <div class="furnace-label">Today's Score</div>
+      <div class="furnace-stats" id="furnaceStats">0/0 done</div>
+      <div class="furnace-compare" id="furnaceCompare"></div>
     </div>
     <div class="donuts-progress" id="donutsProgress"></div>
+    <div class="badges-section" id="badgesSection">
+      <div class="badges-title">🏆 Achievements</div>
+      <div class="badges-grid" id="badgesGrid"></div>
+    </div>
+    <div class="card" id="pendingCard">
+      <div class="card-title">📝 Pending</div>
       <div id="pendingList"></div>
     </div>
     <div id="doneSection"></div>
@@ -753,6 +929,26 @@
         <button class="preset-btn" onclick="addPreset('growth')">📚 Growth</button>
         <button class="preset-btn" onclick="addPreset('finance')">💰 Finance</button>
       </div>
+    <div class="notif-settings" id="notifSettings">
+      <div class="notif-title">\ud83d\udd14 Reminder Notifications</div>
+      <div class="notif-row">
+        <span class="notif-label">Morning Reminder</span>
+        <input type="time" class="notif-time" id="notifMorning" value="08:00">
+      </div>
+      <div class="notif-row">
+        <span class="notif-label">Afternoon Check</span>
+        <input type="time" class="notif-time" id="notifAfternoon" value="14:00">
+      </div>
+      <div class="notif-row">
+        <span class="notif-label">Evening Nudge</span>
+        <input type="time" class="notif-time" id="notifEvening" value="19:00">
+      </div>
+      <div class="notif-row">
+        <span class="notif-label">Enable Notifications</span>
+        <div class="notif-toggle" id="notifToggle" onclick="toggleNotifications()"></div>
+      </div>
+      <button class="notif-btn" onclick="saveNotifSettings()">Save Reminder Times</button>
+    </div>
     </div>
   </div>
 </div>
@@ -882,6 +1078,9 @@ function saveSingle(id){
     ta.answers[id]=val;
   }
   
+  // Animate the saved item
+  const itemEl=document.querySelector('[data-id="'+id+'"]')||document.getElementById('item_'+id);
+  if(itemEl)itemEl.classList.add('saving');
   saveTodayAnswers(ta.answers);
   
   // If it's a goal item, also update the goal's achieved value
@@ -903,7 +1102,7 @@ function saveSingle(id){
     }
   }
   
-  saveDailyRecord();renderCheckin();updateDashStats();
+  saveDailyRecord();checkBadges();renderCheckin();updateDashStats();
 }
 
 function undoSingle(id){
@@ -950,23 +1149,31 @@ function updateLiveScore(){
   const score=tw?Math.round(ws/tw*100):0;
   const total=allItems.length;
   
-  // Update furnace display
-  const valEl=document.getElementById('furnaceVal');if(valEl){valEl.textContent=score+'%';valEl.style.textShadow='0 2px 8px rgba(0,0,0,0.6), 0 0 '+(10+score*0.2)+'px rgba(251,191,36,'+(0.1+score*0.005)+')';}
-  const statsEl=document.getElementById('furnaceStats');if(statsEl)statsEl.textContent=dc+'/'+total+' done';
-  
-  // Fire height = score%, brightness/intensity dims with low score
-  const fireEl=document.getElementById('furnaceFire');
-  if(fireEl){
-    const h=Math.max(5,score); // minimum 5% so it's never fully empty
-    fireEl.style.height=h+'%';
-    // Brightness: low score = dim (0.4), high score = bright (1.3)
-    const brightness=0.4+(score/100)*0.9;
-    fireEl.style.filter='brightness('+brightness.toFixed(2)+')';
+  const card=document.getElementById('furnaceScore');
+  if(card){
+    // Fire height: 15% at score 0, 100% at score 100
+    const fireH=15+score*0.85;
+    card.style.setProperty('--fire-h',fireH+'%');
+    
+    // Glow: increases with score
+    const glowSize=4+score*0.2;
+    const glowAlpha=(0.05+score*0.003).toFixed(3);
+    const inGlowSize=8+score*0.2;
+    const inGlowAlpha=(0.05+score*0.004).toFixed(3);
+    card.style.boxShadow='0 0 '+glowSize+'px rgba(251,146,60,'+glowAlpha+'), 0 0 '+(glowSize*2)+'px rgba(220,38,38,'+(glowAlpha*0.5).toFixed(3)+'), inset 0 -'+inGlowSize+'px '+(inGlowSize*2)+'px rgba(220,38,38,'+inGlowAlpha+')';
+    
+    // Border gets brighter
+    card.style.borderColor='rgba(251,146,60,'+(0.15+score*0.004).toFixed(3)+')';
   }
   
-  // Embers: only show when score > 30
-  const embersEl=document.getElementById('furnaceEmbers');
-  if(embersEl)embersEl.style.opacity=score>30?'1':'0';
+  const valEl=document.getElementById('furnaceVal');
+  if(valEl){
+    valEl.textContent=score+'%';valEl.classList.remove('score-anim');void valEl.offsetWidth;valEl.classList.add('score-anim');
+    const tGlow=8+score*0.2;
+    valEl.style.textShadow='0 0 '+tGlow+'px rgba(251,191,36,'+(0.2+score*0.006).toFixed(2)+')';
+  }
+  const statsEl=document.getElementById('furnaceStats');
+  if(statsEl)statsEl.textContent=dc+'/'+total+' done';
   
   // Yesterday comparison
   const data=gD();
@@ -1198,9 +1405,9 @@ function updateReverseClock(){
 
 // ===== EXPORT/IMPORT =====
 function exportExcel(){const data=gD(),qs=gQ();if(!data.length){alert('No data');return;}const cats=[...new Set(qs.map(q=>q.category))].sort();let csv='Date,Overall Score,Status';cats.forEach(c=>{csv+=','+c+'%';});qs.forEach(q=>{csv+=','+(q.type==='yesno'?q.text+' (Y/N)':q.text+' ('+q.target+' '+q.uom+')');});csv+='\n';data.forEach(d=>{csv+=d.date+','+d.score+','+scoreText(d.score).replace(/[^\w\s]/g,'').trim();cats.forEach(c=>{csv+=','+(d.catScores&&d.catScores[c]!==undefined?d.catScores[c]:'');});qs.forEach(q=>{const v=d.actuals?d.actuals[q.id]:'';csv+=','+(q.type==='yesno'?(v===1?'Yes':v===0?'No':''):v||'');});csv+='\n';});csv+='\n--- SUMMARY ---\nPeriod,Score,Status,Days\n';const now=new Date();const w7=data.filter(d=>d.date>=new Date(now-7*86400000).toISOString().slice(0,10));if(w7.length)csv+='Last 7 Days,'+Math.round(w7.reduce((s,d)=>s+d.score,0)/w7.length)+'%,,'+w7.length+'\n';const mm=data.filter(d=>d.date.startsWith(now.toISOString().slice(0,7)));if(mm.length)csv+='This Month,'+Math.round(mm.reduce((s,d)=>s+d.score,0)/mm.length)+'%,,'+mm.length+'\n';const yy=data.filter(d=>d.date.startsWith(String(now.getFullYear())));if(yy.length)csv+='This Year,'+Math.round(yy.reduce((s,d)=>s+d.score,0)/yy.length)+'%,,'+yy.length+'\n';csv+='All Time,'+Math.round(data.reduce((s,d)=>s+d.score,0)/data.length)+'%,,'+data.length+'\n';const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Life_Tracker_'+getToday()+'.csv';a.click();}
-function exportJSON(){const p={questions:gQ(),data:gD(),todayAnswers:getTodayAnswers(),timeTargets:getTimeTargets(),timeLog:getTimeLog(),goals:getGoals(),exported:new Date().toISOString(),version:'v7'};const b=new Blob([JSON.stringify(p,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='life_tracker_backup_'+getToday()+'.json';a.click();}
-function importBackup(){const i=document.createElement('input');i.type='file';i.accept='.json,.csv';i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{if(f.name.endsWith('.json')){const p=JSON.parse(ev.target.result);if(p.questions)sQ(p.questions);if(p.data)sD(p.data);if(p.todayAnswers)localStorage.setItem(TDK,JSON.stringify(p.todayAnswers));if(p.timeTargets)setTimeTargets(p.timeTargets);if(p.timeLog)localStorage.setItem(TLK,JSON.stringify(p.timeLog));if(p.goals)saveGoals(p.goals);}else{const lines=ev.target.result.split('\n'),data=gD();for(let i=1;i<lines.length;i++){const cols=lines[i].split(',');if(cols.length<2||!cols[0].match(/^\d{4}-\d{2}-\d{2}$/))continue;const date=cols[0],score=parseInt(cols[1]);if(!isNaN(score)&&!data.find(d=>d.date===date))data.push({date,score,catScores:{},actuals:{}});}sD(data);}renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();renderTimerTab();alert('✅ Imported!');}catch(err){alert('❌ Invalid file');}};r.readAsText(f);};i.click();}
-function clearAll(){if(!confirm('⚠️ Delete ALL data?'))return;localStorage.removeItem(DK);localStorage.removeItem(QK);localStorage.removeItem(TDK);localStorage.removeItem(TTK);localStorage.removeItem(TLK);renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();renderTimerTab();}
+function exportJSON(){const p={questions:gQ(),data:gD(),todayAnswers:getTodayAnswers(),timeTargets:getTimeTargets(),timeLog:getTimeLog(),goals:getGoals(),badges:JSON.parse(localStorage.getItem('life_tracker_badges_v1')||'[]'),notifSettings:getNotifSettings(),exported:new Date().toISOString(),version:'v7'};const b=new Blob([JSON.stringify(p,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='life_tracker_backup_'+getToday()+'.json';a.click();}
+function importBackup(){const i=document.createElement('input');i.type='file';i.accept='.json,.csv';i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{if(f.name.endsWith('.json')){const p=JSON.parse(ev.target.result);if(p.questions)sQ(p.questions);if(p.data)sD(p.data);if(p.todayAnswers)localStorage.setItem(TDK,JSON.stringify(p.todayAnswers));if(p.timeTargets)setTimeTargets(p.timeTargets);if(p.timeLog)localStorage.setItem(TLK,JSON.stringify(p.timeLog));if(p.goals)saveGoals(p.goals);if(p.badges)localStorage.setItem('life_tracker_badges_v1',JSON.stringify(p.badges));if(p.notifSettings)localStorage.setItem(NOTIF_KEY,JSON.stringify(p.notifSettings));}else{const lines=ev.target.result.split('\n'),data=gD();for(let i=1;i<lines.length;i++){const cols=lines[i].split(',');if(cols.length<2||!cols[0].match(/^\d{4}-\d{2}-\d{2}$/))continue;const date=cols[0],score=parseInt(cols[1]);if(!isNaN(score)&&!data.find(d=>d.date===date))data.push({date,score,catScores:{},actuals:{}});}sD(data);}renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();checkBadges();loadNotifSettings();renderTimerTab();alert('✅ Imported!');}catch(err){alert('❌ Invalid file');}};r.readAsText(f);};i.click();}
+function clearAll(){if(!confirm('⚠️ Delete ALL data?'))return;localStorage.removeItem(DK);localStorage.removeItem(QK);localStorage.removeItem(TDK);localStorage.removeItem(TTK);localStorage.removeItem(TLK);renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();checkBadges();loadNotifSettings();renderTimerTab();}
 
 
 
@@ -1612,6 +1819,9 @@ function updateDashStats(){
   const pc=document.getElementById('dashPendingCount');if(pc)pc.textContent=(allItems.length-doneCount);
   // Render target deviation bars (show all target-type items)
   
+  // Micro-animate stat tiles
+  document.querySelectorAll('.dash-stat').forEach(el=>{el.classList.remove('updated');void el.offsetWidth;el.classList.add('updated');});
+
 }
 
 
@@ -1771,10 +1981,168 @@ function updateMotivation(){
   el.textContent=msgs[idx];
 }
 
+
+// ===== BADGES & ACHIEVEMENTS =====
+const BADGES=[
+  {id:'first100',icon:'\ud83c\udf1f',name:'First 100%',desc:'Score 100% in a day',check:function(d){return d.some(x=>x.score>=100);}},
+  {id:'streak3',icon:'\ud83d\udd25',name:'3-Day Fire',desc:'3 day streak \u226570%',check:function(d){return getStreak(d,70)>=3;}},
+  {id:'streak7',icon:'\ud83d\udcaa',name:'7-Day Warrior',desc:'7 day streak \u226570%',check:function(d){return getStreak(d,70)>=7;}},
+  {id:'streak14',icon:'\u26a1',name:'2-Week Beast',desc:'14 day streak \u226570%',check:function(d){return getStreak(d,70)>=14;}},
+  {id:'streak30',icon:'\ud83d\udc51',name:'Monthly King',desc:'30 day streak \u226570%',check:function(d){return getStreak(d,70)>=30;}},
+  {id:'earlybird',icon:'\ud83c\udf05',name:'Early Bird',desc:'All done before noon',check:function(d,meta){return meta.earlyBird;}},
+  {id:'perfectweek',icon:'\ud83c\udfc6',name:'Perfect Week',desc:'7 days \u226580%',check:function(d){return getStreak(d,80)>=7;}},
+  {id:'century',icon:'\ud83d\udcaf',name:'Century',desc:'100 check-in days',check:function(d){return d.length>=100;}},
+  {id:'comeback',icon:'\ud83d\ude80',name:'Comeback',desc:'+20% vs yesterday',check:function(d){if(d.length<2)return false;const t=d[d.length-1],y=d[d.length-2];return t.score-y.score>=20;}},
+  {id:'halfcentury',icon:'\u2b50',name:'50 Days',desc:'50 check-in days',check:function(d){return d.length>=50;}}
+];
+
+function getStreak(data,minScore){
+  let streak=0;
+  for(let i=data.length-1;i>=0;i--){
+    if(data[i].score>=minScore)streak++;
+    else break;
+  }
+  return streak;
+}
+
+function checkBadges(){
+  const data=gD();
+  const earned=JSON.parse(localStorage.getItem('life_tracker_badges_v1')||'[]');
+  const now=new Date();
+  const meta={earlyBird:false};
+  // Check if all items done before noon today
+  const ta=getTodayAnswers();
+  const allItems=getAllDueItems();
+  if(allItems.length>0&&Object.keys(ta.answers).length>=allItems.length&&now.getHours()<12){
+    meta.earlyBird=true;
+  }
+  
+  let newBadges=[];
+  BADGES.forEach(b=>{
+    if(!earned.includes(b.id)&&b.check(data,meta)){
+      earned.push(b.id);
+      newBadges.push(b.id);
+    }
+  });
+  
+  if(newBadges.length)localStorage.setItem('life_tracker_badges_v1',JSON.stringify(earned));
+  renderBadges(earned,newBadges);
+}
+
+function renderBadges(earned,newBadges){
+  const grid=document.getElementById('badgesGrid');
+  if(!grid)return;
+  let html='';
+  BADGES.forEach(b=>{
+    const isEarned=earned.includes(b.id);
+    const isNew=newBadges&&newBadges.includes(b.id);
+    html+='<div class="badge'+(isEarned?' earned':'')+(isNew?' badge-new':'')+'" title="'+b.desc+'">';
+    html+='<div class="badge-icon">'+b.icon+'</div>';
+    html+='<div class="badge-name">'+b.name+'</div>';
+    html+='</div>';
+  });
+  grid.innerHTML=html;
+}
+
+
+// ===== PUSH NOTIFICATION REMINDERS =====
+const NOTIF_KEY='life_tracker_notif_v1';
+
+function getNotifSettings(){
+  try{return JSON.parse(localStorage.getItem(NOTIF_KEY))||{enabled:false,morning:'08:00',afternoon:'14:00',evening:'19:00'};}
+  catch(e){return{enabled:false,morning:'08:00',afternoon:'14:00',evening:'19:00'};}
+}
+
+function saveNotifSettings(){
+  const s={
+    enabled:document.getElementById('notifToggle').classList.contains('on'),
+    morning:document.getElementById('notifMorning').value,
+    afternoon:document.getElementById('notifAfternoon').value,
+    evening:document.getElementById('notifEvening').value
+  };
+  localStorage.setItem(NOTIF_KEY,JSON.stringify(s));
+  alert('Reminder times saved!');
+}
+
+function toggleNotifications(){
+  const tog=document.getElementById('notifToggle');
+  if(!tog)return;
+  if(tog.classList.contains('on')){
+    tog.classList.remove('on');
+  } else {
+    // Request permission
+    if('Notification' in window){
+      Notification.requestPermission().then(p=>{
+        if(p==='granted'){
+          tog.classList.add('on');
+          new Notification('Life Tracker',{body:'Notifications enabled!'});
+        } else {
+          alert('Please allow notifications in browser settings');
+        }
+      });
+    } else {
+      tog.classList.add('on');
+    }
+  }
+}
+
+function loadNotifSettings(){
+  const s=getNotifSettings();
+  const tog=document.getElementById('notifToggle');
+  const m=document.getElementById('notifMorning');
+  const a=document.getElementById('notifAfternoon');
+  const e=document.getElementById('notifEvening');
+  if(tog&&s.enabled)tog.classList.add('on');
+  if(m)m.value=s.morning;
+  if(a)a.value=s.afternoon;
+  if(e)e.value=s.evening;
+}
+
+function checkNotifications(){
+  const s=getNotifSettings();
+  if(!s.enabled)return;
+  if(!('Notification' in window)||Notification.permission!=='granted')return;
+  
+  const now=new Date();
+  const timeStr=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  const todayKey='notif_fired_'+getToday();
+  const fired=JSON.parse(sessionStorage.getItem(todayKey)||'[]');
+  
+  const allItems=getAllDueItems();
+  const ta=getTodayAnswers();
+  const pending=allItems.length-Object.keys(ta.answers).length;
+  const score=allItems.length?Math.round(Object.keys(ta.answers).length/allItems.length*100):0;
+  const hoursLeft=Math.floor((24*60-(now.getHours()*60+now.getMinutes()))/60);
+  
+  let msg=null;
+  let label=null;
+  
+  if(timeStr===s.morning&&!fired.includes('morning')){
+    label='morning';
+    msg=pending>0?'Good morning! You have '+pending+' tasks today. Start strong!':'Good morning! All caught up - maintain the streak!';
+  } else if(timeStr===s.afternoon&&!fired.includes('afternoon')){
+    label='afternoon';
+    msg=pending>0?'Afternoon check: '+pending+' tasks still pending. '+hoursLeft+'h left!':'All done! Score: '+score+'%. Keep it up!';
+  } else if(timeStr===s.evening&&!fired.includes('evening')){
+    label='evening';
+    if(pending>0)msg='Evening nudge: '+pending+' tasks pending! Don\'t let the day end without finishing.';
+    else msg='All tasks complete! Score: '+score+'%. Well done today!';
+  }
+  
+  if(msg&&label){
+    fired.push(label);
+    sessionStorage.setItem(todayKey,JSON.stringify(fired));
+    new Notification('Life Tracker',{body:msg,icon:'icon-192.png'});
+  }
+}
+
+// Check every minute
+setInterval(checkNotifications,60000);
+
 // ===== INIT =====
 try{
 document.getElementById('todayDate').textContent='📅 '+new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short',year:'numeric'});
-renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();
+renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();checkBadges();loadNotifSettings();
 updateReverseClock();
 setInterval(updateReverseClock,1000);
 setInterval(()=>{if(Object.keys(activeTimers).length)renderTimerTab();},10000);

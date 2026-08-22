@@ -217,11 +217,11 @@
   .sunset-sun { transition: top 2s ease, left 2s ease, opacity 1s ease, transform 1s ease; }
   
   .sunset-bar { position: absolute; bottom: 12px; left: 16px; right: 16px; height: 18px; border-radius: 9px; background: rgba(255,255,255,0.08); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); overflow: hidden; z-index: 3; border: 1px solid rgba(255,255,255,0.12); box-shadow: inset 0 1px 2px rgba(0,0,0,0.2); }
-  .sunset-bar-fill { height: 100%; border-radius: 9px; transition: width 1s ease; position: relative; overflow: hidden; background: transparent; }
-  .sunset-bar-fill::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--wc1, rgba(74,222,128,0.6)), var(--wc2, rgba(56,189,248,0.6)), var(--wc1, rgba(74,222,128,0.6)), var(--wc2, rgba(56,189,248,0.6))); background-size: 200% 100%; animation: water-flow 2s linear infinite; border-radius: 9px; }
-  .sunset-bar-fill::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent, rgba(255,255,255,0.15) 25%, transparent 50%); background-size: 30px 100%; animation: water-wave 1.5s linear infinite; border-radius: 9px; }
-  @keyframes water-flow { 0%{background-position: 0% 0%} 100%{background-position: -200% 0%} }
-  @keyframes water-wave { 0%{background-position: 0 0} 100%{background-position: 30px 0} }
+  
+  
+  
+   100%{background-position: -200% 0%} }
+   100%{background-position: 30px 0} }
   .sunset-stats { position: absolute; bottom: 4px; left: 18px; right: 18px; display: flex; justify-content: space-between; font-size: 10px; z-index: 3; color: rgba(255,255,255,0.7); }
   .sunset-stats .gone { color: #ef4444; }
   .sunset-stats .left { color: #84cc16; }
@@ -461,14 +461,58 @@
   .donut-label { font-size: 7px; color: #3b7d99; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 52px; }
 
 
-  .live-score-bar { display: flex; align-items: center; gap: 12px; padding: 12px 14px; margin-bottom: 12px; border-radius: var(--radius-sm); background: rgba(6,182,212,0.02); border: 1px solid rgba(6,182,212,0.06); }
-  .live-value { font-size: 22px; font-weight: 800; color: #06b6d4; font-family: var(--font-mono); }
-  .live-label { font-size: 9px; color: #3b7d99; text-transform: uppercase; }
-  .live-progress { flex: 1; height: 6px; background: rgba(6,182,212,0.06); border-radius: 3px; overflow: hidden; }
-  .live-progress-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease, background 0.5s ease; }
-  .live-count { font-size: 11px; color: #3b7d99; font-family: var(--font-mono); white-space: nowrap; }
+  
+  
+  
+  
+  
+  
 
   .sun-moon-info { position: absolute; top: 6px; left: 0; right: 0; text-align: center; font-size: 9px; color: rgba(200,230,255,0.5); z-index: 4; letter-spacing: 0.5px; }
+
+  .sunset-bar-fill { height: 100%; border-radius: 9px; transition: width 1s ease; position: relative; overflow: hidden; background: linear-gradient(180deg, var(--wc1, rgba(6,182,212,0.8)) 0%, var(--wc2, rgba(8,145,178,0.6)) 100%); }
+  .sunset-bar-fill::before { content: ''; position: absolute; top: -4px; left: 0; right: 0; height: 10px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 10'%3E%3Cpath d='M0,5 C15,2 30,8 45,5 C60,2 75,8 90,5 C105,2 120,8 135,5' fill='none' stroke='rgba(186,230,253,0.5)' stroke-width='1.5'/%3E%3C/svg%3E") repeat-x; background-size: 120px 10px; animation: wave-surface-move 1.5s linear infinite; }
+  .sunset-bar-fill::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 0%, rgba(186,230,253,0.15) 30%, transparent 60%); animation: shine-sweep 3s ease-in-out infinite; border-radius: 9px; }
+  @keyframes wave-surface-move { 0%{background-position: 0 0} 100%{background-position: -120px 0} }
+  @keyframes shine-sweep { 0%,100%{transform: translateX(-100%)} 50%{transform: translateX(100%)} }
+
+  .bar-motivation { position: absolute; bottom: 1px; left: 0; right: 0; text-align: center; font-size: 11px; color: rgba(186,230,253,0.75); z-index: 4; font-style: italic; letter-spacing: 0.3px; padding: 0 12px; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+
+  /* Flame Torch Score Display */
+  
+  
+  
+   100%{transform: scaleX(0.88) scaleY(1.06); opacity: 1} }
+  
+  
+  
+  
+  
+  
+  
+
+  /* Full Furnace Score Display */
+  .furnace-score { position: relative; height: 120px; border-radius: var(--radius-sm); background: #0a0200; border: 1px solid rgba(251,146,60,0.15); overflow: hidden; margin-bottom: 12px; }
+  .furnace-fire { position: absolute; bottom: 0; left: 0; right: 0; height: 0%; overflow: hidden; transition: height 0.8s ease, filter 0.8s ease; }
+  .furnace-fire .fire-l1 { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(220,38,38,0.9) 0%, rgba(234,88,12,0.7) 40%, rgba(251,191,36,0.4) 70%, transparent 100%); animation: furnace-pulse1 1.2s ease-in-out infinite alternate; }
+  .furnace-fire .fire-l2 { position: absolute; inset: 0; background: radial-gradient(ellipse 30% 50% at 20% 80%, rgba(251,191,36,0.6), transparent), radial-gradient(ellipse 25% 60% at 50% 70%, rgba(245,158,11,0.5), transparent), radial-gradient(ellipse 30% 55% at 80% 85%, rgba(251,191,36,0.5), transparent); animation: furnace-dance 0.8s ease-in-out infinite alternate; }
+  .furnace-fire .fire-l3 { position: absolute; inset: 0; background: radial-gradient(ellipse 15% 40% at 15% 60%, rgba(254,240,138,0.3), transparent), radial-gradient(ellipse 12% 45% at 40% 50%, rgba(254,240,138,0.25), transparent), radial-gradient(ellipse 18% 35% at 65% 65%, rgba(254,240,138,0.3), transparent), radial-gradient(ellipse 14% 40% at 88% 55%, rgba(254,240,138,0.2), transparent); animation: furnace-tips 0.5s ease-in-out infinite alternate-reverse; }
+  @keyframes furnace-pulse1 { 0%{opacity:0.85;transform:scaleY(0.95)} 100%{opacity:1;transform:scaleY(1.03)} }
+  @keyframes furnace-dance { 0%{transform:translateX(-2px) scaleY(0.97)} 100%{transform:translateX(2px) scaleY(1.03)} }
+  @keyframes furnace-tips { 0%{transform:translateY(3px);opacity:0.7} 100%{transform:translateY(-3px);opacity:1} }
+  .furnace-embers { position: absolute; bottom: 10%; left: 0; right: 0; height: 40%; pointer-events: none; }
+  .furnace-embers .ember { position: absolute; width: 3px; height: 3px; background: #fbbf24; border-radius: 50%; box-shadow: 0 0 4px #fbbf24; animation: ember-rise 2.5s ease-out infinite; }
+  .furnace-embers .ember:nth-child(1) { left: 15%; animation-delay: 0s; }
+  .furnace-embers .ember:nth-child(2) { left: 35%; animation-delay: 0.8s; width: 2px; height: 2px; }
+  .furnace-embers .ember:nth-child(3) { left: 55%; animation-delay: 0.4s; }
+  .furnace-embers .ember:nth-child(4) { left: 75%; animation-delay: 1.2s; width: 2px; height: 2px; }
+  .furnace-embers .ember:nth-child(5) { left: 90%; animation-delay: 0.6s; }
+  @keyframes ember-rise { 0%{transform:translateY(0);opacity:1} 100%{transform:translateY(-60px);opacity:0} }
+  .furnace-info { position: absolute; top: 10px; left: 0; right: 0; text-align: center; z-index: 3; }
+  .furnace-val { font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 0 20px rgba(251,191,36,0.3); }
+  .furnace-label { font-size: 9px; color: rgba(255,240,200,0.6); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  .furnace-stats { font-size: 12px; color: rgba(255,240,200,0.8); margin-top: 4px; }
+  .furnace-compare { font-size: 11px; color: #86efac; margin-top: 3px; }
 </style>
 </head>
 <body>
@@ -506,6 +550,7 @@
           <div class="sunset-sub" id="sunsetSub">before darkness falls</div>
         </div>
         <div class="sunset-bar"><div class="sunset-bar-fill" id="sunsetBarFill" style="width:0%"></div></div>
+        <div class="bar-motivation" id="barMotivation"></div>
         
       </div>
       <div class="dash-stats-row">
@@ -518,10 +563,21 @@
     
     <div class="card" id="pendingCard">
       <div class="card-title">📝 Pending</div>
-      <div class="live-score-bar" id="liveScoreBar">
-      <div><div class="live-value" id="liveScore">0%</div><div class="live-label">Today's Score</div></div>
-      <div class="live-progress"><div class="live-progress-fill" id="liveProgressFill" style="width:0%;background:var(--color-border)"></div></div>
-      <div class="live-count" id="liveCount">0/0 done</div>
+      <div class="furnace-score" id="furnaceScore">
+      <div class="furnace-fire" id="furnaceFire">
+        <div class="fire-l1"></div>
+        <div class="fire-l2"></div>
+        <div class="fire-l3"></div>
+      </div>
+      <div class="furnace-embers" id="furnaceEmbers">
+        <div class="ember"></div><div class="ember"></div><div class="ember"></div><div class="ember"></div><div class="ember"></div>
+      </div>
+      <div class="furnace-info">
+        <div class="furnace-val" id="furnaceVal">0%</div>
+        <div class="furnace-label">Today's Score</div>
+        <div class="furnace-stats" id="furnaceStats">0/0 done</div>
+        <div class="furnace-compare" id="furnaceCompare"></div>
+      </div>
     </div>
     <div class="donuts-progress" id="donutsProgress"></div>
       <div id="pendingList"></div>
@@ -882,11 +938,6 @@ function saveDailyRecord(){
 function updateLiveScore(){
   const allItems=getAllDueItems();
   const ta=getTodayAnswers();
-  if(!allItems.length){
-    const el=document.getElementById('liveScore');if(el)el.textContent='0%';
-    const ct=document.getElementById('liveCount');if(ct)ct.textContent='0/0';
-    return;
-  }
   let ws=0,tw=0,dc=0;
   allItems.forEach(q=>{
     tw+=q.weight;
@@ -897,10 +948,39 @@ function updateLiveScore(){
     }
   });
   const score=tw?Math.round(ws/tw*100):0;
-  const col=scoreColor(score);
-  const el=document.getElementById('liveScore');if(el){el.textContent=score+'%';el.style.color=col;}
-  const ct=document.getElementById('liveCount');if(ct)ct.textContent=dc+'/'+allItems.length+' done';
-  const pf=document.getElementById('liveProgressFill');if(pf){pf.style.width=score+'%';pf.style.background=col;}
+  const total=allItems.length;
+  
+  // Update furnace display
+  const valEl=document.getElementById('furnaceVal');if(valEl){valEl.textContent=score+'%';valEl.style.textShadow='0 2px 8px rgba(0,0,0,0.6), 0 0 '+(10+score*0.2)+'px rgba(251,191,36,'+(0.1+score*0.005)+')';}
+  const statsEl=document.getElementById('furnaceStats');if(statsEl)statsEl.textContent=dc+'/'+total+' done';
+  
+  // Fire height = score%, brightness/intensity dims with low score
+  const fireEl=document.getElementById('furnaceFire');
+  if(fireEl){
+    const h=Math.max(5,score); // minimum 5% so it's never fully empty
+    fireEl.style.height=h+'%';
+    // Brightness: low score = dim (0.4), high score = bright (1.3)
+    const brightness=0.4+(score/100)*0.9;
+    fireEl.style.filter='brightness('+brightness.toFixed(2)+')';
+  }
+  
+  // Embers: only show when score > 30
+  const embersEl=document.getElementById('furnaceEmbers');
+  if(embersEl)embersEl.style.opacity=score>30?'1':'0';
+  
+  // Yesterday comparison
+  const data=gD();
+  const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
+  const yStr=yesterday.toISOString().slice(0,10);
+  const yData=data.find(d=>d.date===yStr);
+  const compareEl=document.getElementById('furnaceCompare');
+  if(compareEl&&yData){
+    const diff=score-yData.score;
+    if(diff>0)compareEl.textContent='\u2191'+diff+'% vs yesterday ('+yData.score+'%)';
+    else if(diff<0)compareEl.textContent='\u2193'+Math.abs(diff)+'% vs yesterday ('+yData.score+'%)';
+    else compareEl.textContent='= same as yesterday ('+yData.score+'%)';
+    compareEl.style.color=diff>=0?'#86efac':'#fca5a5';
+  } else if(compareEl){compareEl.textContent='';}
 }
 function renderStats(){const data=gD(),te=data.find(d=>d.date===getToday()),l7=data.slice(-7);const avg7=l7.length?Math.round(l7.reduce((s,d)=>s+d.score,0)/l7.length):0;let streak=0;const sorted=[...data].sort((a,b)=>b.date.localeCompare(a.date));for(let i=0;i<sorted.length;i++){const d=new Date();d.setDate(d.getDate()-i);if(sorted[i]?.date===d.toISOString().slice(0,10))streak++;else break;}document.getElementById('todayScore').textContent=te?te.score+'%':'—';document.getElementById('avgScore').textContent=avg7?avg7+'%':'—';document.getElementById('streak').textContent=streak;const box=document.getElementById('bigScoreBox'),ds=avg7||(te?te.score:null);if(ds!==null){box.className='big-score-container '+scoreClass(ds);document.getElementById('bigScoreValue').textContent=ds+'%';document.getElementById('bigScoreLabel').textContent=scoreText(ds);document.getElementById('bigScoreSub').textContent='7-day weighted average';box.classList.add('score-animate');setTimeout(()=>box.classList.remove('score-animate'),700);}else{box.className='big-score-container score-none';document.getElementById('bigScoreValue').textContent='—';document.getElementById('bigScoreLabel').textContent='No Data';document.getElementById('bigScoreSub').textContent='Complete your first check-in';}renderSummaryGrid(data);renderGauge(avg7);renderTrend(data);renderRadar(data);renderHistory(data);}
 function renderSummaryGrid(data){const now=new Date(),grid=document.getElementById('summaryGrid');if(!data.length){grid.innerHTML='';return;}const ws=new Date(now);ws.setDate(now.getDate()-now.getDay());const wd=data.filter(d=>d.date>=ws.toISOString().slice(0,10));const wa=wd.length?Math.round(wd.reduce((s,d)=>s+d.score,0)/wd.length):null;const mk=now.toISOString().slice(0,7);const md=data.filter(d=>d.date.startsWith(mk));const ma=md.length?Math.round(md.reduce((s,d)=>s+d.score,0)/md.length):null;const yk=String(now.getFullYear());const yd=data.filter(d=>d.date.startsWith(yk));const ya=yd.length?Math.round(yd.reduce((s,d)=>s+d.score,0)/yd.length):null;const aa=data.length?Math.round(data.reduce((s,d)=>s+d.score,0)/data.length):null;function c(l,s){if(s===null)return'<div class="summary-card"><div class="period-label">'+l+'</div><div class="period-score" style="color:var(--color-text-muted)">—</div></div>';return'<div class="summary-card"><div class="period-label">'+l+'</div><div class="period-score" style="color:'+scoreColor(s)+'">'+s+'%</div><div class="period-status" style="color:'+scoreColor(s)+'">'+scoreText(s)+'</div></div>';}grid.innerHTML=c('This Week',wa)+c('This Month',ma)+c('This Year',ya)+c('All Time',aa);}
@@ -1098,10 +1178,10 @@ function updateReverseClock(){
   if(barEl){
     const remainPct=100-usedPct;
     let c1,c2;
-    if(remainPct>60){c1='rgba(34,197,94,0.6)';c2='rgba(56,189,248,0.6)';}
-    else if(remainPct>40){c1='rgba(132,204,22,0.6)';c2='rgba(250,204,21,0.6)';}
-    else if(remainPct>20){c1='rgba(6,182,212,0.6)';c2='rgba(249,115,22,0.6)';}
-    else{c1='rgba(239,68,68,0.6)';c2='rgba(220,38,38,0.6)';}
+    if(remainPct>60){c1='rgba(34,197,94,0.8)';c2='rgba(22,163,74,0.6)';}
+    else if(remainPct>40){c1='rgba(6,182,212,0.8)';c2='rgba(8,145,178,0.6)';}
+    else if(remainPct>20){c1='rgba(245,158,11,0.8)';c2='rgba(217,119,6,0.6)';}
+    else{c1='rgba(239,68,68,0.8)';c2='rgba(185,28,28,0.6)';}
     barEl.style.setProperty('--wc1',c1);barEl.style.setProperty('--wc2',c2);
   }
   // Stats
@@ -1113,6 +1193,7 @@ function updateReverseClock(){
   if(ss){if(usedPct<40)ss.textContent='morning light';else if(usedPct<60)ss.textContent='afternoon glow';else if(usedPct<80)ss.textContent='golden hour fading';else ss.textContent='darkness approaching';}
   // Update dashboard stats
   updateDashStats();
+  updateMotivation();
 }
 
 // ===== EXPORT/IMPORT =====
@@ -1620,6 +1701,75 @@ function applySunMoonTimes(){
 }
 
 fetchSunMoonData().catch(function(){});
+
+
+// ===== MOTIVATIONAL TEXT =====
+function updateMotivation(){
+  const el=document.getElementById('barMotivation');
+  if(!el)return;
+  const now=new Date();
+  const h=now.getHours(),m=now.getMinutes();
+  const timeStr=String(h%12||12).padStart(2,'0')+':'+String(m).padStart(2,'0')+(h>=12?' PM':' AM');
+  
+  // Get stats
+  const allItems=getAllDueItems();
+  const ta=getTodayAnswers();
+  const total=allItems.length;
+  const done=Object.keys(ta.answers).length;
+  const pending=total-done;
+  const pct=total?Math.round(done/total*100):0;
+  const hoursLeft=Math.floor((24*60-(h*60+m))/60);
+  const minsLeft=(24*60-(h*60+m))%60;
+  const timePerTask=pending>0?Math.round((hoursLeft*60+minsLeft)/pending):0;
+  
+  // Yesterday comparison
+  const data=gD();
+  const yesterday=new Date(now);yesterday.setDate(yesterday.getDate()-1);
+  const yStr=yesterday.toISOString().slice(0,10);
+  const yData=data.find(d=>d.date===yStr);
+  const yScore=yData?yData.score:null;
+  let compareText='';
+  if(yScore!==null){
+    const diff=pct-yScore;
+    if(diff>0)compareText=' \u2191'+diff+'% vs yesterday';
+    else if(diff<0)compareText=' \u2193'+Math.abs(diff)+'% vs yesterday';
+    else compareText=' = same as yesterday';
+  }
+  
+  // Mixed pool
+  const msgs=[];
+  
+  // Stats + comparison messages
+  if(pending===0&&total>0){
+    msgs.push('\u2705 All '+total+' done! '+pct+'%'+compareText+' \u2014 You crushed it!');
+    msgs.push('\u2705 Sab kaam poora! '+pct+'%'+compareText+' \ud83c\udf1f');
+  } else if(pending>0){
+    msgs.push('\u23f3 '+timeStr+' \u2022 '+done+'/'+total+' done ('+pct+'%)'+compareText+' \u2022 '+timePerTask+'min/task');
+    msgs.push('\u26a1 '+timeStr+' \u2022 '+pending+' pending \u2022 '+hoursLeft+'h '+minsLeft+'m left'+compareText);
+    msgs.push('\u23f3 '+timeStr+' \u2022 '+pending+' baaki \u2022 Har ek ko '+timePerTask+'min do \u2022 GO!');
+  }
+  
+  // Time-phase messages
+  if(h>=5&&h<9){
+    msgs.push('\u2600\ufe0f '+timeStr+' \u2014 Subah ka waqt sona hai. Barbaad mat karo.');
+    msgs.push('\u2600\ufe0f '+timeStr+' \u2014 Morning hours = power hours. Start strong.');
+  } else if(h>=9&&h<12){
+    msgs.push('\ud83d\udcaa '+timeStr+' \u2014 Peak focus. Distractions hatao, kaam karo.');
+    msgs.push('\ud83d\udcaa '+timeStr+' \u2014 Average log yahi pe quit karte hain. Tum nahi.');
+  } else if(h>=12&&h<16){
+    msgs.push('\u26a1 '+timeStr+' \u2014 Half day gone. Kya ukhaad liya? Chal padho.');
+    msgs.push('\u26a1 '+timeStr+' \u2014 Afternoon slump is for quitters. Push through.');
+  } else if(h>=16&&h<20){
+    msgs.push('\ud83c\udf05 '+timeStr+' \u2014 Shaam ho gayi. Target poora hua?');
+    msgs.push('\ud83c\udf05 '+timeStr+' \u2014 Kal ka tu aaj ke tu ko judge karega.');
+  } else {
+    msgs.push('\ud83c\udf19 '+timeStr+' \u2014 Din khatam. Score check karo.');
+    msgs.push('\ud83c\udf19 '+timeStr+' \u2014 Chain tab milegi jab kaam poora hoga.');
+  }
+  
+  const idx=Math.floor(m/5)%msgs.length;
+  el.textContent=msgs[idx];
+}
 
 // ===== INIT =====
 try{

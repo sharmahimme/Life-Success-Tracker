@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="color-scheme" content="dark">
-<meta name="supported-color-schemes" content="dark">
+<meta name="color-scheme" content="dark light">
+<meta name="supported-color-schemes" content="dark light">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -12,13 +12,29 @@
 <meta name="theme-color" content="#020617">
 <link rel="manifest" href="manifest.json">
 <title>Life Improvement Tracker</title>
-<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts.js">
+// ===== AUTO MODE DETECTION =====
+(function(){
+  const mq = window.matchMedia('(prefers-color-scheme: dark)');
+  function onModeChange(e){
+    // Force repaint
+    document.body.style.display='none';
+    void document.body.offsetHeight;
+    document.body.style.display='';
+    // Update clock/charts
+    if(typeof updateReverseClock==='function') updateReverseClock();
+    if(typeof updateDashStats==='function') updateDashStats();
+  }
+  if(mq.addEventListener){ mq.addEventListener('change', onModeChange); }
+  else if(mq.addListener){ mq.addListener(onModeChange); }
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts-more.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/solid-gauge.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/accessibility.js"></script>
 <style>
   :root {
-    color-scheme: dark only;
+    color-scheme: dark light;
     --color-bg: #020617; --color-bg-secondary: rgba(6,182,212,0.04); --color-text: #e0f2fe;
     --color-text-secondary: #7dd3fc; --color-text-muted: #3b7d99;
     --color-border-light: rgba(6,182,212,0.08); --color-border: rgba(6,182,212,0.14);
@@ -211,8 +227,8 @@
   /* Stars and Moon */
   .sunset-stars { position: absolute; inset: 0; opacity: 0; transition: opacity 1.5s ease; pointer-events: none; z-index: 2; }
   .sunset-stars.visible { opacity: 1; }
-  .star { position: absolute; display: block; min-width: 5px; min-height: 5px; width: 5px; height: 5px; background: #ffffff !important; border-radius: 50%; -webkit-animation: twinkle 2.5s ease-in-out infinite; animation: twinkle 2.5s ease-in-out infinite; box-shadow: 0 0 6px 2px rgba(255,255,255,0.95); z-index: 2; outline: 1px solid rgba(255,255,255,0.3); }
-  .star:nth-child(odd) { -webkit-animation-delay: 0.8s; animation-delay: 0.8s; width: 4px; height: 4px; }
+  .star { position: absolute; display: block; width: 3px; height: 3px; background: #ffffff; border-radius: 50%; -webkit-animation: twinkle 2.5s ease-in-out infinite; animation: twinkle 2.5s ease-in-out infinite; box-shadow: 0 0 4px 1px rgba(255,255,255,0.8); z-index: 2; }
+  .star:nth-child(odd) { -webkit-animation-delay: 0.8s; animation-delay: 0.8s; width: 2px; height: 2px; }
   .star:nth-child(3n) { -webkit-animation-delay: 1.5s; animation-delay: 1.5s; -webkit-animation-duration: 3s; animation-duration: 3s; }
   @-webkit-keyframes twinkle { 0%,100%{opacity:0.4} 50%{opacity:1} }
   @keyframes twinkle { 0%,100%{opacity:0.4} 50%{opacity:1} }
@@ -749,7 +765,41 @@
     60% { opacity: 0.8; }
     100% { opacity: 0; transform: translateY(-100px) scale(0.3) translateX(8px); }
   }
-</style>
+
+  /* ===== LIGHT MODE ADAPTATION ===== */
+  @media (prefers-color-scheme: light) {
+    :root {
+      --color-bg: #f0f4f8; --color-bg-secondary: rgba(6,150,180,0.06); --color-text: #1a2332;
+      --color-text-secondary: #2d6a7e; --color-text-muted: #5a8fa3;
+      --glass-bg: rgba(255,255,255,0.7); --glass-border: rgba(6,182,212,0.15);
+    }
+    .app-container { background: #f0f4f8; }
+    .tab-content { background: transparent; }
+    .dash-stats-row { background: rgba(6,182,212,0.05); border-color: rgba(6,182,212,0.12); }
+    .dash-stat-value { color: #0891b2; }
+    .dash-stat-label { color: #5a8fa3; }
+    .furnace-card { background: #1a1008; }
+    .wa-coach { background: rgba(0,60,40,0.08); border-color: rgba(0,92,75,0.15); }
+    .wa-coach .wa-bubble { background: #075e54; }
+    .pending-card, .done-card { background: rgba(255,255,255,0.8); border-color: rgba(6,182,212,0.12); }
+    .pending-card .qi-name, .done-card .qi-name { color: #1a2332; }
+    .qi-cat { color: #2d6a7e; }
+    .badges-section { background: rgba(255,255,255,0.6); border-color: rgba(6,182,212,0.1); }
+    .bottom-nav { background: rgba(240,244,248,0.95); border-color: rgba(6,182,212,0.12); }
+    .nav-item { color: #5a8fa3; }
+    .nav-item.active { color: #0891b2; }
+    .settings-section, .goal-card { background: rgba(255,255,255,0.7); border-color: rgba(6,182,212,0.1); }
+    .sunset-clock { border-color: rgba(6,182,212,0.12); }
+    .clock-label-top { color: rgba(30,60,80,0.5); }
+    .sunset-time { color: #1a2332; text-shadow: none; }
+    .clock-hrs { color: #5a8fa3; opacity: 0.5; }
+    .sunset-sub { color: #2d6a7e; }
+    /* Stars in light mode - use dark gold color for contrast */
+    .star { background: #b8860b !important; box-shadow: 0 0 4px 1px rgba(184,134,11,0.7); outline: none; }
+    .sunset-stars { opacity: 0 !important; }
+    .sunset-stars.visible { opacity: 1 !important; }
+  }
+  </style>
 </head>
 <body>
 

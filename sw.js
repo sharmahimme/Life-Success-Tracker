@@ -1,9 +1,5 @@
-C:\Users\hmsharm\Downloads\sw.js
-javascript
-
-Copy
-// Life Tracker Service Worker
-var CACHE_NAME = 'life-tracker-v2';
+// Life Tracker Service Worker v3 — force cache refresh
+var CACHE_NAME = 'life-tracker-v3';
 var ASSETS = [
   './',
   './index.html',
@@ -38,30 +34,49 @@ self.addEventListener('activate', function(e) {
 });
 
 self.addEventListener('fetch', function(e) {
+  // Network-first strategy for HTML files (always get latest)
+  if (e.request.mode === 'navigate' || e.request.url.endsWith('.html')) {
+    e.respondWith(
+      fetch(e.request).then(function(resp) {
+        var clone = resp.clone();
+        caches.open(CACHE_NAME).then(function(cache) { cache.put(e.request, clone); });
+        return resp;
+      }).catch(function() {
+        return caches.match(e.request).then(function(r) { return r || caches.match('./index.html'); });
+      })
+    );
+    return;
+  }
+  // Cache-first for other assets
   e.respondWith(
     caches.match(e.request).then(function(r) {
       return r || fetch(e.request).then(function(resp) {
         if (resp.status === 200) {
           var clone = resp.clone();
-          caches.open(CACHE_NAME).then(function(cache) {
-            cache.put(e.request, clone);
-          });
+          caches.open(CACHE_NAME).then(function(cache) { cache.put(e.request, clone); });
         }
         return resp;
       }).catch(function() {
-        // Offline fallback
-        if (e.request.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
+        if (e.request.mode === 'navigate') return caches.match('./index.html');
       });
     })
   );
 });
 
-// Handle notification clicks — open the app
 self.addEventListener('notificationclick', function(e) {
   e.notification.close();
   e.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
+      for (var i = 0; i < clientList.length; i++) {
+        if (clientList[i].url.includes('Life-Success-Tracker') && 'focus' in clientList[i]) {
+          return clientList[i].focus();
+        }
+      }
+      if (clients.openWindow) return clients.openWindow('./');
+    })
+  );
+});
+
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
       // Focus existing window if open
       for (var i = 0; i < clientList.length; i++) {

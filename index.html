@@ -594,18 +594,18 @@
   @keyframes number-pop { 0%{transform:translateY(8px);opacity:0} 100%{transform:translateY(0);opacity:1} }
 
   /* Badges & Achievements */
-  .badges-section { margin: 12px 0; padding: 14px; border-radius: var(--radius-sm); background: rgba(6,182,212,0.03); border: 1px solid rgba(6,182,212,0.08); }
-  .badges-title { font-size: 11px; font-weight: 700; color: var(--color-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-  .badges-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  
+  
+  
   .badge { width: 52px; text-align: center; padding: 6px 2px; border-radius: 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); transition: transform 0.2s ease, box-shadow 0.2s ease; }
   .badge.earned { border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.05); animation: badge-shine 2s ease-in-out infinite alternate; }
   .badge.earned:active { transform: scale(1.1); }
   @keyframes badge-shine { 0%{box-shadow: 0 0 0 rgba(251,191,36,0)} 100%{box-shadow: 0 0 8px rgba(251,191,36,0.15)} }
-  .badge .badge-icon { font-size: 22px; line-height: 1.2; }
-  .badge .badge-name { font-size: 7px; color: #3b7d99; margin-top: 3px; line-height: 1.2; }
+  .badge 
+  .badge 
   .badge.earned .badge-name { color: #fbbf24; }
   .badge:not(.earned) { opacity: 0.35; filter: grayscale(1); }
-  .badge-new { animation: badge-unlock 0.6s ease; }
+  
 
   /* Push Notification Settings */
   .notif-settings { margin-top: 16px; padding: 14px; border-radius: var(--radius-sm); background: rgba(6,182,212,0.03); border: 1px solid rgba(6,182,212,0.08); }
@@ -620,6 +620,34 @@
   .notif-toggle.on::after { transform: translateX(18px); }
   .notif-btn { margin-top: 10px; padding: 8px 14px; border-radius: 8px; background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.3); color: #22d3ee; font-size: 11px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
   .notif-btn:active { background: rgba(6,182,212,0.25); }
+
+  .wc-dig { font-size: 26px; font-weight: 800; font-family: var(--font-mono); color: #e0f2fe; text-shadow: 0 0 8px rgba(6,182,212,0.3); width: 18px; display: inline-block; text-align: center; }
+  .wc-sep { font-size: 20px; font-weight: 700; color: rgba(186,230,253,0.35); width: 6px; text-align: center; }
+  .wc-hrs { font-size: 7px; opacity: 0.35; margin-left: 3px; letter-spacing: 0.5px; }
+  #fallenPool span { font-size: 7px; font-weight: 600; font-family: var(--font-mono); color: rgba(6,182,212,0.12); line-height: 1; }
+  @keyframes wc-fall { 0%{transform:translateY(0) scale(1);opacity:1} 30%{opacity:0.8} 100%{transform:translateY(85px) scale(0.5);opacity:0} }
+  @keyframes wc-slide-in { 0%{transform:translateY(-25px);opacity:0} 100%{transform:translateY(0);opacity:1} }
+  @keyframes wc-splash { 0%{transform:translateY(0) scale(1);opacity:0.6} 100%{transform:translateY(-8px) translateX(var(--sx,3px)) scale(0.3);opacity:0} }
+
+  /* ===== MOBILE UX ===== */
+  html { -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+  body { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: contain; }
+  button, .btn, .nav-item, .type-option, .period-btn, select { min-height: 44px; }
+  input[type="text"], input[type="number"], input[type="time"], select, textarea { font-size: 16px !important; border-radius: 8px; padding: 10px 12px; }
+  .qi-item { padding: 12px; margin-bottom: 6px; border-radius: 10px; min-height: 50px; }
+  .qi-name { font-size: 14px; }
+  .qi-input input[type="number"] { width: 70px; height: 40px; text-align: center; font-size: 16px !important; font-weight: 700; }
+  .qi-save { min-width: 55px; height: 36px; font-size: 12px; font-weight: 700; border-radius: 8px; }
+  .bottom-nav { height: 58px; padding-bottom: env(safe-area-inset-bottom, 8px); }
+  .tab-content { padding-bottom: 70px; }
+  .period-selector { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .period-btn { white-space: nowrap; flex-shrink: 0; padding: 8px 14px; }
+  .goal-modal { width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; border-radius: 14px; }
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-thumb { background: rgba(6,182,212,0.15); border-radius: 3px; }
+  button:active, .btn:active, .nav-item:active, .type-option:active, .period-btn:active { transform: scale(0.96); opacity: 0.85; transition: transform 0.1s; }
+  @media (max-height: 500px) and (orientation: landscape) { .sunset-clock { height: 90px; } .furnace-card { height: 100px; } .bottom-nav { height: 48px; } }
+  @media (max-width: 360px) { .wc-dig { font-size: 22px; width: 15px; } .furnace-val { font-size: 26px; } }
 </style>
 </head>
 <body>
@@ -653,8 +681,16 @@
         <div class="sunset-horizon"></div>
         <div class="sun-moon-info" id="sunMoonInfo"></div>
         <div class="sunset-time-wrap">
-          <div class="sunset-time" id="mainClockValue">00:00:00</div>
+          
+          <div id="fallingDigits" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:4;"></div>
+          <div style="display:flex;align-items:center;gap:1px;position:relative;z-index:5;">
+            <span class="wc-dig" id="wcd0">0</span><span class="wc-dig" id="wcd1">0</span><span class="wc-sep">:</span>
+            <span class="wc-dig" id="wcd2">0</span><span class="wc-dig" id="wcd3">0</span><span class="wc-sep">:</span>
+            <span class="wc-dig" id="wcd4">0</span><span class="wc-dig" id="wcd5">0</span>
+            <span class="wc-hrs">hrs</span>
+          </div>
           <div class="sunset-sub" id="sunsetSub">before darkness falls</div>
+          <div id="fallenPool" style="position:absolute;bottom:18px;left:70px;right:10px;height:14px;overflow:hidden;display:flex;flex-wrap:wrap;gap:1px;justify-content:center;z-index:2;"></div>
         </div>
         <div class="sunset-bar"><div class="sunset-bar-fill" id="sunsetBarFill" style="width:0%"></div></div>
         <div class="bar-motivation" id="barMotivation"></div>
@@ -674,10 +710,7 @@
       <div class="furnace-compare" id="furnaceCompare"></div>
     </div>
     <div class="donuts-progress" id="donutsProgress"></div>
-    <div class="badges-section" id="badgesSection">
-      <div class="badges-title">🏆 Achievements</div>
-      <div class="badges-grid" id="badgesGrid"></div>
-    </div>
+    
     <div class="card" id="pendingCard">
       <div class="card-title">📝 Pending</div>
       <div id="pendingList"></div>
@@ -853,6 +886,19 @@
         <button class="preset-btn" onclick="addPreset('growth')">📚 Growth</button>
         <button class="preset-btn" onclick="addPreset('finance')">💰 Finance</button>
       </div>
+    <div class="card" style="margin-top:12px;">
+      <div class="card-title">💾 Auto Backup</div>
+      <div style="font-size:11px;color:var(--color-text-muted);margin-bottom:8px;">
+        Auto-backup runs daily at 1:00 AM. Only one backup file is maintained (overwrites previous).
+      </div>
+      <div style="font-size:11px;margin-bottom:8px;">
+        Last backup: <strong id="lastBackupTime">—</strong>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="saveAutoBackup()" style="flex:1;min-width:120px;">📥 Backup Now</button>
+        <button class="btn btn-ghost" onclick="restoreFromAutoBackup()" style="flex:1;min-width:120px;">📤 Restore Backup</button>
+      </div>
+    </div>
     <div class="notif-settings" id="notifSettings">
       <div class="notif-title">\ud83d\udd14 Reminder Notifications</div>
       <div class="notif-row">
@@ -1009,30 +1055,57 @@ function saveSingle(id){
   
   // If it's a goal item, also update the goal's achieved value
   if(item.isGoalItem){
-    const goals=getGoals();
-    const goal=goals.find(g=>g.id===item.goalId);
+    var goals=getGoals();
+    var goal=goals.find(function(g){return g.id===item.goalId;});
     if(goal){
+      var todayStr=getToday();
       if(item.subGoalId){
-        const sg=goal.subGoals.find(s=>s.id===item.subGoalId);
-        if(sg)sg.achieved=ta.answers[id];
-        // Recalculate parent from sub-goals
-        goal.achieved=goal.subGoals.reduce((sum,s)=>sum+s.achieved,0);
+        var sg=goal.subGoals.find(function(s){return s.id===item.subGoalId;});
+        if(sg){
+          sg.dailyLog=sg.dailyLog||{};
+          sg.dailyLog[todayStr]=ta.answers[id];
+          sg.achieved=Object.values(sg.dailyLog).reduce(function(s,v){return s+(parseFloat(v)||0);},0);
+        }
+        goal.achieved=goal.subGoals.reduce(function(sum,s){return sum+(s.achieved||0);},0);
       } else {
-        goal.achieved=ta.answers[id];
+        goal.dailyLog=goal.dailyLog||{};
+        goal.dailyLog[todayStr]=ta.answers[id];
+        goal.achieved=Object.values(goal.dailyLog).reduce(function(s,v){return s+(parseFloat(v)||0);},0);
       }
       goal.history=goal.history||[];
-      goal.history.push({date:getToday(),value:goal.achieved});
+      var existingIdx=goal.history.findIndex(function(h){return h.date===todayStr;});
+      if(existingIdx>=0){goal.history[existingIdx].value=goal.achieved;}
+      else{goal.history.push({date:todayStr,value:goal.achieved});}
       saveGoals(goals);
     }
   }
   
-  saveDailyRecord();checkBadges();renderCheckin();updateDashStats();
+  saveDailyRecord();renderCheckin();updateDashStats();
 }
 
 function undoSingle(id){
-  const ta=getTodayAnswers();
+  var ta=getTodayAnswers();
   delete ta.answers[id];
   saveTodayAnswers(ta.answers);
+  var allItems=getAllDueItems();
+  var item=allItems.find(function(x){return x.id===id||x.id===String(id);});
+  if(item&&item.isGoalItem){
+    var goals=getGoals();
+    var goal=goals.find(function(g){return g.id===item.goalId;});
+    if(goal){
+      var todayStr=getToday();
+      if(item.subGoalId){
+        var sg=goal.subGoals.find(function(s){return s.id===item.subGoalId;});
+        if(sg&&sg.dailyLog){delete sg.dailyLog[todayStr];sg.achieved=Object.values(sg.dailyLog).reduce(function(s,v){return s+(parseFloat(v)||0);},0);}
+        goal.achieved=goal.subGoals.reduce(function(sum,s){return sum+(s.achieved||0);},0);
+      } else {
+        if(goal.dailyLog){delete goal.dailyLog[todayStr];goal.achieved=Object.values(goal.dailyLog).reduce(function(s,v){return s+(parseFloat(v)||0);},0);}
+      }
+      var hi=goal.history?goal.history.findIndex(function(h){return h.date===todayStr;}):-1;
+      if(hi>=0){if(goal.achieved>0)goal.history[hi].value=goal.achieved;else goal.history.splice(hi,1);}
+      saveGoals(goals);
+    }
+  }
   saveDailyRecord();renderCheckin();updateDashStats();
 }
 
@@ -1251,7 +1324,27 @@ function updateReverseClock(){
   document.getElementById('dayProgressInner').style.width=usedPct+'%';
   document.getElementById('dayPct').textContent=usedPct+'% of day used • '+fmtMin(h*60+m)+' remaining';
   // Update Sunset Sky on check-in page
-  const mc=document.getElementById('mainClockValue');if(mc)mc.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  var hStr=String(h).padStart(2,'0'),mStr=String(m).padStart(2,'0'),sStr=String(s).padStart(2,'0');
+  var newDigs=[hStr[0],hStr[1],mStr[0],mStr[1],sStr[0],sStr[1]];
+  for(var di=0;di<6;di++){
+    var del=document.getElementById('wcd'+di);
+    if(del&&del.textContent!==newDigs[di]){
+      var oldCh=del.textContent;
+      var fc=document.getElementById('fallingDigits');
+      if(fc){
+        var rect=del.getBoundingClientRect();
+        var areaRect=document.getElementById('sunsetClock').getBoundingClientRect();
+        var fd=document.createElement('span');fd.textContent=oldCh;
+        fd.style.cssText='position:absolute;left:'+(rect.left-areaRect.left)+'px;top:'+(rect.top-areaRect.top)+'px;font-size:26px;font-weight:800;font-family:var(--font-mono);color:#22d3ee;text-shadow:0 0 8px rgba(6,182,212,0.4);animation:wc-fall 0.8s ease-in forwards;z-index:6;';
+        fc.appendChild(fd);setTimeout(function(e){e.remove();},900,fd);
+        for(var sp=0;sp<3;sp++){var spl=document.createElement('span');spl.textContent='\u2022';spl.style.cssText='position:absolute;left:'+(rect.left-areaRect.left+5+Math.random()*8)+'px;top:105px;font-size:8px;color:rgba(34,211,238,0.5);animation:wc-splash 0.5s ease-out 0.7s forwards;--sx:'+(Math.random()*10-5)+'px;';fc.appendChild(spl);setTimeout(function(e){e.remove();},1300,spl);}
+      }
+      del.textContent=newDigs[di];
+      del.style.animation='wc-slide-in 0.3s ease-out';
+      setTimeout(function(e){e.style.animation='';},350,del);
+      if(di>=4){var pool=document.getElementById('fallenPool');if(pool){var ps=document.createElement('span');ps.textContent=oldCh;pool.appendChild(ps);if(pool.children.length>40)pool.removeChild(pool.firstChild);}}
+    }
+  }
   updateTaskUsedPct();
   // Rainbow bar width
   const sb=document.getElementById('sunsetBarFill');if(sb)sb.style.width=(100-usedPct)+'%';
@@ -1330,8 +1423,12 @@ function updateReverseClock(){
 // ===== EXPORT/IMPORT =====
 function exportExcel(){const data=gD(),qs=gQ();if(!data.length){alert('No data');return;}const cats=[...new Set(qs.map(q=>q.category))].sort();let csv='Date,Overall Score,Status';cats.forEach(c=>{csv+=','+c+'%';});qs.forEach(q=>{csv+=','+(q.type==='yesno'?q.text+' (Y/N)':q.text+' ('+q.target+' '+q.uom+')');});csv+='\n';data.forEach(d=>{csv+=d.date+','+d.score+','+scoreText(d.score).replace(/[^\w\s]/g,'').trim();cats.forEach(c=>{csv+=','+(d.catScores&&d.catScores[c]!==undefined?d.catScores[c]:'');});qs.forEach(q=>{const v=d.actuals?d.actuals[q.id]:'';csv+=','+(q.type==='yesno'?(v===1?'Yes':v===0?'No':''):v||'');});csv+='\n';});csv+='\n--- SUMMARY ---\nPeriod,Score,Status,Days\n';const now=new Date();const w7=data.filter(d=>d.date>=new Date(now-7*86400000).toISOString().slice(0,10));if(w7.length)csv+='Last 7 Days,'+Math.round(w7.reduce((s,d)=>s+d.score,0)/w7.length)+'%,,'+w7.length+'\n';const mm=data.filter(d=>d.date.startsWith(now.toISOString().slice(0,7)));if(mm.length)csv+='This Month,'+Math.round(mm.reduce((s,d)=>s+d.score,0)/mm.length)+'%,,'+mm.length+'\n';const yy=data.filter(d=>d.date.startsWith(String(now.getFullYear())));if(yy.length)csv+='This Year,'+Math.round(yy.reduce((s,d)=>s+d.score,0)/yy.length)+'%,,'+yy.length+'\n';csv+='All Time,'+Math.round(data.reduce((s,d)=>s+d.score,0)/data.length)+'%,,'+data.length+'\n';const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Life_Tracker_'+getToday()+'.csv';a.click();}
 function exportJSON(){const p={questions:gQ(),data:gD(),todayAnswers:getTodayAnswers(),timeTargets:getTimeTargets(),timeLog:getTimeLog(),goals:getGoals(),badges:JSON.parse(localStorage.getItem('life_tracker_badges_v1')||'[]'),notifSettings:getNotifSettings(),exported:new Date().toISOString(),version:'v7'};const b=new Blob([JSON.stringify(p,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='life_tracker_backup_'+getToday()+'.json';a.click();}
-function importBackup(){const i=document.createElement('input');i.type='file';i.accept='.json,.csv';i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{if(f.name.endsWith('.json')){const p=JSON.parse(ev.target.result);if(p.questions)sQ(p.questions);if(p.data)sD(p.data);if(p.todayAnswers)localStorage.setItem(TDK,JSON.stringify(p.todayAnswers));if(p.timeTargets)setTimeTargets(p.timeTargets);if(p.timeLog)localStorage.setItem(TLK,JSON.stringify(p.timeLog));if(p.goals)saveGoals(p.goals);if(p.badges)localStorage.setItem('life_tracker_badges_v1',JSON.stringify(p.badges));if(p.notifSettings)localStorage.setItem(NOTIF_KEY,JSON.stringify(p.notifSettings));}else{const lines=ev.target.result.split('\n'),data=gD();for(let i=1;i<lines.length;i++){const cols=lines[i].split(',');if(cols.length<2||!cols[0].match(/^\d{4}-\d{2}-\d{2}$/))continue;const date=cols[0],score=parseInt(cols[1]);if(!isNaN(score)&&!data.find(d=>d.date===date))data.push({date,score,catScores:{},actuals:{}});}sD(data);}renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();checkBadges();loadNotifSettings();renderTimerTab();alert('✅ Imported!');}catch(err){alert('❌ Invalid file');}};r.readAsText(f);};i.click();}
-function clearAll(){if(!confirm('⚠️ Delete ALL data?'))return;localStorage.removeItem(DK);localStorage.removeItem(QK);localStorage.removeItem(TDK);localStorage.removeItem(TTK);localStorage.removeItem(TLK);renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();checkBadges();loadNotifSettings();renderTimerTab();}
+function importBackup(){const i=document.createElement('input');i.type='file';i.accept='.json,.csv';i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{if(f.name.endsWith('.json')){const p=JSON.parse(ev.target.result);if(p.questions)sQ(p.questions);if(p.data)sD(p.data);if(p.todayAnswers)localStorage.setItem(TDK,JSON.stringify(p.todayAnswers));if(p.timeTargets)setTimeTargets(p.timeTargets);if(p.timeLog)localStorage.setItem(TLK,JSON.stringify(p.timeLog));if(p.goals)saveGoals(p.goals);if(p.badges)localStorage.setItem('life_tracker_badges_v1',JSON.stringify(p.badges));if(p.notifSettings)localStorage.setItem(NOTIF_KEY,JSON.stringify(p.notifSettings));}else{const lines=ev.target.result.split('\n'),data=gD();for(let i=1;i<lines.length;i++){const cols=lines[i].split(',');if(cols.length<2||!cols[0].match(/^\d{4}-\d{2}-\d{2}$/))continue;const date=cols[0],score=parseInt(cols[1]);if(!isNaN(score)&&!data.find(d=>d.date===date))data.push({date,score,catScores:{},actuals:{}});}sD(data);}backfillMissedDays();
+renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();loadNotifSettings();
+var lbt=document.getElementById("lastBackupTime");if(lbt)lbt.textContent=getLastBackupInfo();renderTimerTab();alert('✅ Imported!');}catch(err){alert('❌ Invalid file');}};r.readAsText(f);};i.click();}
+function clearAll(){if(!confirm('⚠️ Delete ALL data?'))return;localStorage.removeItem(DK);localStorage.removeItem(QK);localStorage.removeItem(TDK);localStorage.removeItem(TTK);localStorage.removeItem(TLK);backfillMissedDays();
+renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();loadNotifSettings();
+var lbt=document.getElementById("lastBackupTime");if(lbt)lbt.textContent=getLastBackupInfo();renderTimerTab();}
 
 
 
@@ -1508,9 +1605,12 @@ function saveGoalUpdate(goalId){
     if(totalFromSub>0)g.achieved=totalFromSub;
   }
   
-  // Add to history
+  // Update history: replace today or add new (no duplicates)
   g.history=g.history||[];
-  g.history.push({date:new Date().toISOString().slice(0,10),value:g.achieved});
+  var todayStr=getToday();
+  var existingIdx=g.history.findIndex(function(h){return h.date===todayStr;});
+  if(existingIdx>=0){g.history[existingIdx].value=g.achieved;}
+  else{g.history.push({date:todayStr,value:g.achieved});}
   
   saveGoals(goals);
   document.getElementById('goalModal').remove();
@@ -1906,71 +2006,6 @@ function updateMotivation(){
 }
 
 
-// ===== BADGES & ACHIEVEMENTS =====
-const BADGES=[
-  {id:'first100',icon:'\ud83c\udf1f',name:'First 100%',desc:'Score 100% in a day',check:function(d){return d.some(x=>x.score>=100);}},
-  {id:'streak3',icon:'\ud83d\udd25',name:'3-Day Fire',desc:'3 day streak \u226570%',check:function(d){return getStreak(d,70)>=3;}},
-  {id:'streak7',icon:'\ud83d\udcaa',name:'7-Day Warrior',desc:'7 day streak \u226570%',check:function(d){return getStreak(d,70)>=7;}},
-  {id:'streak14',icon:'\u26a1',name:'2-Week Beast',desc:'14 day streak \u226570%',check:function(d){return getStreak(d,70)>=14;}},
-  {id:'streak30',icon:'\ud83d\udc51',name:'Monthly King',desc:'30 day streak \u226570%',check:function(d){return getStreak(d,70)>=30;}},
-  {id:'earlybird',icon:'\ud83c\udf05',name:'Early Bird',desc:'All done before noon',check:function(d,meta){return meta.earlyBird;}},
-  {id:'perfectweek',icon:'\ud83c\udfc6',name:'Perfect Week',desc:'7 days \u226580%',check:function(d){return getStreak(d,80)>=7;}},
-  {id:'century',icon:'\ud83d\udcaf',name:'Century',desc:'100 check-in days',check:function(d){return d.length>=100;}},
-  {id:'comeback',icon:'\ud83d\ude80',name:'Comeback',desc:'+20% vs yesterday',check:function(d){if(d.length<2)return false;const t=d[d.length-1],y=d[d.length-2];return t.score-y.score>=20;}},
-  {id:'halfcentury',icon:'\u2b50',name:'50 Days',desc:'50 check-in days',check:function(d){return d.length>=50;}}
-];
-
-function getStreak(data,minScore){
-  let streak=0;
-  for(let i=data.length-1;i>=0;i--){
-    if(data[i].score>=minScore)streak++;
-    else break;
-  }
-  return streak;
-}
-
-function checkBadges(){
-  const data=gD();
-  const earned=JSON.parse(localStorage.getItem('life_tracker_badges_v1')||'[]');
-  const now=new Date();
-  const meta={earlyBird:false};
-  // Check if all items done before noon today
-  const ta=getTodayAnswers();
-  const allItems=getAllDueItems();
-  if(allItems.length>0&&Object.keys(ta.answers).length>=allItems.length&&now.getHours()<12){
-    meta.earlyBird=true;
-  }
-  
-  let newBadges=[];
-  BADGES.forEach(b=>{
-    if(!earned.includes(b.id)&&b.check(data,meta)){
-      earned.push(b.id);
-      newBadges.push(b.id);
-    }
-  });
-  
-  if(newBadges.length)localStorage.setItem('life_tracker_badges_v1',JSON.stringify(earned));
-  renderBadges(earned,newBadges);
-}
-
-function renderBadges(earned,newBadges){
-  const grid=document.getElementById('badgesGrid');
-  if(!grid)return;
-  let html='';
-  BADGES.forEach(b=>{
-    const isEarned=earned.includes(b.id);
-    const isNew=newBadges&&newBadges.includes(b.id);
-    html+='<div class="badge'+(isEarned?' earned':'')+(isNew?' badge-new':'')+'" title="'+b.desc+'">';
-    html+='<div class="badge-icon">'+b.icon+'</div>';
-    html+='<div class="badge-name">'+b.name+'</div>';
-    html+='</div>';
-  });
-  grid.innerHTML=html;
-}
-
-
-// ===== PUSH NOTIFICATION REMINDERS =====
-const NOTIF_KEY='life_tracker_notif_v1';
 
 function getNotifSettings(){
   try{return JSON.parse(localStorage.getItem(NOTIF_KEY))||{enabled:false,morning:'08:00',afternoon:'14:00',evening:'19:00'};}
@@ -1999,7 +2034,7 @@ function toggleNotifications(){
       Notification.requestPermission().then(p=>{
         if(p==='granted'){
           tog.classList.add('on');
-          new Notification('Life Tracker',{body:'Notifications enabled!'});
+          sendNotification('Life Tracker','Notifications enabled! \u2705');
         } else {
           alert('Please allow notifications in browser settings');
         }
@@ -2030,7 +2065,7 @@ function checkNotifications(){
   const now=new Date();
   const timeStr=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
   const todayKey='notif_fired_'+getToday();
-  const fired=JSON.parse(sessionStorage.getItem(todayKey)||'[]');
+  const fired=JSON.parse(localStorage.getItem(todayKey)||'[]');
   
   const allItems=getAllDueItems();
   const ta=getTodayAnswers();
@@ -2055,18 +2090,129 @@ function checkNotifications(){
   
   if(msg&&label){
     fired.push(label);
-    sessionStorage.setItem(todayKey,JSON.stringify(fired));
-    new Notification('Life Tracker',{body:msg,icon:'icon-192.png'});
+    localStorage.setItem(todayKey,JSON.stringify(fired));
+    sendNotification('Life Tracker',msg);
   }
 }
 
 // Check every minute
 setInterval(checkNotifications,60000);
 
+
+// ===== MISSED DAYS BACKFILL =====
+function backfillMissedDays(){
+  var data=gD();if(!data.length)return;
+  data.sort(function(a,b){return a.date.localeCompare(b.date);});
+  var lastDate=data[data.length-1].date,today=getToday();
+  if(lastDate>=today)return;
+  var qs=gQ(),catWeights={};
+  qs.filter(function(q){return !q.frequency||q.frequency==='daily';}).forEach(function(q){catWeights[q.category]=(catWeights[q.category]||0)+q.weight;});
+  var d=new Date(lastDate);d.setDate(d.getDate()+1);var todayD=new Date(today),filled=0;
+  while(d<todayD){
+    var ds=d.toISOString().slice(0,10);
+    if(!data.find(function(x){return x.date===ds;})){
+      var cs={};Object.keys(catWeights).forEach(function(c){cs[c]=0;});
+      data.push({date:ds,score:0,catScores:cs,actuals:{},missed:true});filled++;
+    }
+    d.setDate(d.getDate()+1);
+  }
+  if(filled>0){data.sort(function(a,b){return a.date.localeCompare(b.date);});sD(data);}
+}
+
+// Cross-platform notification (Android + Desktop)
+function sendNotification(title,body){
+  if('serviceWorker' in navigator&&navigator.serviceWorker.controller){
+    navigator.serviceWorker.getRegistration().then(function(reg){
+      if(reg)reg.showNotification(title,{body:body,icon:'icon-192.png',badge:'icon-192.png',vibrate:[200,100,200],tag:'life-tracker-reminder',renotify:true});
+      else{try{new Notification(title,{body:body,icon:'icon-192.png'});}catch(e){}}
+    }).catch(function(){try{new Notification(title,{body:body,icon:'icon-192.png'});}catch(e){}});
+  } else {try{new Notification(title,{body:body,icon:'icon-192.png'});}catch(e){}}
+}
+
+
+// ===== AUTO BACKUP (1 AM daily) =====
+var BACKUP_KEY='life_tracker_auto_backup';
+var BACKUP_TIME_KEY='life_tracker_last_backup';
+
+function createBackupData(){
+  return {
+    version:'v7',
+    backupDate:new Date().toISOString(),
+    questions:gQ(),
+    data:gD(),
+    todayAnswers:getTodayAnswers(),
+    goals:getGoals(),
+    timeTargets:getTimeTargets(),
+    timeLog:getTimeLog(),
+    notifSettings:getNotifSettings()
+  };
+}
+
+function saveAutoBackup(){
+  var backup=createBackupData();
+  // Save to localStorage (single key — always overwrites = only 1 backup)
+  localStorage.setItem(BACKUP_KEY, JSON.stringify(backup));
+  localStorage.setItem(BACKUP_TIME_KEY, new Date().toISOString());
+  
+  // Also trigger file download
+  try{
+    var blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;
+    a.download='life_tracker_backup.json';
+    a.style.display='none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},1000);
+  }catch(e){}
+}
+
+function restoreFromAutoBackup(){
+  var raw=localStorage.getItem(BACKUP_KEY);
+  if(!raw){alert('No auto-backup found');return;}
+  try{
+    var p=JSON.parse(raw);
+    if(p.questions)sQ(p.questions);
+    if(p.data)sD(p.data);
+    if(p.todayAnswers)saveTodayAnswers(p.todayAnswers.answers||{});
+    if(p.goals)saveGoals(p.goals);
+    if(p.timeTargets)setTimeTargets(p.timeTargets);
+    if(p.timeLog)setTimeLog(p.timeLog);
+    if(p.notifSettings)saveNotifSettings(p.notifSettings);
+    alert('Restored from backup: '+p.backupDate);
+    location.reload();
+  }catch(e){alert('Backup restore failed: '+e.message);}
+}
+
+function getLastBackupInfo(){
+  var ts=localStorage.getItem(BACKUP_TIME_KEY);
+  return ts?new Date(ts).toLocaleString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'Never';
+}
+
+// Auto-backup checker — runs every 60 seconds
+function checkAutoBackup(){
+  var now=new Date();
+  var h=now.getHours(),m=now.getMinutes();
+  
+  // Trigger at 1:00 AM
+  if(h===1&&m===0){
+    var lastBackup=localStorage.getItem(BACKUP_TIME_KEY);
+    var today=getToday();
+    // Only backup once per day
+    if(!lastBackup||!lastBackup.startsWith(today)){
+      saveAutoBackup();
+    }
+  }
+}
+setInterval(checkAutoBackup,60000);
+
 // ===== INIT =====
 try{
 document.getElementById('todayDate').textContent='📅 '+new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short',year:'numeric'});
-renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();checkBadges();loadNotifSettings();
+backfillMissedDays();
+renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();loadNotifSettings();
+var lbt=document.getElementById("lastBackupTime");if(lbt)lbt.textContent=getLastBackupInfo();
 updateReverseClock();
 setInterval(updateReverseClock,1000);
 setInterval(()=>{if(Object.keys(activeTimers).length)renderTimerTab();},10000);

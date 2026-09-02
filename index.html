@@ -1423,9 +1423,97 @@ function updateReverseClock(){
 // ===== EXPORT/IMPORT =====
 function exportExcel(){const data=gD(),qs=gQ();if(!data.length){alert('No data');return;}const cats=[...new Set(qs.map(q=>q.category))].sort();let csv='Date,Overall Score,Status';cats.forEach(c=>{csv+=','+c+'%';});qs.forEach(q=>{csv+=','+(q.type==='yesno'?q.text+' (Y/N)':q.text+' ('+q.target+' '+q.uom+')');});csv+='\n';data.forEach(d=>{csv+=d.date+','+d.score+','+scoreText(d.score).replace(/[^\w\s]/g,'').trim();cats.forEach(c=>{csv+=','+(d.catScores&&d.catScores[c]!==undefined?d.catScores[c]:'');});qs.forEach(q=>{const v=d.actuals?d.actuals[q.id]:'';csv+=','+(q.type==='yesno'?(v===1?'Yes':v===0?'No':''):v||'');});csv+='\n';});csv+='\n--- SUMMARY ---\nPeriod,Score,Status,Days\n';const now=new Date();const w7=data.filter(d=>d.date>=new Date(now-7*86400000).toISOString().slice(0,10));if(w7.length)csv+='Last 7 Days,'+Math.round(w7.reduce((s,d)=>s+d.score,0)/w7.length)+'%,,'+w7.length+'\n';const mm=data.filter(d=>d.date.startsWith(now.toISOString().slice(0,7)));if(mm.length)csv+='This Month,'+Math.round(mm.reduce((s,d)=>s+d.score,0)/mm.length)+'%,,'+mm.length+'\n';const yy=data.filter(d=>d.date.startsWith(String(now.getFullYear())));if(yy.length)csv+='This Year,'+Math.round(yy.reduce((s,d)=>s+d.score,0)/yy.length)+'%,,'+yy.length+'\n';csv+='All Time,'+Math.round(data.reduce((s,d)=>s+d.score,0)/data.length)+'%,,'+data.length+'\n';const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Life_Tracker_'+getToday()+'.csv';a.click();}
 function exportJSON(){const p={questions:gQ(),data:gD(),todayAnswers:getTodayAnswers(),timeTargets:getTimeTargets(),timeLog:getTimeLog(),goals:getGoals(),badges:JSON.parse(localStorage.getItem('life_tracker_badges_v1')||'[]'),notifSettings:getNotifSettings(),exported:new Date().toISOString(),version:'v7'};const b=new Blob([JSON.stringify(p,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='life_tracker_backup_'+getToday()+'.json';a.click();}
-function importBackup(){const i=document.createElement('input');i.type='file';i.accept='.json,.csv';i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{if(f.name.endsWith('.json')){const p=JSON.parse(ev.target.result);if(p.questions)sQ(p.questions);if(p.data)sD(p.data);if(p.todayAnswers){var ta=p.todayAnswers;if(ta.answers)saveTodayAnswers(ta.answers);else if(typeof ta==='object')saveTodayAnswers(ta);}if(p.timeTargets)setTimeTargets(p.timeTargets);if(p.timeLog)localStorage.setItem(TLK,JSON.stringify(p.timeLog));if(p.goals)saveGoals(p.goals);if(p.badges)localStorage.setItem('life_tracker_badges_v1',JSON.stringify(p.badges));if(p.notifSettings)saveNotifSettings(p.notifSettings);}else{const lines=ev.target.result.split('\n'),data=gD();for(let i=1;i<lines.length;i++){const cols=lines[i].split(',');if(cols.length<2||!cols[0].match(/^\d{4}-\d{2}-\d{2}$/))continue;const date=cols[0],score=parseInt(cols[1]);if(!isNaN(score)&&!data.find(d=>d.date===date))data.push({date,score,catScores:{},actuals:{}});}sD(data);}backfillMissedDays();
-renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();loadNotifSettings();
-var lbt=document.getElementById("lastBackupTime");if(lbt)lbt.textContent=getLastBackupInfo();renderTimerTab();alert('✅ Imported!');}catch(err){alert('❌ Invalid file');}};r.readAsText(f);};i.click();}
+function importBackup(){
+  var i=document.createElement('input');
+  i.type='file';
+  i.accept='.json,.csv,.txt';
+  i.onchange=function(e){
+    var f=e.target.files[0];
+    if(!f)return;
+    var r=new FileReader();
+    r.onload=function(ev){
+      try{
+        var text=ev.target.result;
+        
+        // Try JSON first (regardless of extension)
+        var isJSON=false;
+        try{
+          var p=JSON.parse(text);
+          if(p&&typeof p==='object')isJSON=true;
+        }catch(je){}
+        
+        if(isJSON){
+          var p=JSON.parse(text);
+          
+          // Validate: must have at least questions or data
+          if(!p.questions&&!p.data){
+            alert('\u274c Invalid backup: no questions or data found');
+            return;
+          }
+          
+          if(p.questions)sQ(p.questions);
+          if(p.data)sD(p.data);
+          
+          // todayAnswers: ONLY import if they are from TODAY
+          // Old todayAnswers are already in the data[] history
+          if(p.todayAnswers){
+            var taDate=p.todayAnswers.date||'';
+            if(taDate===getToday()){
+              // Same day — restore today's answers
+              saveTodayAnswers(p.todayAnswers.answers||{});
+            } else {
+              // Different day — clear today's answers (start fresh)
+              saveTodayAnswers({});
+            }
+          }
+          
+          if(p.timeTargets)setTimeTargets(p.timeTargets);
+          if(p.timeLog){
+            try{localStorage.setItem('life_tracker_time_log_v7',JSON.stringify(p.timeLog));}catch(e){}
+          }
+          if(p.goals)saveGoals(p.goals);
+          if(p.notifSettings){
+            try{saveNotifSettings(p.notifSettings);}catch(e){}
+          }
+          
+          // Run backfill for any missed days between last data entry and today
+          backfillMissedDays();
+          
+          // Refresh everything
+          renderCheckin();renderSettings();updateDashStats();
+          renderGoals();renderDonutsProgress();loadNotifSettings();
+          renderTimerTab();
+          var lbt=document.getElementById('lastBackupTime');
+          if(lbt)lbt.textContent=getLastBackupInfo();
+          
+          var qCount=p.questions?p.questions.length:0;
+          var dCount=p.data?p.data.length:0;
+          var gCount=p.goals?p.goals.length:0;
+          alert('\u2705 Imported! '+qCount+' habits, '+dCount+' days of data, '+gCount+' goals');
+          
+        } else {
+          // CSV import
+          var lines=text.split('\n'),data=gD(),added=0;
+          for(var li=1;li<lines.length;li++){
+            var cols=lines[li].split(',');
+            if(cols.length<2||!/^\d{4}-\d{2}-\d{2}$/.test(cols[0]))continue;
+            var date=cols[0],score=parseInt(cols[1]);
+            if(!isNaN(score)&&!data.find(function(d){return d.date===date;})){
+              data.push({date:date,score:score,catScores:{},actuals:{}});
+              added++;
+            }
+          }
+          if(added>0){sD(data);backfillMissedDays();renderCheckin();updateDashStats();}
+          alert('\u2705 CSV imported: '+added+' new entries');
+        }
+      }catch(err){
+        alert('\u274c Import error: '+err.message);
+      }
+    };
+    r.readAsText(f);
+  };
+  i.click();
+}
 function clearAll(){if(!confirm('⚠️ Delete ALL data?'))return;localStorage.removeItem(DK);localStorage.removeItem(QK);localStorage.removeItem(TDK);localStorage.removeItem(TTK);localStorage.removeItem(TLK);backfillMissedDays();
 renderCheckin();renderSettings();updateDashStats();renderGoals();renderDonutsProgress();loadNotifSettings();
 var lbt=document.getElementById("lastBackupTime");if(lbt)lbt.textContent=getLastBackupInfo();renderTimerTab();}
@@ -2185,7 +2273,11 @@ function restoreFromAutoBackup(){
     var p=JSON.parse(raw);
     if(p.questions)sQ(p.questions);
     if(p.data)sD(p.data);
-    if(p.todayAnswers){var ta=p.todayAnswers;if(ta.answers)saveTodayAnswers(ta.answers);else if(typeof ta==='object')saveTodayAnswers(ta);}
+    if(p.todayAnswers){
+      var taDate=p.todayAnswers.date||'';
+      if(taDate===getToday())saveTodayAnswers(p.todayAnswers.answers||{});
+      else saveTodayAnswers({});
+    }
     if(p.goals)saveGoals(p.goals);
     if(p.timeTargets)setTimeTargets(p.timeTargets);
     if(p.timeLog)setTimeLog(p.timeLog);
